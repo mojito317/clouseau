@@ -32,6 +32,8 @@ COUCHDB_URL ?= http://$(COUCHDB_HOST):$(COUCHDB_PORT)
 COUCHDB_USER ?= admin
 COUCHDB_PASS ?= pass
 
+HTTPOTION_TIMEOUT ?= 180000
+
 ERLANG_COOKIE?= #
 ifneq ($(ERLANG_COOKIE),)
 	_DEVRUN_COOKIE=--erlang-cookie=$(ERLANG_COOKIE)
@@ -712,3 +714,19 @@ docker-mango-test: mango-test-env
 	 COUCH_USER=$(COUCHDB_USER) \
 	 COUCH_PASS=$(COUCHDB_PASS) \
 	 $(COUCHDB_DIR)/src/mango/.venv/bin/nose2 -F -s $(COUCHDB_DIR)/src/mango/test -c test/mango/unittest.cfg
+
+
+.PHONY: docker-elixir-test
+docker-elixir-test: $(COUCHDB_DIR)/.compiled
+	@echo "Running Elixir search tests against Docker CouchDB at $(COUCHDB_URL)..."
+	@mkdir -p $(COUCHDB_DIR)/test/config
+	@ERLANG_COOKIE=$$(cat $(ERLANG_COOKIE_FILE)) && \
+	 cd $(COUCHDB_DIR) && \
+	 EX_COUCH_URL=$(COUCHDB_URL) \
+	 EX_USERNAME=$(COUCHDB_USER) \
+	 EX_PASSWORD=$(COUCHDB_PASS) \
+	 MIX_ENV=integration \
+	 $(MAKE) elixir-search \
+	 	_WITH_CLOUSEAU=-q \
+	 	ERLANG_COOKIE=$$ERLANG_COOKIE \
+	 	EXUNIT_OPTS="--max-cases 1 test/elixir/test/search_test.exs"
