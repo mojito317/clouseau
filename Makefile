@@ -710,10 +710,11 @@ mango-test-env: $(COUCHDB_DIR)/.checked_out
 # target: docker-mango-test - Run mango tests against dockerized CouchDB (COUCHDB_HOST, COUCHDB_PORT, COUCHDB_USER, COUCHDB_PASS)
 docker-mango-test: mango-test-env
 	@echo "Running mango tests against Docker CouchDB at $(COUCHDB_URL)..."
-	@COUCH_HOST=$(COUCHDB_URL) \
+	@PYTHONUNBUFFERED=1 \
+	 COUCH_HOST=$(COUCHDB_URL) \
 	 COUCH_USER=$(COUCHDB_USER) \
 	 COUCH_PASS=$(COUCHDB_PASS) \
-	 $(COUCHDB_DIR)/src/mango/.venv/bin/nose2 -F -s $(COUCHDB_DIR)/src/mango/test -c test/mango/unittest.cfg
+	 $(COUCHDB_DIR)/src/mango/.venv/bin/nose2 -v -F -s $(COUCHDB_DIR)/src/mango/test -c test/mango/unittest.cfg
 
 
 .PHONY: docker-elixir-test
