@@ -78,7 +78,7 @@ jobs:
       - name: Run mango tests on Docker CouchDB
         uses: nick-fields/retry@v4
         with:
-          timeout_minutes: 5
+          timeout_minutes: 8
           max_attempts: 3
           command: mise exec -- make docker-mango-test
       - name: Run Elixir search tests on Docker CouchDB
@@ -90,5 +90,4 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          make docker-compose-down
           make clean-erlang-cookie

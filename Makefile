@@ -684,11 +684,6 @@ docker-compose-up:
 	 COUCHDB_PASS=$(COUCHDB_PASS) \
 	 docker compose -f docker/compose.yaml up -d
 
-.PHONY: docker-compose-down
-# target: docker-compose-down - Stop docker compose services
-docker-compose-down:
-	@docker compose -f docker/compose.yaml down
-
 .PHONY: clean-erlang-cookie
 # target: clean-erlang-cookie - Remove erlang.cookie file
 clean-erlang-cookie:
