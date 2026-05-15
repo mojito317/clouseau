@@ -680,9 +680,9 @@ docker-test-integration:
 # target: docker-compose-up - Start docker compose services (COUCHDB_PORT, COUCHDB_USER, COUCHDB_PASS)
 docker-compose-up:
 	@COUCHDB_PORT=$(COUCHDB_PORT) \
-	 COUCHDB_USER=$(COUCHDB_USER) \
-	 COUCHDB_PASS=$(COUCHDB_PASS) \
-	 docker compose -f docker/compose.yaml up -d
+	COUCHDB_USER=$(COUCHDB_USER) \
+	COUCHDB_PASS=$(COUCHDB_PASS) \
+	docker compose -f docker/compose.yaml up -d
 
 .PHONY: clean-erlang-cookie
 # target: clean-erlang-cookie - Remove erlang.cookie file
@@ -706,10 +706,10 @@ mango-test-env: $(COUCHDB_DIR)/.checked_out
 docker-mango-test: mango-test-env
 	@echo "Running mango tests against Docker CouchDB at $(COUCHDB_URL)..."
 	@PYTHONUNBUFFERED=1 \
-	 COUCH_HOST=$(COUCHDB_URL) \
-	 COUCH_USER=$(COUCHDB_USER) \
-	 COUCH_PASS=$(COUCHDB_PASS) \
-	 $(COUCHDB_DIR)/src/mango/.venv/bin/nose2 -v -F -s $(COUCHDB_DIR)/src/mango/test -c test/mango/unittest.cfg
+	COUCH_HOST=$(COUCHDB_URL) \
+	COUCH_USER=$(COUCHDB_USER) \
+	COUCH_PASS=$(COUCHDB_PASS) \
+	$(COUCHDB_DIR)/src/mango/.venv/bin/nose2 -v -F -s $(COUCHDB_DIR)/src/mango/test -c test/mango/unittest.cfg
 
 
 .PHONY: docker-elixir-test
@@ -717,12 +717,12 @@ docker-elixir-test: $(COUCHDB_DIR)/.compiled
 	@echo "Running Elixir search tests against Docker CouchDB at $(COUCHDB_URL)..."
 	@mkdir -p $(COUCHDB_DIR)/test/config
 	@ERLANG_COOKIE=$$(cat $(ERLANG_COOKIE_FILE)) && \
-	 cd $(COUCHDB_DIR) && \
-	 EX_COUCH_URL=$(COUCHDB_URL) \
-	 EX_USERNAME=$(COUCHDB_USER) \
-	 EX_PASSWORD=$(COUCHDB_PASS) \
-	 MIX_ENV=integration \
-	 $(MAKE) elixir-search \
-	 	_WITH_CLOUSEAU=-q \
-	 	ERLANG_COOKIE=$$ERLANG_COOKIE \
-	 	EXUNIT_OPTS="--max-cases 1 test/elixir/test/search_test.exs"
+	cd $(COUCHDB_DIR) && \
+	EX_COUCH_URL=$(COUCHDB_URL) \
+	EX_USERNAME=$(COUCHDB_USER) \
+	EX_PASSWORD=$(COUCHDB_PASS) \
+	MIX_ENV=integration \
+	$(MAKE) elixir-search \
+		_WITH_CLOUSEAU=-q \
+		ERLANG_COOKIE=$$ERLANG_COOKIE \
+		EXUNIT_OPTS="--max-cases 1 test/elixir/test/search_test.exs"
