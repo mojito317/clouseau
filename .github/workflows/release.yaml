@@ -67,6 +67,6 @@ jobs:
             BUILD_MODE=release
             CLOUSEAU_VERSION=${{ steps.version.outputs.version }}
           tags: |
-            ghcr.io/cloudant-labs/clouseau:${{ steps.version.outputs.version }}
-            ghcr.io/cloudant-labs/clouseau:latest
+            ghcr.io/mojito317/clouseau:${{ steps.version.outputs.version }}
+            ghcr.io/mojito317/clouseau:latest
           platforms: linux/amd64,linux/arm64
