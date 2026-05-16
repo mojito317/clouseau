@@ -11,7 +11,7 @@
 # the License.
 
 ARG CLOUSEAU_VERSION=3.3.0
-ARG CLOUSEAU_REPO=https://github.com/cloudant-labs/clouseau
+ARG CLOUSEAU_REPO=https://github.com/mojito31/clouseau
 ARG BUILD_MODE=release
 
 
