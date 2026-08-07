@@ -19,7 +19,7 @@ ThisBuild / version := s"${readVersion}"
 
 updateOptions := updateOptions.value.withCachedResolution(true)
 
-object Versions {
+val versions = new {
   val zio        = "2.1.16"
   val zioConfig  = "4.0.4"
   val zioLogging = "2.5.0"
@@ -34,16 +34,16 @@ lazy val luceneComponents = Seq(
   // The single % is for java libraries
   // the %% appends the version of scala used, and should be used for scala libraries;
   // the %%% is for scala-js (and scala native).
-  "org.apache.lucene" % "lucene-core"               % Versions.lucene,
-  "org.apache.lucene" % "lucene-grouping"           % Versions.lucene,
-  "org.apache.lucene" % "lucene-queryparser"        % Versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-common"   % Versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-stempel"  % Versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-smartcn"  % Versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-kuromoji" % Versions.lucene,
-  "org.apache.lucene" % "lucene-facet"              % Versions.lucene,
-  "org.apache.lucene" % "lucene-spatial"            % Versions.lucene,
-  "org.apache.lucene" % "lucene-highlighter"        % Versions.lucene
+  "org.apache.lucene" % "lucene-core"               % versions.lucene,
+  "org.apache.lucene" % "lucene-grouping"           % versions.lucene,
+  "org.apache.lucene" % "lucene-queryparser"        % versions.lucene,
+  "org.apache.lucene" % "lucene-analyzers-common"   % versions.lucene,
+  "org.apache.lucene" % "lucene-analyzers-stempel"  % versions.lucene,
+  "org.apache.lucene" % "lucene-analyzers-smartcn"  % versions.lucene,
+  "org.apache.lucene" % "lucene-analyzers-kuromoji" % versions.lucene,
+  "org.apache.lucene" % "lucene-facet"              % versions.lucene,
+  "org.apache.lucene" % "lucene-spatial"            % versions.lucene,
+  "org.apache.lucene" % "lucene-highlighter"        % versions.lucene
 )
 
 /**
@@ -144,31 +144,29 @@ val isTestJar = sys.props.getOrElse("jartest", "false").toBoolean
 
 val settingsToUse = if (isTestJar) { jartestSettings } else { defaultSettings }
 
-val commonDependencies = Seq(
-  // The single % is for java libraries
-  // the %% appends the version of scala used, and should be used for scala libraries;
-  // the %%% is for scala-js (and scala native).
-  "dev.zio"       %% "zio"                               % Versions.zio,
-  "dev.zio"       %% "zio-config"                        % Versions.zioConfig,
-  "dev.zio"       %% "zio-config-magnolia"               % Versions.zioConfig,
-  "dev.zio"       %% "zio-config-typesafe"               % Versions.zioConfig,
-  "dev.zio"       %% "zio-logging"                       % Versions.zioLogging,
-  // This is needed because micrometer (see below) uses SLF4J
-  "dev.zio"       %% "zio-logging-slf4j-bridge"          % Versions.zioLogging,
-  "dev.zio"       %% "zio-metrics-connectors-micrometer" % Versions.zioMetrics,
-  "dev.zio"       %% "zio-streams"                       % Versions.zio,
-  "io.micrometer"  % "micrometer-registry-jmx"           % "1.14.5",
-  "org.scala-lang" % "scala-reflect"                     % Versions.reflect,
-  "org.tinylog"    % "tinylog-api"                       % Versions.tinylog,
-  "org.tinylog"    % "tinylog-impl"                      % Versions.tinylog,
-  "dev.zio"       %% "zio-test"                          % Versions.zio % Test,
-  "dev.zio"       %% "zio-test-junit"                    % Versions.zio % Test,
-  "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
-  "junit"          % "junit"                             % "4.13.2"        % Test
-)
-
 lazy val commonSettings = Seq(
-  libraryDependencies ++= commonDependencies,
+  libraryDependencies ++= Seq(
+    // The single % is for java libraries
+    // the %% appends the version of scala used, and should be used for scala libraries;
+    // the %%% is for scala-js (and scala native).
+    "dev.zio"       %% "zio"                               % versions.zio,
+    "dev.zio"       %% "zio-config"                        % versions.zioConfig,
+    "dev.zio"       %% "zio-config-magnolia"               % versions.zioConfig,
+    "dev.zio"       %% "zio-config-typesafe"               % versions.zioConfig,
+    "dev.zio"       %% "zio-logging"                       % versions.zioLogging,
+    // This is needed because micrometer (see below) uses SLF4J
+    "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
+    "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
+    "dev.zio"       %% "zio-streams"                       % versions.zio,
+    "io.micrometer"  % "micrometer-registry-jmx"           % versions.jmx,
+    "org.scala-lang" % "scala-reflect"                     % versions.reflect,
+    "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
+    "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
+    "dev.zio"       %% "zio-test"                          % versions.zio % Test,
+    "dev.zio"       %% "zio-test-junit"                    % versions.zio % Test,
+    "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
+    "junit"          % "junit"                             % "4.13.2"        % Test
+  ),
   assembly / assemblyMergeStrategy := commonMergeStrategy,
   ThisBuild / assemblyShadeRules := shadeRules,
   assemblyPackageScala / assembleArtifact := false,
