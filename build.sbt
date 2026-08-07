@@ -158,7 +158,6 @@ lazy val commonSettings = Seq(
     "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
     "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
     "dev.zio"       %% "zio-streams"                       % versions.zio,
-    "io.micrometer"  % "micrometer-registry-jmx"           % "1.14.5",
     "org.scala-lang" % "scala-reflect"                     % versions.reflect,
     "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
     "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
@@ -232,7 +231,8 @@ lazy val clouseau = (project in file("clouseau"))
   .settings(settingsToUse: _*)
   .settings(
     resolvers += "cloudant-repo" at "https://cloudant.github.io/maven/repo/",
-    libraryDependencies ++= luceneComponents
+    libraryDependencies ++= luceneComponents,
+    libraryDependencies += "io.micrometer" % "micrometer-registry-jmx" % "1.14.5"
   )
   .settings(
     assemblyPackageScala / assembleArtifact := true
