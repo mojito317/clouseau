@@ -1,5 +1,5 @@
 import sbtassembly.Assembly.Dependency
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "3.8.4"
 
 import net.nmoncho.sbt.dependencycheck.settings.*
 import org.owasp.dependencycheck.reporting.ReportGenerator.Format
