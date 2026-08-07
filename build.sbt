@@ -158,7 +158,7 @@ lazy val commonSettings = Seq(
     "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
     "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
     "dev.zio"       %% "zio-streams"                       % versions.zio,
-    "io.micrometer"  % "micrometer-registry-jmx"           % versions.jmx,
+    "io.micrometer"  % "micrometer-registry-jmx"           % "1.14.5",
     "org.scala-lang" % "scala-reflect"                     % versions.reflect,
     "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
     "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
