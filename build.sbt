@@ -19,31 +19,29 @@ ThisBuild / version := s"${readVersion}"
 
 updateOptions := updateOptions.value.withCachedResolution(true)
 
-val versions = new {
-  val zio        = "2.1.16"
-  val zioConfig  = "4.0.4"
-  val zioLogging = "2.5.0"
-  val zioMetrics = "2.3.1"
-  val jmx        = "1.14.5"
-  val reflect    = "2.13.16"
-  val lucene     = "4.6.1-cloudant1"
-  val tinylog    = "2.7.0"
-}
+val zioVersion        = "2.1.16"
+val zioConfigVersion  = "4.0.4"
+val zioLoggingVersion = "2.5.0"
+val zioMetricsVersion = "2.3.1"
+val jmxVersion        = "1.14.5"
+val reflectVersion    = "2.13.16"
+val luceneVersion     = "4.6.1-cloudant1"
+val tinylogVersion    = "2.7.0"
 
 lazy val luceneComponents = Seq(
   // The single % is for java libraries
   // the %% appends the version of scala used, and should be used for scala libraries;
   // the %%% is for scala-js (and scala native).
-  "org.apache.lucene" % "lucene-core"               % versions.lucene,
-  "org.apache.lucene" % "lucene-grouping"           % versions.lucene,
-  "org.apache.lucene" % "lucene-queryparser"        % versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-common"   % versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-stempel"  % versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-smartcn"  % versions.lucene,
-  "org.apache.lucene" % "lucene-analyzers-kuromoji" % versions.lucene,
-  "org.apache.lucene" % "lucene-facet"              % versions.lucene,
-  "org.apache.lucene" % "lucene-spatial"            % versions.lucene,
-  "org.apache.lucene" % "lucene-highlighter"        % versions.lucene
+  "org.apache.lucene" % "lucene-core"               % luceneVersion,
+  "org.apache.lucene" % "lucene-grouping"           % luceneVersion,
+  "org.apache.lucene" % "lucene-queryparser"        % luceneVersion,
+  "org.apache.lucene" % "lucene-analyzers-common"   % luceneVersion,
+  "org.apache.lucene" % "lucene-analyzers-stempel"  % luceneVersion,
+  "org.apache.lucene" % "lucene-analyzers-smartcn"  % luceneVersion,
+  "org.apache.lucene" % "lucene-analyzers-kuromoji" % luceneVersion,
+  "org.apache.lucene" % "lucene-facet"              % luceneVersion,
+  "org.apache.lucene" % "lucene-spatial"            % luceneVersion,
+  "org.apache.lucene" % "lucene-highlighter"        % luceneVersion
 )
 
 /**
@@ -144,24 +142,24 @@ val isTestJar = sys.props.getOrElse("jartest", "false").toBoolean
 
 val settingsToUse = if (isTestJar) { jartestSettings } else { defaultSettings }
 
-val commonDependencies = Seq(
-  // The single % is for java libraries
-  // the %% appends the version of scala used, and should be used for scala libraries;
-  // the %%% is for scala-js (and scala native).
-  "dev.zio"       %% "zio"                               % versions.zio,
-  "dev.zio"       %% "zio-config"                        % versions.zioConfig,
-  "dev.zio"       %% "zio-config-magnolia"               % versions.zioConfig,
-  "dev.zio"       %% "zio-config-typesafe"               % versions.zioConfig,
-  "dev.zio"       %% "zio-logging"                       % versions.zioLogging,
+// The single % is for java libraries
+// the %% appends the version of scala used, and should be used for scala libraries;
+// the %%% is for scala-js (and scala native).
+libraryDependencies ++= Seq(
+  "dev.zio"       %% "zio"                               % zioVersion,
+  "dev.zio"       %% "zio-config"                        % zioConfigVersion,
+  "dev.zio"       %% "zio-config-magnolia"               % zioConfigVersion,
+  "dev.zio"       %% "zio-config-typesafe"               % zioConfigVersion,
+  "dev.zio"       %% "zio-logging"                       % zioLoggingVersion,
   // This is needed because micrometer (see below) uses SLF4J
-  "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
-  "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
-  "dev.zio"       %% "zio-streams"                       % versions.zio,
-  "org.scala-lang" % "scala-reflect"                     % versions.reflect,
-  "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
-  "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
-  "dev.zio"       %% "zio-test"                          % versions.zio % Test,
-  "dev.zio"       %% "zio-test-junit"                    % versions.zio % Test,
+  "dev.zio"       %% "zio-logging-slf4j-bridge"          % zioLoggingVersion,
+  "dev.zio"       %% "zio-metrics-connectors-micrometer" % zioMetricsVersion,
+  "dev.zio"       %% "zio-streams"                       % zioVersion,
+  "org.scala-lang" % "scala-reflect"                     % reflectVersion,
+  "org.tinylog"    % "tinylog-api"                       % tinylogVersion,
+  "org.tinylog"    % "tinylog-impl"                      % tinylogVersion,
+  "dev.zio"       %% "zio-test"                          % zioVersion % Test,
+  "dev.zio"       %% "zio-test-junit"                    % zioVersion % Test,
   "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
   "junit"          % "junit"                             % "4.13.2"        % Test
 )
@@ -177,16 +175,10 @@ lazy val commonSettings = Seq(
 lazy val vendor = (project in file("vendor"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
-  .settings(
-    libraryDependencies ++= commonDependencies
-  )
 
 lazy val core = (project in file("core"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
-  .settings(
-    libraryDependencies ++= commonDependencies
-  )
   .settings(dependencyCheckSkip := false)
   .enablePlugins(BuildInfoPlugin)
   .enablePlugins(plugins.JUnitXmlReportPlugin)
@@ -207,9 +199,6 @@ lazy val otp = (project in file("otp"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
   .settings(
-    libraryDependencies ++= commonDependencies
-  )
-  .settings(
     scalacOptions ++= Seq("-deprecation", "-feature")
   )
   .enablePlugins(plugins.JUnitXmlReportPlugin)
@@ -219,9 +208,6 @@ lazy val otp = (project in file("otp"))
 lazy val scalang = (project in file("scalang"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
-  .settings(
-    libraryDependencies ++= commonDependencies
-  )
   .enablePlugins(plugins.JUnitXmlReportPlugin)
   .dependsOn(core)
   .dependsOn(macros)
@@ -242,9 +228,6 @@ lazy val composedOptions: Seq[String] = {
 lazy val clouseau = (project in file("clouseau"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
-  .settings(
-    libraryDependencies ++= commonDependencies
-  )
   .settings(
     resolvers += "cloudant-repo" at "https://cloudant.github.io/maven/repo/",
     libraryDependencies ++= luceneComponents,
@@ -289,9 +272,6 @@ lazy val test = (project in file("test"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
   .settings(
-    libraryDependencies ++= commonDependencies
-  )
-  .settings(
     scalacOptions ++= Seq("-deprecation", "-feature")
   )
   .dependsOn(core)
@@ -299,9 +279,6 @@ lazy val test = (project in file("test"))
 lazy val macros = (project in file("macros"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
-  .settings(
-    libraryDependencies ++= commonDependencies
-  )
 
 lazy val root = (project in file("."))
   .aggregate(core, clouseau, macros, otp, test, scalang)
