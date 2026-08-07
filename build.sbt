@@ -144,28 +144,29 @@ val isTestJar = sys.props.getOrElse("jartest", "false").toBoolean
 
 val settingsToUse = if (isTestJar) { jartestSettings } else { defaultSettings }
 
+val commonDependencies = Seq(
+  // The single % is for java libraries
+  // the %% appends the version of scala used, and should be used for scala libraries;
+  // the %%% is for scala-js (and scala native).
+  "dev.zio"       %% "zio"                               % versions.zio,
+  "dev.zio"       %% "zio-config"                        % versions.zioConfig,
+  "dev.zio"       %% "zio-config-magnolia"               % versions.zioConfig,
+  "dev.zio"       %% "zio-config-typesafe"               % versions.zioConfig,
+  "dev.zio"       %% "zio-logging"                       % versions.zioLogging,
+  // This is needed because micrometer (see below) uses SLF4J
+  "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
+  "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
+  "dev.zio"       %% "zio-streams"                       % versions.zio,
+  "org.scala-lang" % "scala-reflect"                     % versions.reflect,
+  "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
+  "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
+  "dev.zio"       %% "zio-test"                          % versions.zio % Test,
+  "dev.zio"       %% "zio-test-junit"                    % versions.zio % Test,
+  "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
+  "junit"          % "junit"                             % "4.13.2"        % Test
+)
+
 lazy val commonSettings = Seq(
-  libraryDependencies ++= Seq(
-    // The single % is for java libraries
-    // the %% appends the version of scala used, and should be used for scala libraries;
-    // the %%% is for scala-js (and scala native).
-    "dev.zio"       %% "zio"                               % versions.zio,
-    "dev.zio"       %% "zio-config"                        % versions.zioConfig,
-    "dev.zio"       %% "zio-config-magnolia"               % versions.zioConfig,
-    "dev.zio"       %% "zio-config-typesafe"               % versions.zioConfig,
-    "dev.zio"       %% "zio-logging"                       % versions.zioLogging,
-    // This is needed because micrometer (see below) uses SLF4J
-    "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions.zioLogging,
-    "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions.zioMetrics,
-    "dev.zio"       %% "zio-streams"                       % versions.zio,
-    "org.scala-lang" % "scala-reflect"                     % versions.reflect,
-    "org.tinylog"    % "tinylog-api"                       % versions.tinylog,
-    "org.tinylog"    % "tinylog-impl"                      % versions.tinylog,
-    "dev.zio"       %% "zio-test"                          % versions.zio % Test,
-    "dev.zio"       %% "zio-test-junit"                    % versions.zio % Test,
-    "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
-    "junit"          % "junit"                             % "4.13.2"        % Test
-  ),
   assembly / assemblyMergeStrategy := commonMergeStrategy,
   ThisBuild / assemblyShadeRules := shadeRules,
   assemblyPackageScala / assembleArtifact := false,
@@ -176,10 +177,16 @@ lazy val commonSettings = Seq(
 lazy val vendor = (project in file("vendor"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
+  .settings(
+    libraryDependencies ++= commonDependencies
+  )
 
 lazy val core = (project in file("core"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
+  .settings(
+    libraryDependencies ++= commonDependencies
+  )
   .settings(dependencyCheckSkip := false)
   .enablePlugins(BuildInfoPlugin)
   .enablePlugins(plugins.JUnitXmlReportPlugin)
@@ -200,6 +207,9 @@ lazy val otp = (project in file("otp"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
   .settings(
+    libraryDependencies ++= commonDependencies
+  )
+  .settings(
     scalacOptions ++= Seq("-deprecation", "-feature")
   )
   .enablePlugins(plugins.JUnitXmlReportPlugin)
@@ -209,6 +219,9 @@ lazy val otp = (project in file("otp"))
 lazy val scalang = (project in file("scalang"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
+  .settings(
+    libraryDependencies ++= commonDependencies
+  )
   .enablePlugins(plugins.JUnitXmlReportPlugin)
   .dependsOn(core)
   .dependsOn(macros)
@@ -229,6 +242,9 @@ lazy val composedOptions: Seq[String] = {
 lazy val clouseau = (project in file("clouseau"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
+  .settings(
+    libraryDependencies ++= commonDependencies
+  )
   .settings(
     resolvers += "cloudant-repo" at "https://cloudant.github.io/maven/repo/",
     libraryDependencies ++= luceneComponents,
@@ -273,6 +289,9 @@ lazy val test = (project in file("test"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
   .settings(
+    libraryDependencies ++= commonDependencies
+  )
+  .settings(
     scalacOptions ++= Seq("-deprecation", "-feature")
   )
   .dependsOn(core)
@@ -280,6 +299,9 @@ lazy val test = (project in file("test"))
 lazy val macros = (project in file("macros"))
   .settings(commonSettings *)
   .settings(settingsToUse: _*)
+  .settings(
+    libraryDependencies ++= commonDependencies
+  )
 
 lazy val root = (project in file("."))
   .aggregate(core, clouseau, macros, otp, test, scalang)
