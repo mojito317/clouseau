@@ -144,7 +144,7 @@ val isTestJar = sys.props.getOrElse("jartest", "false").toBoolean
 
 val settingsToUse = if (isTestJar) { jartestSettings } else { defaultSettings }
 
-val commonLibraryDependencies = Seq(
+libraryDependencies ++= Seq(
   // The single % is for java libraries
   // the %% appends the version of scala used, and should be used for scala libraries;
   // the %%% is for scala-js (and scala native).
@@ -168,7 +168,6 @@ val commonLibraryDependencies = Seq(
 )
 
 lazy val commonSettings = Seq(
-  libraryDependencies ++= commonLibraryDependencies,
   assembly / assemblyMergeStrategy := commonMergeStrategy,
   ThisBuild / assemblyShadeRules := shadeRules,
   assemblyPackageScala / assembleArtifact := false,
