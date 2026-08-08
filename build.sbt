@@ -231,7 +231,8 @@ lazy val clouseau = (project in file("clouseau"))
   .settings(
     resolvers += "cloudant-repo" at "https://cloudant.github.io/maven/repo/",
     libraryDependencies ++= luceneComponents,
-    libraryDependencies += "io.micrometer" % "micrometer-registry-jmx" % "1.14.5"
+    libraryDependencies += "io.micrometer" % "micrometer-registry-jmx" % "1.14.5",
+    libraryDependencies += "dev.zio" %% "zio" % zioVersion
   )
   .settings(
     assemblyPackageScala / assembleArtifact := true
