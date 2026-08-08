@@ -212,7 +212,7 @@ lazy val clouseau = (project in file("clouseau"))
     // The single % is for java libraries
     // the %% appends the version of scala used, and should be used for scala libraries;
     // the %%% is for scala-js (and scala native).
-    libraryDependencies += "dev.zio"       %% "zio"                               % "2.1.16",
+    libraryDependencies += "dev.zio"       %% "zio"                               % "2.1.26",
     libraryDependencies += "dev.zio"       %% "zio-config"                        % "4.0.4",
     libraryDependencies += "dev.zio"       %% "zio-config-magnolia"               % "4.0.4",
     libraryDependencies += "dev.zio"       %% "zio-config-typesafe"               % "4.0.4",
