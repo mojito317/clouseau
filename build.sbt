@@ -212,21 +212,21 @@ lazy val clouseau = (project in file("clouseau"))
     // The single % is for java libraries
     // the %% appends the version of scala used, and should be used for scala libraries;
     // the %%% is for scala-js (and scala native).
-    libraryDependencies += "dev.zio"       %% "zio"                               % zioVersion,
-    libraryDependencies += "dev.zio"       %% "zio-config"                        % zioConfigVersion,
-    libraryDependencies += "dev.zio"       %% "zio-config-magnolia"               % zioConfigVersion,
-    libraryDependencies += "dev.zio"       %% "zio-config-typesafe"               % zioConfigVersion,
-    libraryDependencies += "dev.zio"       %% "zio-logging"                       % zioLoggingVersion,
+    libraryDependencies += "dev.zio"       %% "zio"                               % "2.1.16",
+    libraryDependencies += "dev.zio"       %% "zio-config"                        % "4.0.4",
+    libraryDependencies += "dev.zio"       %% "zio-config-magnolia"               % "4.0.4",
+    libraryDependencies += "dev.zio"       %% "zio-config-typesafe"               % "4.0.4",
+    libraryDependencies += "dev.zio"       %% "zio-logging"                       % "2.5.0",
     // This is needed because micrometer (see below) uses SLF4J
-    libraryDependencies += "dev.zio"       %% "zio-logging-slf4j-bridge"          % zioLoggingVersion,
-    libraryDependencies += "dev.zio"       %% "zio-metrics-connectors-micrometer" % zioMetricsVersion,
-    libraryDependencies += "dev.zio"       %% "zio-streams"                       % zioVersion,
-    libraryDependencies += "io.micrometer"  % "micrometer-registry-jmx"           % jmxVersion,
-    libraryDependencies += "org.scala-lang" % "scala-reflect"                     % reflectVersion,
-    libraryDependencies += "org.tinylog"    % "tinylog-api"                       % tinylogVersion,
-    libraryDependencies += "org.tinylog"    % "tinylog-impl"                      % tinylogVersion,
-    libraryDependencies += "dev.zio"       %% "zio-test"                          % zioVersion % Test,
-    libraryDependencies += "dev.zio"       %% "zio-test-junit"                    % zioVersion % Test,
+    libraryDependencies += "dev.zio"       %% "zio-logging-slf4j-bridge"          % "2.5.0",
+    libraryDependencies += "dev.zio"       %% "zio-metrics-connectors-micrometer" % "2.3.1",
+    libraryDependencies += "dev.zio"       %% "zio-streams"                       % "2.1.16",
+    libraryDependencies += "io.micrometer"  % "micrometer-registry-jmx"           % "1.14.5",
+    libraryDependencies += "org.scala-lang" % "scala-reflect"                     % "2.13.16",
+    libraryDependencies += "org.tinylog"    % "tinylog-api"                       % "2.7.0",
+    libraryDependencies += "org.tinylog"    % "tinylog-impl"                      % "2.7.0",
+    libraryDependencies += "dev.zio"       %% "zio-test"                          % "2.1.16"        % Test,
+    libraryDependencies += "dev.zio"       %% "zio-test-junit"                    % "2.1.16"        % Test,
     libraryDependencies += "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
     libraryDependencies += "junit"          % "junit"                             % "4.13.2"        % Test
   )
