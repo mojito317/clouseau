@@ -108,22 +108,31 @@
       "groupSlug": "github-actions"
     },
     {
-      "description": "Group all sbt plugin updates into a single PR",
+      "description": "Group all sbt plugin updates (project/plugins.sbt) into a single PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/plugins.sbt"],
       "groupName": "sbt plugins",
       "groupSlug": "sbt-plugins"
     },
     {
-      "description": "Group all build.sbt library dependency updates into a single PR (sbt manager for inline versions + regex manager for versions Map)",
-      "matchManagers": ["sbt", "regex"],
+      "description": "Group inline sbt library deps from build.sbt into one PR",
+      "matchManagers": ["sbt"],
       "matchFileNames": ["build.sbt"],
       "groupName": "sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
     {
-      "description": "Group regex-manager deps (versions Map) that have no matchFileNames into sbt dependencies",
+      "description": "Group versions Map deps (extracted by regex customManagers from build.sbt) into the same sbt dependencies PR",
       "matchManagers": ["regex"],
+      "matchPackageNames": [
+        "dev.zio:zio",
+        "dev.zio:zio-config",
+        "dev.zio:zio-logging",
+        "dev.zio:zio-metrics-connectors-micrometer",
+        "io.micrometer:micrometer-registry-jmx",
+        "org.scala-lang:scala-reflect",
+        "org.tinylog:tinylog-api"
+      ],
       "groupName": "sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
