@@ -32,6 +32,46 @@
       "versioningTemplate": "semver-coerced"
     },
     {
+      "description": "Track editorconfig-checker version in mise.toml — keep in sync with .editorconfig-checker.json",
+      "customType": "regex",
+      "fileMatch": ["^mise\\.toml$"],
+      "matchStrings": ["editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "description": "Track editorconfig-checker version in .editorconfig-checker.json — keep in sync with mise.toml",
+      "customType": "regex",
+      "fileMatch": ["^\\.editorconfig-checker\\.json$"],
+      "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "description": "Track scalafmt version in mise.toml — keep in sync with .scalafmt.conf",
+      "customType": "regex",
+      "fileMatch": ["^mise\\.toml$"],
+      "matchStrings": ["scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "scalameta/scalafmt",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "description": "Track scalafmt version in .scalafmt.conf — keep in sync with mise.toml",
+      "customType": "regex",
+      "fileMatch": ["^\\.scalafmt\\.conf$"],
+      "matchStrings": ["^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+      "depNameTemplate": "scalameta/scalafmt",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
       "description": "Track sbt version in mise.toml against conda-forge (the actual backend mise uses)",
       "customType": "regex",
       "fileMatch": ["^mise\\.toml$"],
@@ -244,9 +284,23 @@
       "enabled": false
     },
     {
-      "description": "Disable scalafmt version updates in .scalafmt.conf (synced from mise.toml via postinstall hook)",
+      "description": "Disable scalafmt built-in manager — versioned via regex customManagers instead",
       "matchManagers": ["scalafmt"],
       "enabled": false
+    },
+    {
+      "description": "Group scalafmt from mise.toml and .scalafmt.conf into a single PR",
+      "matchPackageNames": ["scalameta/scalafmt"],
+      "matchManagers": ["custom.regex"],
+      "groupName": "scalafmt version",
+      "groupSlug": "scalafmt-version"
+    },
+    {
+      "description": "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into a single PR",
+      "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+      "matchManagers": ["custom.regex"],
+      "groupName": "editorconfig-checker version",
+      "groupSlug": "editorconfig-checker-version"
     },
     {
       "description": "Disable typst dependencies in docs — not part of the application",
