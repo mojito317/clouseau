@@ -8,6 +8,12 @@
   "branchPrefix": "renovate-",
   "recreateClosed": true,
   "customDatasources": {
+    "conda-forge-openjdk": {
+      "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/openjdk",
+      "transformTemplates": [
+        "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+      ]
+    },
     "conda-forge-sbt": {
       "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
       "transformTemplates": [
@@ -16,6 +22,17 @@
     }
   },
   "customManagers": [
+    {
+      "description": "Track java (openjdk) version in mise.toml against conda-forge — preserves openjdk- prefix",
+      "customType": "regex",
+      "fileMatch": ["^mise\\.toml$"],
+      "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "openjdk",
+      "datasourceTemplate": "custom.conda-forge-openjdk",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^(?<version>.+)$",
+      "depTypeTemplate": "tools"
+    },
     {
       "description": "Track sbt version in mise.toml against conda-forge (the actual backend mise uses)",
       "customType": "regex",
@@ -134,22 +151,29 @@
       "enabled": false
     },
     {
-      "description": "Only allow elixir versions with -otp-27 suffix — must come before mise-tools group to be overridden, but allowedVersions is additive so place before grouping",
+      "description": "Elixir: use regex versioning so -otp-N suffix is a compatibility qualifier, not a pre-release; only allow versions tied to otp-27",
       "matchPackageNames": ["elixir"],
       "matchManagers": ["mise"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
       "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
     },
     {
-      "description": "Group all mise tool updates into a single PR (java and sbt excluded via rules above/below)",
+      "description": "Disable java from the mise manager — handled by regex/conda-forge customManager instead",
+      "matchPackageNames": ["java", "java-jdk"],
+      "matchManagers": ["mise"],
+      "enabled": false
+    },
+    {
+      "description": "Group all mise tool updates into a single PR (java and sbt excluded via rules above)",
       "matchManagers": ["mise"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
     },
     {
-      "description": "Pin java to 21.x LTS (openjdk-21.x on conda-forge) — own PR, after mise-tools to win last-match",
-      "matchPackageNames": ["java", "java-jdk"],
-      "matchManagers": ["mise"],
-      "allowedVersions": "/^openjdk-21\\./",
+      "description": "Pin java (openjdk) to 21.x LTS — own PR, after mise-tools to win last-match",
+      "matchPackageNames": ["openjdk"],
+      "matchManagers": ["custom.regex"],
+      "allowedVersions": "/^21\\./",
       "groupName": "java",
       "groupSlug": "java"
     },
@@ -170,9 +194,9 @@
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Block major java updates — must come after all grouping rules to win last-match",
-      "matchPackageNames": ["java", "java-jdk"],
-      "matchManagers": ["mise"],
+      "description": "Block major java updates — must come after java grouping rule to win last-match",
+      "matchPackageNames": ["openjdk"],
+      "matchManagers": ["custom.regex"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
