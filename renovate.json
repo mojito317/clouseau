@@ -114,8 +114,8 @@
       "groupSlug": "sbt-plugins"
     },
     {
-      "description": "Group all sbt library dependency updates into a single PR",
-      "matchManagers": ["sbt"],
+      "description": "Group all build.sbt library dependency updates into a single PR (sbt manager for inline versions + regex manager for versions Map)",
+      "matchManagers": ["sbt", "regex"],
       "matchFileNames": ["build.sbt"],
       "groupName": "sbt dependencies",
       "groupSlug": "sbt-dependencies"
