@@ -65,7 +65,7 @@
       "description": "Track scalafmt version in .scalafmt.conf — keep in sync with mise.toml",
       "customType": "regex",
       "fileMatch": ["^\\.scalafmt\\.conf$"],
-      "matchStrings": ["^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+      "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
       "depNameTemplate": "scalameta/scalafmt",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver-coerced",
@@ -189,6 +189,18 @@
       "enabled": false
     },
     {
+      "description": "Disable scalafmt from the mise manager — handled by regex customManagers instead",
+      "matchPackageNames": ["scalafmt"],
+      "matchManagers": ["mise"],
+      "enabled": false
+    },
+    {
+      "description": "Disable editorconfig-checker from the mise manager — handled by regex customManagers instead",
+      "matchPackageNames": ["editorconfig-checker"],
+      "matchManagers": ["mise"],
+      "enabled": false
+    },
+    {
       "description": "Elixir: use regex versioning so -otp-N suffix is a compatibility qualifier, not a pre-release; only allow versions tied to otp-27",
       "matchPackageNames": ["elixir"],
       "matchManagers": ["mise"],
@@ -202,7 +214,7 @@
       "enabled": false
     },
     {
-      "description": "Group all mise tool updates into a single PR (sbt excluded via rules above)",
+      "description": "Group all mise tool updates into a single PR (sbt, java, scalafmt, editorconfig-checker excluded via rules above)",
       "matchManagers": ["mise"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
