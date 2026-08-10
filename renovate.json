@@ -146,10 +146,18 @@
       "groupSlug": "mise-tools"
     },
     {
-      "description": "Group sbt from mise.toml and project/build.properties (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
+      "description": "Group sbt from mise.toml (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
       "matchPackageNames": ["sbt"],
       "matchManagers": ["regex"],
-      "matchFileNames": ["mise.toml", "project/build.properties"],
+      "matchFileNames": ["mise.toml"],
+      "groupName": "sbt version",
+      "groupSlug": "sbt-version"
+    },
+    {
+      "description": "Group sbt from project/build.properties (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
+      "matchPackageNames": ["sbt"],
+      "matchManagers": ["regex"],
+      "matchFileNames": ["project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
     },
