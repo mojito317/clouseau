@@ -168,7 +168,6 @@
       "matchFileNames": ["project/plugins.sbt"],
       "groupName": "Update project/plugins.sbt dependencies",
       "groupSlug": "sbt-plugins",
-      "schedule": ["on day 10 of every month"],
       "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
     },
     {
