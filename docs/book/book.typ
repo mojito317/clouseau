@@ -1,6 +1,6 @@
 
 #import "@preview/pintorita:0.1.4"
-#import "@preview/biz-report:0.2.0": report
+#import "@preview/biz-report:0.3.1": report
 
 #import "./services-inheritance.typ": services-inheritance-diagram
 #import "./components.typ": components-diagram
