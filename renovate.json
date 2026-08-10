@@ -156,24 +156,24 @@
       "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
     },
     {
-      "description": "Disable java from the mise manager — handled by regex/conda-forge customManager instead",
+      "description": "Disable java from the mise manager — handled by regex/mise-java-openjdk customManager instead",
       "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
       "enabled": false
     },
     {
-      "description": "Group all mise tool updates into a single PR (java and sbt excluded via rules above)",
+      "description": "Group all mise tool updates into a single PR (sbt excluded via rules above)",
       "matchManagers": ["mise"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
     },
     {
-      "description": "Pin java (openjdk) to 21.x LTS — own PR, after mise-tools to win last-match",
+      "description": "Pin java (openjdk) to 21.x LTS and group into mise tools PR",
       "matchPackageNames": ["openjdk"],
       "matchManagers": ["custom.regex"],
       "allowedVersions": "/^21\\./",
-      "groupName": "java",
-      "groupSlug": "java"
+      "groupName": "mise tools",
+      "groupSlug": "mise-tools"
     },
     {
       "description": "Group sbt from mise.toml (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
