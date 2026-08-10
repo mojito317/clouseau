@@ -190,13 +190,13 @@
     },
     {
       "description": "Disable scalafmt from the mise manager — handled by regex customManagers instead",
-      "matchPackageNames": ["scalafmt"],
+      "matchDepNames": ["scalafmt"],
       "matchManagers": ["mise"],
       "enabled": false
     },
     {
       "description": "Disable editorconfig-checker from the mise manager — handled by regex customManagers instead",
-      "matchPackageNames": ["editorconfig-checker"],
+      "matchDepNames": ["editorconfig-checker"],
       "matchManagers": ["mise"],
       "enabled": false
     },
