@@ -8,10 +8,10 @@
   "branchPrefix": "renovate-",
   "recreateClosed": true,
   "customDatasources": {
-    "conda-forge-openjdk": {
-      "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/openjdk",
+    "mise-java-openjdk": {
+      "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
       "transformTemplates": [
-        "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+        "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
       ]
     },
     "conda-forge-sbt": {
@@ -23,15 +23,13 @@
   },
   "customManagers": [
     {
-      "description": "Track java (openjdk) version in mise.toml against conda-forge — preserves openjdk- prefix",
+      "description": "Track java (openjdk) version in mise.toml via mise-java.jdx.dev — the exact registry mise uses, preserves openjdk- prefix",
       "customType": "regex",
       "fileMatch": ["^mise\\.toml$"],
       "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
       "depNameTemplate": "openjdk",
-      "datasourceTemplate": "custom.conda-forge-openjdk",
-      "versioningTemplate": "semver-coerced",
-      "extractVersionTemplate": "^(?<version>.+)$",
-      "depTypeTemplate": "tools"
+      "datasourceTemplate": "custom.mise-java-openjdk",
+      "versioningTemplate": "semver-coerced"
     },
     {
       "description": "Track sbt version in mise.toml against conda-forge (the actual backend mise uses)",
