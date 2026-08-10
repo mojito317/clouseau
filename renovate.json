@@ -116,9 +116,14 @@
       "allowedVersions": "/^21[.+]/"
     },
     {
-      "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
+      "description": "Disable sbt from the mise manager — handled by regex/conda-forge customManager instead",
+      "matchPackageNames": ["sbt", "sbt/sbt"],
       "matchManagers": ["mise"],
-      "excludePackageNames": ["sbt"],
+      "enabled": false
+    },
+    {
+      "description": "Group all mise tool updates into a single PR (sbt excluded via mise manager disable above)",
+      "matchManagers": ["mise"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
     },
