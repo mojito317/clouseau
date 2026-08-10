@@ -1,7 +1,8 @@
 **/bin
 **/build/
 **/node_modules
-**/project
+**/project/target
+**/project/project
 **/target
 *.beam
 *.class
