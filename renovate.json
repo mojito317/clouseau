@@ -1,0 +1,72 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "labels": ["dependencies"],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 2,
+  "packageRules": [
+    {
+      "description": "Disable major version upgrades for scala (project is pinned to 2.13.x)",
+      "matchPackageNames": ["scala"],
+      "matchManagers": ["mise"],
+      "allowedVersions": "/^2\\.13\\./"
+    },
+    {
+      "description": "Disable major version upgrades for sbt (project requires sbt 1.x)",
+      "matchPackageNames": ["sbt", "sbt/sbt"],
+      "allowedVersions": "/^1\\./"
+    },
+    {
+      "description": "Group sbt version across mise.toml and project/build.properties into one PR (kept in sync via postinstall hook)",
+      "matchPackageNames": ["sbt", "sbt/sbt"],
+      "matchManagers": ["mise", "sbt"],
+      "matchFileNames": ["mise.toml", "project/build.properties"],
+      "groupName": "sbt version",
+      "groupSlug": "sbt-version"
+    },
+    {
+      "description": "Disable major version upgrades for java (project targets Java 21 LTS)",
+      "matchPackageNames": ["java"],
+      "allowedVersions": "/^(openjdk-)?21\\./"
+    },
+    {
+      "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
+      "matchManagers": ["mise"],
+      "excludePackageNames": ["sbt"],
+      "groupName": "mise tools",
+      "groupSlug": "mise-tools"
+    },
+    {
+      "description": "Group all GitHub Actions updates into a single PR",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions",
+      "groupSlug": "github-actions"
+    },
+    {
+      "description": "Group all sbt plugin updates into a single PR",
+      "matchManagers": ["sbt"],
+      "matchFileNames": ["project/plugins.sbt"],
+      "groupName": "sbt plugins",
+      "groupSlug": "sbt-plugins"
+    },
+    {
+      "description": "Group all sbt library dependency updates into a single PR",
+      "matchManagers": ["sbt"],
+      "matchFileNames": ["build.sbt"],
+      "groupName": "sbt dependencies",
+      "groupSlug": "sbt-dependencies"
+    },
+    {
+      "description": "Ignore lucene cloudant fork — not on standard registries",
+      "matchPackagePatterns": ["org.apache.lucene"],
+      "enabled": false
+    },
+    {
+      "description": "Disable scalafmt version updates in .scalafmt.conf (synced from mise.toml via postinstall hook)",
+      "matchManagers": ["scalafmt"],
+      "enabled": false
+    }
+  ]
+}

@@ -152,8 +152,8 @@ libraryDependencies ++= Seq(
   "org.tinylog"    % "tinylog-impl"                      % "2.7.0",
   "dev.zio"       %% "zio-test"                          % "2.1.16" % Test,
   "dev.zio"       %% "zio-test-junit"                    % "2.1.16" % Test,
-  "com.github.sbt" % "junit-interface"                   % "0.13.3"        % Test,
-  "junit"          % "junit"                             % "4.13.2"        % Test
+  "com.github.sbt" % "junit-interface"                   % "0.13.3" % Test,
+  "junit"          % "junit"                             % "4.13.2" % Test
 )
 
 lazy val commonSettings = Seq(
