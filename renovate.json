@@ -6,6 +6,7 @@
   "prHourlyLimit": 0,
   "branchNameStrict": true,
   "branchPrefix": "renovate-",
+  "recreateClosed": true,
   "customManagers": [
     {
       "description": "Update zio version in versions Map (covers zio + zio-streams)",
@@ -89,22 +90,6 @@
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Group sbt from mise.toml into the sbt version PR",
-      "matchPackageNames": ["sbt"],
-      "matchManagers": ["mise"],
-      "matchFileNames": ["mise.toml"],
-      "groupName": "sbt version",
-      "groupSlug": "sbt-version"
-    },
-    {
-      "description": "Group sbt/sbt from project/build.properties (sbt manager) into the sbt version PR",
-      "matchPackageNames": ["sbt/sbt"],
-      "matchManagers": ["sbt"],
-      "matchFileNames": ["project/build.properties"],
-      "groupName": "sbt version",
-      "groupSlug": "sbt-version"
-    },
-    {
       "description": "Pin java to 21.x LTS in mise.toml — block Java major jumps",
       "matchPackageNames": ["java"],
       "matchManagers": ["mise"],
@@ -123,6 +108,22 @@
       "excludePackageNames": ["sbt"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
+    },
+    {
+      "description": "Group sbt from mise.toml into the sbt version PR — must come after mise-tools to win last-match",
+      "matchPackageNames": ["sbt"],
+      "matchManagers": ["mise"],
+      "matchFileNames": ["mise.toml"],
+      "groupName": "sbt version",
+      "groupSlug": "sbt-version"
+    },
+    {
+      "description": "Group sbt/sbt from project/build.properties into the sbt version PR",
+      "matchPackageNames": ["sbt/sbt"],
+      "matchManagers": ["sbt"],
+      "matchFileNames": ["project/build.properties"],
+      "groupName": "sbt version",
+      "groupSlug": "sbt-version"
     },
     {
       "description": "Group all GitHub Actions updates into a single PR",
