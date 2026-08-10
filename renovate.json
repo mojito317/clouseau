@@ -137,6 +137,7 @@
       "matchFileNames": ["project/plugins.sbt"],
       "groupName": "sbt plugins",
       "groupSlug": "sbt-plugins",
+      "schedule": ["* * 10 */2 *"],
       "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
     },
     {
