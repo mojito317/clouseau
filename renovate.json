@@ -76,15 +76,29 @@
       "allowedVersions": "/^2\\.13\\./"
     },
     {
+      "description": "Block major scala updates as a safety net — separateMinorPatch causes major updates to bypass allowedVersions",
+      "matchPackageNames": ["scala"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "description": "Pin sbt to 1.x across all managers — sbt 2.x is a breaking change",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Group sbt version across mise.toml and project/build.properties into one PR (kept in sync via postinstall hook)",
-      "matchPackageNames": ["sbt", "sbt/sbt"],
-      "matchManagers": ["mise", "sbt-build-properties"],
-      "matchFileNames": ["mise.toml", "project/build.properties"],
+      "description": "Group sbt from mise.toml into the sbt version PR",
+      "matchPackageNames": ["sbt"],
+      "matchManagers": ["mise"],
+      "matchFileNames": ["mise.toml"],
+      "groupName": "sbt version",
+      "groupSlug": "sbt-version"
+    },
+    {
+      "description": "Group sbt/sbt from project/build.properties (sbt manager) into the sbt version PR",
+      "matchPackageNames": ["sbt/sbt"],
+      "matchManagers": ["sbt"],
+      "matchFileNames": ["project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
     },
