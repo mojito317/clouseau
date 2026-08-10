@@ -13,9 +13,24 @@
       "transformTemplates": [
         "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
       ]
+    },
+    "adoptium-temurin-21": {
+      "defaultRegistryUrlTemplate": "https://api.adoptium.net/v3/assets/feature_releases/21/ga?architecture=x64&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=linux&page=0&page_size=50&project=jdk&sort_method=DEFAULT&sort_order=DESC&vendor=eclipse",
+      "transformTemplates": [
+        "{\"releases\": $map($, function($r) { {\"version\": \"temurin-\" & $r.version_data.semver} })}"
+      ]
     }
   },
   "customManagers": [
+    {
+      "description": "Track java version in mise.toml against Adoptium Temurin 21 (temurin-X.Y.Z+B.0.LTS format)",
+      "customType": "regex",
+      "fileMatch": ["^mise\\.toml$"],
+      "matchStrings": ["java\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "java",
+      "datasourceTemplate": "custom.adoptium-temurin-21",
+      "versioningTemplate": "semver-coerced"
+    },
     {
       "description": "Track sbt version in mise.toml against conda-forge (the actual backend mise uses)",
       "customType": "regex",
@@ -110,10 +125,10 @@
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS — block major version jumps",
+      "description": "Disable java from the mise manager — Renovate uses Adoptium version strings (21.0.12+8.0.LTS) but mise core:java only accepts openjdk-X.Y.Z bare format; update manually",
       "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^21[.+]/"
+      "enabled": false
     },
     {
       "description": "Disable sbt from the mise manager — handled by regex/conda-forge customManager instead",
@@ -144,13 +159,6 @@
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Block major java updates — must come after all grouping rules to win last-match",
-      "matchPackageNames": ["java", "java-jdk"],
-      "matchManagers": ["mise"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
-    },
-    {
       "description": "Block major scala updates — must come after all grouping rules to win last-match",
       "matchPackageNames": ["scala", "org.scala-lang:scala-library"],
       "matchUpdateTypes": ["major"],
@@ -168,7 +176,6 @@
       "matchFileNames": ["project/plugins.sbt"],
       "groupName": "sbt plugins",
       "groupSlug": "sbt-plugins",
-      "schedule": ["* * 10 */2 *"],
       "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
     },
     {
