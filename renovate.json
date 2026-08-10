@@ -84,10 +84,11 @@
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS — block major version jumps",
-      "matchPackageNames": ["java"],
+      "description": "Pin java to 21.x LTS — block major version jumps, strip +build suffix from written value",
+      "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^21[.+]/"
+      "allowedVersions": "/^21[.+]/",
+      "extractVersion": "^(?<version>\\d+\\.\\d+\\.\\d+)"
     },
     {
       "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
