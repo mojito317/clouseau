@@ -71,13 +71,12 @@
   ],
   "packageRules": [
     {
-      "description": "Disable major version upgrades for scala (project is pinned to 2.13.x)",
+      "description": "Pin scala to 2.13.x across all managers (build.sbt scalaVersion + mise.toml)",
       "matchPackageNames": ["scala"],
-      "matchManagers": ["mise"],
       "allowedVersions": "/^2\\.13\\./"
     },
     {
-      "description": "Disable major version upgrades for sbt (project requires sbt 1.x)",
+      "description": "Pin sbt to 1.x across all managers — sbt 2.x is a breaking change",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "allowedVersions": "/^1\\./"
     },
@@ -90,7 +89,7 @@
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Disable major version upgrades for java (project targets Java 21 LTS)",
+      "description": "Pin java to 21.x LTS across all managers — no major version jumps",
       "matchPackageNames": ["java"],
       "allowedVersions": "/^(openjdk-)?21\\./"
     },
