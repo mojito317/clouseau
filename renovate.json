@@ -3,14 +3,14 @@
   "extends": ["config:base", "mergeConfidence:all-badges"],
   "labels": ["dependencies"],
   "dependencyDashboard": true,
-  "prHourlyLimit": 2,
+  "prHourlyLimit": 0,
   "customManagers": [
     {
       "description": "Update zio version in versions Map (covers zio + zio-streams)",
       "customType": "regex",
       "fileMatch": ["^build\\.sbt$"],
       "matchStrings": ["\"zio\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
-      "depNameTemplate": "dev.zio:zio",
+      "depNameTemplate": "dev.zio:zio_2.13",
       "datasourceTemplate": "maven",
       "versioningTemplate": "maven"
     },
@@ -19,7 +19,7 @@
       "customType": "regex",
       "fileMatch": ["^build\\.sbt$"],
       "matchStrings": ["\"zio\\.config\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
-      "depNameTemplate": "dev.zio:zio-config",
+      "depNameTemplate": "dev.zio:zio-config_2.13",
       "datasourceTemplate": "maven",
       "versioningTemplate": "maven"
     },
@@ -28,7 +28,7 @@
       "customType": "regex",
       "fileMatch": ["^build\\.sbt$"],
       "matchStrings": ["\"zio\\.logging\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
-      "depNameTemplate": "dev.zio:zio-logging",
+      "depNameTemplate": "dev.zio:zio-logging_2.13",
       "datasourceTemplate": "maven",
       "versioningTemplate": "maven"
     },
@@ -37,7 +37,7 @@
       "customType": "regex",
       "fileMatch": ["^build\\.sbt$"],
       "matchStrings": ["\"zio\\.metrics\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
-      "depNameTemplate": "dev.zio:zio-metrics-connectors-micrometer",
+      "depNameTemplate": "dev.zio:zio-metrics-connectors-micrometer_2.13",
       "datasourceTemplate": "maven",
       "versioningTemplate": "maven"
     },
@@ -92,7 +92,14 @@
       "description": "Pin java to 21.x LTS in mise.toml — block Java major jumps",
       "matchPackageNames": ["java"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^21\\./"
+      "allowedVersions": "/^(openjdk-)?21[.+]/"
+    },
+    {
+      "description": "Block major java updates in mise.toml as a safety net",
+      "matchPackageNames": ["java"],
+      "matchManagers": ["mise"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     },
     {
       "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
@@ -125,10 +132,10 @@
       "description": "Group versions Map deps (extracted by regex customManagers from build.sbt) into the same sbt dependencies PR",
       "matchManagers": ["regex"],
       "matchPackageNames": [
-        "dev.zio:zio",
-        "dev.zio:zio-config",
-        "dev.zio:zio-logging",
-        "dev.zio:zio-metrics-connectors-micrometer",
+        "dev.zio:zio_2.13",
+        "dev.zio:zio-config_2.13",
+        "dev.zio:zio-logging_2.13",
+        "dev.zio:zio-metrics-connectors-micrometer_2.13",
         "io.micrometer:micrometer-registry-jmx",
         "org.scala-lang:scala-reflect",
         "org.tinylog:tinylog-api"
