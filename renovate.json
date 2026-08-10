@@ -4,6 +4,71 @@
   "labels": ["dependencies"],
   "dependencyDashboard": true,
   "prHourlyLimit": 2,
+  "customManagers": [
+    {
+      "description": "Update zio version in versions Map (covers zio + zio-streams)",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"zio\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "dev.zio:zio",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update zio-config version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"zio\\.config\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "dev.zio:zio-config",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update zio-logging version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"zio\\.logging\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "dev.zio:zio-logging",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update zio-metrics version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"zio\\.metrics\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "dev.zio:zio-metrics-connectors-micrometer",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update micrometer-jmx version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"jmx\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "io.micrometer:micrometer-registry-jmx",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update scala-reflect version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"reflect\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "org.scala-lang:scala-reflect",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update tinylog version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"tinylog\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "org.tinylog:tinylog-api",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    }
+  ],
   "packageRules": [
     {
       "description": "Disable major version upgrades for scala (project is pinned to 2.13.x)",
