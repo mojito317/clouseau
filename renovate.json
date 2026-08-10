@@ -79,28 +79,15 @@
       "allowedVersions": "/^2\\.13\\./"
     },
     {
-      "description": "Block major scala updates as a safety net — separateMinorPatch causes major updates to bypass allowedVersions",
-      "matchPackageNames": ["scala"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
-    },
-    {
       "description": "Pin sbt to 1.x across all managers — sbt 2.x is a breaking change",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS in mise.toml — block Java major jumps",
+      "description": "Pin java to 21.x LTS — block major version jumps",
       "matchPackageNames": ["java"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^(openjdk-)?21[.+]/"
-    },
-    {
-      "description": "Block major java updates in mise.toml as a safety net",
-      "matchPackageNames": ["java"],
-      "matchManagers": ["mise"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
+      "allowedVersions": "/^21[.+]/"
     },
     {
       "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
@@ -124,6 +111,19 @@
       "matchFileNames": ["project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
+    },
+    {
+      "description": "Block major java updates — must come after all grouping rules to win last-match",
+      "matchPackageNames": ["java"],
+      "matchManagers": ["mise"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Block major scala updates — must come after all grouping rules to win last-match",
+      "matchPackageNames": ["scala"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     },
     {
       "description": "Group all GitHub Actions updates into a single PR",
