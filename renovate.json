@@ -114,14 +114,14 @@
     },
     {
       "description": "Block major java updates — must come after all grouping rules to win last-match",
-      "matchPackageNames": ["java"],
+      "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
     {
       "description": "Block major scala updates — must come after all grouping rules to win last-match",
-      "matchPackageNames": ["scala"],
+      "matchPackageNames": ["scala", "org.scala-lang:scala-library"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
