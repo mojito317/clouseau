@@ -28,7 +28,7 @@ val versions: Map[String, String] = Map(
   "reflect"         -> "2.13.16",
   "lucene"          -> "4.6.1-cloudant1",
   "tinylog"         -> "2.7.0",
-  "junit"           -> "2.7.0",
+  "junit"           -> "4.13.2",
   "junit.interface" -> "2.7.0",
   // If you add here a new dependency with a version, ensure you add it to customManagers in renovate.json
 )
