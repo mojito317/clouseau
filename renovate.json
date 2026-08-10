@@ -19,7 +19,7 @@
     {
       "description": "Group sbt version across mise.toml and project/build.properties into one PR (kept in sync via postinstall hook)",
       "matchPackageNames": ["sbt", "sbt/sbt"],
-      "matchManagers": ["mise", "sbt"],
+      "matchManagers": ["mise", "sbt-build-properties"],
       "matchFileNames": ["mise.toml", "project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
