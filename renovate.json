@@ -227,7 +227,7 @@
       "enabled": false
     },
     {
-      "description": "Ignore typst dependencies in docs — not part of the application",
+      "description": "Disable typst dependencies in docs — not part of the application",
       "matchManagers": ["typst"],
       "enabled": false
     }
