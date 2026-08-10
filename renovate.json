@@ -26,6 +26,15 @@
       "versioningTemplate": "semver-coerced"
     },
     {
+      "description": "Track sbt version in project/build.properties against conda-forge — keep in sync with mise.toml",
+      "customType": "regex",
+      "fileMatch": ["^project/build\\.properties$"],
+      "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "sbt",
+      "datasourceTemplate": "custom.conda-forge-sbt",
+      "versioningTemplate": "semver-coerced"
+    },
+    {
       "description": "Update zio version in versions Map (covers zio + zio-streams)",
       "customType": "regex",
       "fileMatch": ["^build\\.sbt$"],
@@ -178,6 +187,13 @@
       ],
       "groupName": "sbt dependencies",
       "groupSlug": "sbt-dependencies"
+    },
+    {
+      "description": "Disable sbt/sbt in project/build.properties from the sbt manager — versioned via regex/conda-forge-sbt instead",
+      "matchPackageNames": ["sbt/sbt"],
+      "matchManagers": ["sbt"],
+      "matchFileNames": ["project/build.properties"],
+      "enabled": false
     },
     {
       "description": "Ignore lucene cloudant fork — not on standard registries",
