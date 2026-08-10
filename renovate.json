@@ -207,12 +207,6 @@
       "groupSlug": "sbt-dependencies"
     },
     {
-      "description": "Disable junit and junit-interface from the regex manager",
-      "matchPackageNames": [ "com.github.sbt:junit-interface", "junit:junit"],
-      "matchManagers": ["regex"],
-      "enabled": false
-    },
-    {
       "description": "Disable sbt/sbt in project/build.properties from the sbt manager — versioned via regex/conda-forge-sbt instead",
       "matchPackageNames": ["sbt/sbt"],
       "matchManagers": ["sbt"],
