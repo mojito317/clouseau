@@ -89,9 +89,10 @@
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Pin java to 21.x LTS across all managers — no major version jumps",
+      "description": "Pin java to 21.x LTS in mise.toml — block Java major jumps",
       "matchPackageNames": ["java"],
-      "allowedVersions": "/^(openjdk-)?21\\./"
+      "matchManagers": ["mise"],
+      "allowedVersions": "/^21\\./"
     },
     {
       "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
@@ -121,6 +122,12 @@
       "groupSlug": "sbt-dependencies"
     },
     {
+      "description": "Group regex-manager deps (versions Map) that have no matchFileNames into sbt dependencies",
+      "matchManagers": ["regex"],
+      "groupName": "sbt dependencies",
+      "groupSlug": "sbt-dependencies"
+    },
+    {
       "description": "Ignore lucene cloudant fork — not on standard registries",
       "matchPackagePatterns": ["org.apache.lucene"],
       "enabled": false
@@ -128,6 +135,11 @@
     {
       "description": "Disable scalafmt version updates in .scalafmt.conf (synced from mise.toml via postinstall hook)",
       "matchManagers": ["scalafmt"],
+      "enabled": false
+    },
+    {
+      "description": "Ignore typst dependencies in docs — not part of the application",
+      "matchManagers": ["typst"],
       "enabled": false
     }
   ]
