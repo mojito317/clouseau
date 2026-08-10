@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:base", "mergeConfidence:all-badges"],
   "labels": ["dependencies"],
   "dependencyDashboard": true,
   "prHourlyLimit": 2,
