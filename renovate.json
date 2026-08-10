@@ -4,6 +4,8 @@
   "labels": ["dependencies"],
   "dependencyDashboard": true,
   "prHourlyLimit": 0,
+  "branchNameStrict": true,
+  "branchPrefix": "renovate-",
   "customManagers": [
     {
       "description": "Update zio version in versions Map (covers zio + zio-streams)",
