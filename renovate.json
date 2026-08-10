@@ -134,6 +134,12 @@
       "enabled": false
     },
     {
+      "description": "Only allow elixir versions with -otp-27 suffix — must come before mise-tools group to be overridden, but allowedVersions is additive so place before grouping",
+      "matchPackageNames": ["elixir"],
+      "matchManagers": ["mise"],
+      "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+    },
+    {
       "description": "Group all mise tool updates into a single PR (java and sbt excluded via rules above/below)",
       "matchManagers": ["mise"],
       "groupName": "mise tools",
