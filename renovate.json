@@ -131,9 +131,9 @@
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Group sbt/sbt from project/build.properties into sbt version PR",
-      "matchPackageNames": ["sbt/sbt"],
-      "matchManagers": ["sbt"],
+      "description": "Group sbt from project/build.properties (regex/conda-forge) into sbt version PR",
+      "matchPackageNames": ["sbt"],
+      "matchManagers": ["regex"],
       "matchFileNames": ["project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
