@@ -96,21 +96,39 @@
       "depNameTemplate": "org.tinylog:tinylog-api",
       "datasourceTemplate": "maven",
       "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update junit-interface version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"junit\\.interface\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "com.github.sbt:junit-interface",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
+    },
+    {
+      "description": "Update junit version in versions Map",
+      "customType": "regex",
+      "fileMatch": ["^build\\.sbt$"],
+      "matchStrings": ["\"junit\"\\s*->\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "junit:junit",
+      "datasourceTemplate": "maven",
+      "versioningTemplate": "maven"
     }
   ],
   "packageRules": [
     {
-      "description": "Pin scala to 2.13.x across all managers (build.sbt scalaVersion + mise.toml)",
+      "description": "Pin scala to 2.13.x",
       "matchPackageNames": ["scala"],
       "allowedVersions": "/^2\\.13\\./"
     },
     {
-      "description": "Pin sbt to 1.x — sbt 2.x is a breaking change",
+      "description": "Pin sbt to 1.x",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS — block major version jumps",
+      "description": "Pin java to 21.x LTS",
       "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
       "enabled": false
@@ -119,7 +137,7 @@
       "description": "Disable sbt from the mise manager — handled by regex/conda-forge customManager instead",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^21[.+]/"
+      "enabled": false
     },
     {
       "description": "Group all mise tool updates into a single PR (sbt excluded via mise manager disable above)",
@@ -128,18 +146,10 @@
       "groupSlug": "mise-tools"
     },
     {
-      "description": "Group sbt from mise.toml (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
+      "description": "Group sbt from mise.toml and project/build.properties (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
       "matchPackageNames": ["sbt"],
       "matchManagers": ["regex"],
-      "matchFileNames": ["mise.toml"],
-      "groupName": "sbt version",
-      "groupSlug": "sbt-version"
-    },
-    {
-      "description": "Group sbt from project/build.properties (regex/conda-forge) into sbt version PR",
-      "matchPackageNames": ["sbt"],
-      "matchManagers": ["regex"],
-      "matchFileNames": ["project/build.properties"],
+      "matchFileNames": ["mise.toml", "project/build.properties"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
     },
@@ -166,7 +176,7 @@
       "description": "Group all sbt plugin updates (project/plugins.sbt) into a single monthly PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/plugins.sbt"],
-      "groupName": "Update project/plugins.sbt dependencies",
+      "groupName": "project/plugins.sbt dependencies",
       "groupSlug": "sbt-plugins",
       "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
     },
@@ -174,7 +184,7 @@
       "description": "Group inline sbt library deps from build.sbt into one PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["build.sbt"],
-      "groupName": "Update build.sbt dependencies",
+      "groupName": "build.sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
     {
@@ -187,9 +197,11 @@
         "dev.zio:zio-metrics-connectors-micrometer_2.13",
         "io.micrometer:micrometer-registry-jmx",
         "org.scala-lang:scala-reflect",
-        "org.tinylog:tinylog-api"
+        "org.tinylog:tinylog-api",
+        "com.github.sbt:junit-interface",
+        "junit:junit"
       ],
-      "groupName": "Update build.sbt dependencies",
+      "groupName": "build.sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
     {
@@ -197,11 +209,6 @@
       "matchPackageNames": ["sbt/sbt"],
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/build.properties"],
-      "enabled": false
-    },
-    {
-      "description": "Ignore lucene cloudant fork — not on standard registries",
-      "matchPackagePatterns": ["org.apache.lucene"],
       "enabled": false
     },
     {
