@@ -166,7 +166,7 @@
       "description": "Group all sbt plugin updates (project/plugins.sbt) into a single monthly PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/plugins.sbt"],
-      "groupName": "sbt plugins",
+      "groupName": "Update project/plugins.sbt dependencies",
       "groupSlug": "sbt-plugins",
       "schedule": ["on day 10 of every month"],
       "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
@@ -175,7 +175,7 @@
       "description": "Group inline sbt library deps from build.sbt into one PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["build.sbt"],
-      "groupName": "sbt dependencies",
+      "groupName": "Update build.sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
     {
@@ -190,7 +190,7 @@
         "org.scala-lang:scala-reflect",
         "org.tinylog:tinylog-api"
       ],
-      "groupName": "sbt dependencies",
+      "groupName": "Update build.sbt dependencies",
       "groupSlug": "sbt-dependencies"
     },
     {
