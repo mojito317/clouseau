@@ -11,7 +11,7 @@ mv tmp.json .editorconfig-checker.json
 elixir = "1.19.5-otp-27"
 erlang = "27.3.4.11"
 github-cli = "2.92.0"
-java = "openjdk-21.0.2"
+java = "openjdk-25.0.4+7.0.LTS"
 jq = "1.8.1"
 python = "3.14.5"
 rebar = "3.27.0"
