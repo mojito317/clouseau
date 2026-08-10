@@ -128,22 +128,24 @@
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS",
-      "matchPackageNames": ["java", "java-jdk"],
-      "matchManagers": ["mise"],
-      "enabled": false
-    },
-    {
       "description": "Disable sbt from the mise manager — handled by regex/conda-forge customManager instead",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "matchManagers": ["mise"],
       "enabled": false
     },
     {
-      "description": "Group all mise tool updates into a single PR (sbt excluded via mise manager disable above)",
+      "description": "Group all mise tool updates into a single PR (java and sbt excluded via rules above/below)",
       "matchManagers": ["mise"],
       "groupName": "mise tools",
       "groupSlug": "mise-tools"
+    },
+    {
+      "description": "Pin java to 21.x LTS (openjdk-21.x on conda-forge) — own PR, after mise-tools to win last-match",
+      "matchPackageNames": ["java", "java-jdk"],
+      "matchManagers": ["mise"],
+      "allowedVersions": "/^openjdk-21\\./",
+      "groupName": "java",
+      "groupSlug": "java"
     },
     {
       "description": "Group sbt from mise.toml (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
