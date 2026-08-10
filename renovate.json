@@ -136,7 +136,8 @@
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/plugins.sbt"],
       "groupName": "sbt plugins",
-      "groupSlug": "sbt-plugins"
+      "groupSlug": "sbt-plugins",
+      "prBodyNotes": ["❗ **Remember to keep `clouseau-ci/Dockerfile` in sync with these plugin version changes.**"]
     },
     {
       "description": "Group inline sbt library deps from build.sbt into one PR",
