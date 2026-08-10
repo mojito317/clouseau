@@ -175,12 +175,6 @@
       "enabled": false
     },
     {
-      "description": "Group all GitHub Actions updates into a single PR",
-      "matchManagers": ["github-actions"],
-      "groupName": "github actions",
-      "groupSlug": "github-actions"
-    },
-    {
       "description": "Group all sbt plugin updates (project/plugins.sbt) into a single monthly PR",
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/plugins.sbt"],
@@ -211,6 +205,12 @@
       ],
       "groupName": "build.sbt dependencies",
       "groupSlug": "sbt-dependencies"
+    },
+    {
+      "description": "Disable junit and junit-interface from the regex manager",
+      "matchPackageNames": [ "com.github.sbt:junit-interface", "junit:junit"],
+      "matchManagers": ["regex"],
+      "enabled": false
     },
     {
       "description": "Disable sbt/sbt in project/build.properties from the sbt manager — versioned via regex/conda-forge-sbt instead",
