@@ -7,7 +7,24 @@
   "branchNameStrict": true,
   "branchPrefix": "renovate-",
   "recreateClosed": true,
+  "customDatasources": {
+    "conda-forge-sbt": {
+      "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+      "transformTemplates": [
+        "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+      ]
+    }
+  },
   "customManagers": [
+    {
+      "description": "Track sbt version in mise.toml against conda-forge (the actual backend mise uses)",
+      "customType": "regex",
+      "fileMatch": ["^mise\\.toml$"],
+      "matchStrings": ["sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "sbt",
+      "datasourceTemplate": "custom.conda-forge-sbt",
+      "versioningTemplate": "semver-coerced"
+    },
     {
       "description": "Update zio version in versions Map (covers zio + zio-streams)",
       "customType": "regex",
@@ -79,16 +96,15 @@
       "allowedVersions": "/^2\\.13\\./"
     },
     {
-      "description": "Pin sbt to 1.x across all managers — sbt 2.x is a breaking change",
+      "description": "Pin sbt to 1.x — sbt 2.x is a breaking change",
       "matchPackageNames": ["sbt", "sbt/sbt"],
       "allowedVersions": "/^1\\./"
     },
     {
-      "description": "Pin java to 21.x LTS — block major version jumps, strip +build suffix from written value",
+      "description": "Pin java to 21.x LTS — block major version jumps",
       "matchPackageNames": ["java", "java-jdk"],
       "matchManagers": ["mise"],
-      "allowedVersions": "/^21[.+]/",
-      "extractVersion": "^(?<version>\\d+\\.\\d+\\.\\d+)"
+      "allowedVersions": "/^21[.+]/"
     },
     {
       "description": "Group all mise tool updates into a single PR (excludes sbt, which has its own group)",
@@ -98,15 +114,15 @@
       "groupSlug": "mise-tools"
     },
     {
-      "description": "Group sbt from mise.toml into the sbt version PR — must come after mise-tools to win last-match",
-      "matchPackageNames": ["sbt", "sbt/sbt"],
-      "matchManagers": ["mise"],
+      "description": "Group sbt from mise.toml (conda-forge datasource) into sbt version PR — after mise-tools to win last-match",
+      "matchPackageNames": ["sbt"],
+      "matchManagers": ["regex"],
       "matchFileNames": ["mise.toml"],
       "groupName": "sbt version",
       "groupSlug": "sbt-version"
     },
     {
-      "description": "Group sbt/sbt from project/build.properties into the sbt version PR",
+      "description": "Group sbt/sbt from project/build.properties into sbt version PR",
       "matchPackageNames": ["sbt/sbt"],
       "matchManagers": ["sbt"],
       "matchFileNames": ["project/build.properties"],
