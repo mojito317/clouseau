@@ -637,6 +637,9 @@ $(ARTIFACTS_DIR)/%.zip.chksum: $(ARTIFACTS_DIR)/%.zip
 $(ARTIFACTS_DIR)/%.tar.gz.chksum: $(ARTIFACTS_DIR)/%.tar.gz
 	@cd $(ARTIFACTS_DIR) && sha256sum $(<F) > $(@F)
 
+$(ARTIFACTS_DIR)/%.pdf.chksum: $(ARTIFACTS_DIR)/%.pdf
+	@cd $(ARTIFACTS_DIR) && sha256sum $(<F) > $(@F)
+
 $(ARTIFACTS_DIR)/checksums.txt: $(addprefix $(ARTIFACTS_DIR)/, $(CHECKSUM_FILES))
 	@cat $^ > $@
 	@cd $(ARTIFACTS_DIR)/ && sha256sum -c checksums.txt
