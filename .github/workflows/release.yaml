@@ -46,6 +46,25 @@ jobs:
           VERSION=${GITHUB_REF#refs/tags/}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Wait for release assets to be available
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          URL="https://github.com/mojito317/clouseau/releases/download/${VERSION}/checksums.txt"
+          echo "Waiting for release asset: ${URL}"
+          for i in $(seq 1 20); do
+            STATUS=$(curl -sLo /dev/null -w "%{http_code}" "${URL}")
+            echo "Attempt ${i}: HTTP ${STATUS}"
+            if [ "${STATUS}" = "200" ]; then
+              echo "Asset is available."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "ERROR: Release asset not available after waiting."
+          exit 1
+
       - name: Build and publish
         uses: ./.github/actions/docker-publish
         with:
