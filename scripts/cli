@@ -8,7 +8,7 @@ set -Eeuo pipefail
 
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GH=github.com
-ISSUES_REPO=https://${GH}/cloudant-labs/clouseau
+ISSUES_REPO=https://${GH}/mojito317/clouseau
 PROJECT_LABEL=type:technical-foundation
 
 os="$(uname -s | tr '[:upper:]' '[:lower:]')"
