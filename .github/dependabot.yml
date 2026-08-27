@@ -8,7 +8,6 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
-    open-pull-requests-limit: 10
     # Pin Scala to 2.13.x
     ignore:
       - dependency-name: "org.scala-lang:scala-library"
