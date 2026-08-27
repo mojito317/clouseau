@@ -9,14 +9,13 @@ updates:
     labels:
       - "dependencies"
     open-pull-requests-limit: 99
-    # Pin Scala to 2.13.x and sbt to 1.x
+    # Pin Scala to 2.13.x; sbt version owned by Renovate (mise.toml + build.properties)
     ignore:
       - dependency-name: "org.scala-lang:scala-library"
         update-types: ["version-update:semver-major"]
       - dependency-name: "org.scala-lang:scala-reflect"
         update-types: ["version-update:semver-major"]
       - dependency-name: "org.scala-sbt:sbt"
-        update-types: ["version-update:semver-major"]
     groups:
       sbt-plugins:
         patterns:
