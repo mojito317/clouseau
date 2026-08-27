@@ -53,3 +53,4 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
+
