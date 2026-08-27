@@ -1,0 +1,54 @@
+version: 2
+
+updates:
+  # Maven / sbt — covers build.sbt and project/plugins.sbt
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 10
+    # Pin Scala to 2.13.x
+    ignore:
+      - dependency-name: "org.scala-lang:scala-library"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.scala-lang:scala-reflect"
+        update-types: ["version-update:semver-major"]
+    groups:
+      sbt-plugins:
+        patterns:
+          - "com.eed3si9n:sbt-assembly"
+          - "com.eed3si9n:sbt-buildinfo"
+          - "io.github.siculo:sbt-bom"
+          - "net.nmoncho:sbt-dependency-check"
+          - "org.scalameta:sbt-scalafmt"
+      sbt-dependencies:
+        patterns:
+          - "dev.zio:*"
+          - "io.micrometer:micrometer-registry-jmx"
+          - "org.scala-lang:*"
+          - "org.tinylog:*"
+          - "com.github.sbt:junit-interface"
+          - "junit:junit"
+          - "org.apache.lucene:*"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
