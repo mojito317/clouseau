@@ -1,8 +1,8 @@
 version: 2
 
 updates:
-  # Maven / sbt — covers build.sbt and project/plugins.sbt
-  - package-ecosystem: "maven"
+  # sbt — covers build.sbt and project/plugins.sbt
+  - package-ecosystem: "sbt"
     directory: "/"
     schedule:
       interval: "weekly"
