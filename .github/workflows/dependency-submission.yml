@@ -1,0 +1,25 @@
+name: Dependency Submission
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  dependency-submission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install mise & tools
+        uses: jdx/mise-action@v4
+        with:
+          env: true
+          cache: true
+          export_path: true
+
+      - name: Submit sbt dependency graph
+        uses: scalacenter/sbt-dependency-submission@v3
