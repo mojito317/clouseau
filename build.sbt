@@ -19,32 +19,34 @@ ThisBuild / version := s"${readVersion}"
 
 updateOptions := updateOptions.value.withCachedResolution(true)
 
-// Versions as vals so Dependabot can parse them directly
-val vZio          = "2.1.16"
-val vZioConfig    = "4.0.4"
-val vZioLogging   = "2.5.0"
-val vZioMetrics   = "2.3.1"
-val vJmx          = "1.14.5"
-val vReflect      = "2.13.16"
-val vLucene       = "4.6.1-cloudant1"
-val vTinylog      = "2.7.0"
-val vJunit        = "4.13.2"
-val vJunitIface   = "0.13.3"
+val versions: Map[String, String] = Map(
+  "zio"             -> "2.1.16",
+  "zio.config"      -> "4.0.4",
+  "zio.logging"     -> "2.5.0",
+  "zio.metrics"     -> "2.3.1",
+  "jmx"             -> "1.14.5",
+  "reflect"         -> "2.13.16",
+  "lucene"          -> "4.6.1-cloudant1",
+  "tinylog"         -> "2.7.0",
+  "junit"           -> "4.13.2",
+  "junit.interface" -> "0.13.3",
+  // If you add here a new dependency with a version, ensure you add it to customManagers in renovate.json
+)
 
 lazy val luceneComponents = Seq(
   // The single % is for java libraries
   // the %% appends the version of scala used, and should be used for scala libraries;
   // the %%% is for scala-js (and scala native).
-  "org.apache.lucene" % "lucene-core"               % vLucene,
-  "org.apache.lucene" % "lucene-grouping"           % vLucene,
-  "org.apache.lucene" % "lucene-queryparser"        % vLucene,
-  "org.apache.lucene" % "lucene-analyzers-common"   % vLucene,
-  "org.apache.lucene" % "lucene-analyzers-stempel"  % vLucene,
-  "org.apache.lucene" % "lucene-analyzers-smartcn"  % vLucene,
-  "org.apache.lucene" % "lucene-analyzers-kuromoji" % vLucene,
-  "org.apache.lucene" % "lucene-facet"              % vLucene,
-  "org.apache.lucene" % "lucene-spatial"            % vLucene,
-  "org.apache.lucene" % "lucene-highlighter"        % vLucene
+  "org.apache.lucene" % "lucene-core"               % versions("lucene"),
+  "org.apache.lucene" % "lucene-grouping"           % versions("lucene"),
+  "org.apache.lucene" % "lucene-queryparser"        % versions("lucene"),
+  "org.apache.lucene" % "lucene-analyzers-common"   % versions("lucene"),
+  "org.apache.lucene" % "lucene-analyzers-stempel"  % versions("lucene"),
+  "org.apache.lucene" % "lucene-analyzers-smartcn"  % versions("lucene"),
+  "org.apache.lucene" % "lucene-analyzers-kuromoji" % versions("lucene"),
+  "org.apache.lucene" % "lucene-facet"              % versions("lucene"),
+  "org.apache.lucene" % "lucene-spatial"            % versions("lucene"),
+  "org.apache.lucene" % "lucene-highlighter"        % versions("lucene")
 )
 
 /**
@@ -150,23 +152,23 @@ lazy val commonSettings = Seq(
     // The single % is for java libraries
     // the %% appends the version of scala used, and should be used for scala libraries;
     // the %%% is for scala-js (and scala native).
-    "dev.zio"       %% "zio"                               % vZio,
-    "dev.zio"       %% "zio-config"                        % vZioConfig,
-    "dev.zio"       %% "zio-config-magnolia"               % vZioConfig,
-    "dev.zio"       %% "zio-config-typesafe"               % vZioConfig,
-    "dev.zio"       %% "zio-logging"                       % vZioLogging,
+    "dev.zio"       %% "zio"                               % versions("zio"),
+    "dev.zio"       %% "zio-config"                        % versions("zio.config"),
+    "dev.zio"       %% "zio-config-magnolia"               % versions("zio.config"),
+    "dev.zio"       %% "zio-config-typesafe"               % versions("zio.config"),
+    "dev.zio"       %% "zio-logging"                       % versions("zio.logging"),
     // This is needed because micrometer (see below) uses SLF4J
-    "dev.zio"       %% "zio-logging-slf4j-bridge"          % vZioLogging,
-    "dev.zio"       %% "zio-metrics-connectors-micrometer" % vZioMetrics,
-    "dev.zio"       %% "zio-streams"                       % vZio,
-    "io.micrometer"  % "micrometer-registry-jmx"           % vJmx,
-    "org.scala-lang" % "scala-reflect"                     % vReflect,
-    "org.tinylog"    % "tinylog-api"                       % vTinylog,
-    "org.tinylog"    % "tinylog-impl"                      % vTinylog,
-    "dev.zio"       %% "zio-test"                          % vZio         % Test,
-    "dev.zio"       %% "zio-test-junit"                    % vZio         % Test,
-    "com.github.sbt" % "junit-interface"                   % vJunitIface  % Test,
-    "junit"          % "junit"                             % vJunit       % Test
+    "dev.zio"       %% "zio-logging-slf4j-bridge"          % versions("zio.logging"),
+    "dev.zio"       %% "zio-metrics-connectors-micrometer" % versions("zio.metrics"),
+    "dev.zio"       %% "zio-streams"                       % versions("zio"),
+    "io.micrometer"  % "micrometer-registry-jmx"           % versions("jmx"),
+    "org.scala-lang" % "scala-reflect"                     % versions("reflect"),
+    "org.tinylog"    % "tinylog-api"                       % versions("tinylog"),
+    "org.tinylog"    % "tinylog-impl"                      % versions("tinylog"),
+    "dev.zio"       %% "zio-test"                          % versions("zio")              % Test,
+    "dev.zio"       %% "zio-test-junit"                    % versions("zio")              % Test,
+    "com.github.sbt" % "junit-interface"                   % versions("junit.interface")  % Test,
+    "junit"          % "junit"                             % versions("junit")            % Test
   ),
   assembly / assemblyMergeStrategy := commonMergeStrategy,
   ThisBuild / assemblyShadeRules := shadeRules,
