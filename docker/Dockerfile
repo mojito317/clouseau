@@ -10,7 +10,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ARG CLOUSEAU_VERSION=3.3.0
 ARG CLOUSEAU_REPO=https://github.com/mojito317/clouseau
 ARG BUILD_MODE=release
 
