@@ -1,0 +1,2386 @@
+ INFO: Renovate started
+       "renovateVersion": "44.14.4"
+DEBUG: Using RE2 regex engine
+DEBUG: Parsing configs
+DEBUG: No config file found on disk - skipping
+DEBUG: No additional config file found specified - skipping
+DEBUG: File config
+       "config": {}
+DEBUG: Additional file config
+       "config": {}
+DEBUG: CLI config
+       "config": {}
+DEBUG: Env config
+       "config": {
+         "hostRules": [],
+         "onboarding": false,
+         "requireConfig": "optional",
+         "platform": "github",
+         "token": "***********",
+         "repositories": ["mojito317/clouseau"]
+       }
+DEBUG: Resolved global extends
+       "config": undefined
+DEBUG: Combined config
+       "config": {
+         "hostRules": [],
+         "onboarding": false,
+         "requireConfig": "optional",
+         "platform": "github",
+         "token": "***********",
+         "repositories": ["mojito317/clouseau"]
+       }
+DEBUG: Enabling forkProcessing while in non-autodiscover mode
+DEBUG: Enabling onboardingNoDeps while in non-autodiscover mode
+DEBUG: Found valid git version: 2.54.0
+DEBUG: Setting global hostRules
+DEBUG: Using default github endpoint: https://api.github.com/
+DEBUG: hostRules: authentication already set for api.github.com
+DEBUG: Using queue: host=api.github.com, concurrency=16
+DEBUG: GET https://api.github.com/user/emails = (code=ERR_NON_2XX_3XX_RESPONSE, statusCode=404 retryCount=0, duration=218)
+DEBUG: Cannot read user/emails endpoint on GitHub to retrieve gitAuthor
+DEBUG: Platform config
+       "platformConfig": {
+         "hostType": "github",
+         "endpoint": "https://api.github.com/",
+         "isGHApp": false,
+         "isGhe": false,
+         "isGheCloud": false,
+         "userDetails": {
+           "username": "mojito317",
+           "name": "Eigel Ildikó",
+           "id": 17944122,
+           "email": null
+         },
+         "userEmail": null
+       },
+       "renovateUsername": "mojito317"
+ WARN: Using the default gitAuthor email address, renovate@whitesourcesoftware.com, is not recommended on GitHub.com, as this corresponds to a user owned by Mend and used by users of the forking-renovate[bot] GitHub App. For security and authenticity reasons, Mend enables "Vigilant Mode" on this account to visibly flag unsigned commits. As an account you do not control, you will not be able to sign commits. If you are comfortable with the `Unverified` signatures on each commit, no work is needed. Otherwise, it is recommended to migrate to a user account you own
+       "documentationUrl": "https://github.com/renovatebot/renovate/discussions/39309"
+DEBUG: Adding token authentication for api.github.com (hostType=github) to hostRules
+DEBUG: Using baseDir: /tmp/renovate
+DEBUG: Using cacheDir: /tmp/renovate/cache
+DEBUG: Using containerbaseDir: /tmp/renovate/cache/containerbase
+DEBUG: Initializing Renovate internal cache into /tmp/renovate/cache/renovate/renovate-cache-v1
+DEBUG: Commits limit = null
+DEBUG: Setting global hostRules
+DEBUG: Adding token authentication for api.github.com (hostType=github) to hostRules
+DEBUG: validatePresets()
+DEBUG: Reinitializing hostRules for repo
+DEBUG: Clearing hostRules
+DEBUG: Adding token authentication for api.github.com (hostType=github) to hostRules
+ INFO: Repository started (repository=mojito317/clouseau)
+       "renovateVersion": "44.14.4"
+DEBUG: Using localDir: /tmp/renovate/repos/github/mojito317/clouseau (repository=mojito317/clouseau)
+DEBUG: PackageFiles.clear() - Package files deleted (repository=mojito317/clouseau)
+DEBUG: initRepo("mojito317/clouseau") (repository=mojito317/clouseau)
+DEBUG: hostRules: authentication already set for api.github.com (repository=mojito317/clouseau)
+DEBUG: Using queue: host=api.github.com, concurrency=16 (repository=mojito317/clouseau)
+DEBUG: mojito317/clouseau default branch = main (repository=mojito317/clouseau)
+DEBUG: Issues cache: Adding 2 issues to reconcile queue (repository=mojito317/clouseau)
+DEBUG: Using personal access token for git init (repository=mojito317/clouseau)
+DEBUG: fetchBranchCommits(): url=https://**redacted**@github.com/mojito317/clouseau.git (repository=mojito317/clouseau)
+DEBUG: Resetting npmrc (repository=mojito317/clouseau)
+DEBUG: Resetting npmrc (repository=mojito317/clouseau)
+DEBUG: checkOnboarding() (repository=mojito317/clouseau)
+DEBUG: isOnboarded() (repository=mojito317/clouseau)
+DEBUG: Repo is onboarded (repository=mojito317/clouseau)
+DEBUG: syncGit(): Initializing git repository into /tmp/renovate/repos/github/mojito317/clouseau (repository=mojito317/clouseau)
+DEBUG: Performing blobless clone (repository=mojito317/clouseau)
+DEBUG: git clone completed (repository=mojito317/clouseau)
+       "durationMs": 1665
+DEBUG: latest repository commit (repository=mojito317/clouseau)
+       "latestCommit": {
+         "hash": "848725cfc7fe3ff85e973d53f716fcab6f329c58",
+         "date": "2026-08-27T11:19:23+02:00",
+         "message": "Split dep updates between renovate(mise) and dependabot(everything else)",
+         "refs": "HEAD -> main, origin/main, origin/HEAD",
+         "body": "",
+         "author_name": "Ildikó Eigel",
+         "author_email": "ildiko.eigel@ibm.com"
+       }
+DEBUG: Current branch SHA: 848725cfc7fe3ff85e973d53f716fcab6f329c58 (repository=mojito317/clouseau)
+DEBUG: Found renovate.json config file (repository=mojito317/clouseau)
+DEBUG: Repository config (repository=mojito317/clouseau)
+       "fileName": "renovate.json",
+       "config": {
+         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+         "extends": ["config:base", "mergeConfidence:all-badges"],
+         "labels": ["dependencies"],
+         "dependencyDashboard": true,
+         "prHourlyLimit": 0,
+         "branchNameStrict": true,
+         "branchPrefix": "renovate-",
+         "recreateClosed": true,
+         "enabledManagers": ["mise", "custom.regex"],
+         "customDatasources": {
+           "mise-java-openjdk": {
+             "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
+             "transformTemplates": [
+               "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
+             ]
+           },
+           "conda-forge-sbt": {
+             "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+             "transformTemplates": [
+               "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+             ]
+           }
+         },
+         "customManagers": [
+           {
+             "description": "Track java (openjdk) version in mise.toml via mise-java.jdx.dev",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track editorconfig-checker version in mise.toml",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track editorconfig-checker version in .editorconfig-checker.json",
+             "customType": "regex",
+             "fileMatch": ["^\\.editorconfig-checker\\.json$"],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in mise.toml",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in .scalafmt.conf",
+             "customType": "regex",
+             "fileMatch": ["^\\.scalafmt\\.conf$"],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track sbt version in mise.toml against conda-forge",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track sbt version in project/build.properties against conda-forge",
+             "customType": "regex",
+             "fileMatch": ["^project/build\\.properties$"],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           }
+         ],
+         "packageRules": [
+           {
+             "description": "Pin sbt to 1.x",
+             "matchPackageNames": ["sbt"],
+             "allowedVersions": "/^1\\./"
+           },
+           {
+             "description": "Pin java (openjdk) to 21.x LTS",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "allowedVersions": "/^21\\./"
+           },
+           {
+             "description": "Pin elixir to otp-27 compatible versions",
+             "matchPackageNames": ["elixir"],
+             "matchManagers": ["mise"],
+             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+             "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+           },
+           {
+             "description": "Disable sbt from the mise manager (handled by regex customManager instead)",
+             "matchPackageNames": ["sbt", "sbt/sbt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable scalafmt from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["scalafmt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable editorconfig-checker from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["editorconfig-checker"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable java from the mise manager (handled by regex customManager)",
+             "matchPackageNames": ["java", "java-jdk"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Group all mise tool updates into a single PR",
+             "matchManagers": ["mise"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group openjdk into mise tools PR",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group scalafmt from mise.toml and .scalafmt.conf into single PR",
+             "matchPackageNames": ["scalameta/scalafmt"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "scalafmt version",
+             "groupSlug": "scalafmt-version"
+           },
+           {
+             "description": "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into single PR",
+             "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "editorconfig-checker version",
+             "groupSlug": "editorconfig-checker-version"
+           }
+         ]
+       }
+DEBUG: migrateAndValidate() (repository=mojito317/clouseau)
+DEBUG: Config migration necessary (repository=mojito317/clouseau)
+       "oldConfig": {
+         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+         "extends": ["config:base", "mergeConfidence:all-badges"],
+         "labels": ["dependencies"],
+         "dependencyDashboard": true,
+         "prHourlyLimit": 0,
+         "branchNameStrict": true,
+         "branchPrefix": "renovate-",
+         "recreateClosed": true,
+         "enabledManagers": ["mise", "custom.regex"],
+         "customDatasources": {
+           "mise-java-openjdk": {
+             "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
+             "transformTemplates": [
+               "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
+             ]
+           },
+           "conda-forge-sbt": {
+             "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+             "transformTemplates": [
+               "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+             ]
+           }
+         },
+         "customManagers": [
+           {
+             "description": "Track java (openjdk) version in mise.toml via mise-java.jdx.dev",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track editorconfig-checker version in mise.toml",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track editorconfig-checker version in .editorconfig-checker.json",
+             "customType": "regex",
+             "fileMatch": ["^\\.editorconfig-checker\\.json$"],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in mise.toml",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in .scalafmt.conf",
+             "customType": "regex",
+             "fileMatch": ["^\\.scalafmt\\.conf$"],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track sbt version in mise.toml against conda-forge",
+             "customType": "regex",
+             "fileMatch": ["^mise\\.toml$"],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track sbt version in project/build.properties against conda-forge",
+             "customType": "regex",
+             "fileMatch": ["^project/build\\.properties$"],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           }
+         ],
+         "packageRules": [
+           {
+             "description": "Pin sbt to 1.x",
+             "matchPackageNames": ["sbt"],
+             "allowedVersions": "/^1\\./"
+           },
+           {
+             "description": "Pin java (openjdk) to 21.x LTS",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "allowedVersions": "/^21\\./"
+           },
+           {
+             "description": "Pin elixir to otp-27 compatible versions",
+             "matchPackageNames": ["elixir"],
+             "matchManagers": ["mise"],
+             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+             "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+           },
+           {
+             "description": "Disable sbt from the mise manager (handled by regex customManager instead)",
+             "matchPackageNames": ["sbt", "sbt/sbt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable scalafmt from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["scalafmt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable editorconfig-checker from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["editorconfig-checker"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable java from the mise manager (handled by regex customManager)",
+             "matchPackageNames": ["java", "java-jdk"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Group all mise tool updates into a single PR",
+             "matchManagers": ["mise"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group openjdk into mise tools PR",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group scalafmt from mise.toml and .scalafmt.conf into single PR",
+             "matchPackageNames": ["scalameta/scalafmt"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "scalafmt version",
+             "groupSlug": "scalafmt-version"
+           },
+           {
+             "description": "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into single PR",
+             "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "editorconfig-checker version",
+             "groupSlug": "editorconfig-checker-version"
+           }
+         ]
+       },
+       "newConfig": {
+         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+         "extends": ["config:recommended", "mergeConfidence:all-badges"],
+         "labels": ["dependencies"],
+         "dependencyDashboard": true,
+         "prHourlyLimit": 0,
+         "branchNameStrict": true,
+         "branchPrefix": "renovate-",
+         "recreateWhen": "always",
+         "enabledManagers": ["mise", "custom.regex"],
+         "customDatasources": {
+           "mise-java-openjdk": {
+             "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
+             "transformTemplates": [
+               "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
+             ]
+           },
+           "conda-forge-sbt": {
+             "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+             "transformTemplates": [
+               "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+             ]
+           }
+         },
+         "customManagers": [
+           {
+             "description": "Track java (openjdk) version in mise.toml via mise-java.jdx.dev",
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track editorconfig-checker version in mise.toml",
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track editorconfig-checker version in .editorconfig-checker.json",
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.editorconfig-checker\\.json$/"],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in mise.toml",
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track scalafmt version in .scalafmt.conf",
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.scalafmt\\.conf$/"],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": "Track sbt version in mise.toml against conda-forge",
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": "Track sbt version in project/build.properties against conda-forge",
+             "customType": "regex",
+             "managerFilePatterns": ["/^project/build\\.properties$/"],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           }
+         ],
+         "packageRules": [
+           {
+             "description": "Pin sbt to 1.x",
+             "matchPackageNames": ["sbt"],
+             "allowedVersions": "/^1\\./"
+           },
+           {
+             "description": "Pin java (openjdk) to 21.x LTS",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "allowedVersions": "/^21\\./"
+           },
+           {
+             "description": "Pin elixir to otp-27 compatible versions",
+             "matchPackageNames": ["elixir"],
+             "matchManagers": ["mise"],
+             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+             "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+           },
+           {
+             "description": "Disable sbt from the mise manager (handled by regex customManager instead)",
+             "matchPackageNames": ["sbt", "sbt/sbt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable scalafmt from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["scalafmt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable editorconfig-checker from the mise manager (handled by regex customManagers)",
+             "matchDepNames": ["editorconfig-checker"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Disable java from the mise manager (handled by regex customManager)",
+             "matchPackageNames": ["java", "java-jdk"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": "Group all mise tool updates into a single PR",
+             "matchManagers": ["mise"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group openjdk into mise tools PR",
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": "Group scalafmt from mise.toml and .scalafmt.conf into single PR",
+             "matchPackageNames": ["scalameta/scalafmt"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "scalafmt version",
+             "groupSlug": "scalafmt-version"
+           },
+           {
+             "description": "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into single PR",
+             "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "editorconfig-checker version",
+             "groupSlug": "editorconfig-checker-version"
+           }
+         ]
+       }
+DEBUG: Post-massage config (repository=mojito317/clouseau)
+       "config": {
+         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+         "extends": ["config:recommended", "mergeConfidence:all-badges"],
+         "labels": ["dependencies"],
+         "dependencyDashboard": true,
+         "prHourlyLimit": 0,
+         "branchNameStrict": true,
+         "branchPrefix": "renovate-",
+         "recreateWhen": "always",
+         "enabledManagers": ["mise", "custom.regex"],
+         "customDatasources": {
+           "mise-java-openjdk": {
+             "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
+             "transformTemplates": [
+               "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
+             ]
+           },
+           "conda-forge-sbt": {
+             "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+             "transformTemplates": [
+               "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+             ]
+           }
+         },
+         "customManagers": [
+           {
+             "description": [
+               "Track java (openjdk) version in mise.toml via mise-java.jdx.dev"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": ["Track editorconfig-checker version in mise.toml"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": [
+               "Track editorconfig-checker version in .editorconfig-checker.json"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.editorconfig-checker\\.json$/"],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track scalafmt version in mise.toml"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track scalafmt version in .scalafmt.conf"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.scalafmt\\.conf$/"],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track sbt version in mise.toml against conda-forge"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": [
+               "Track sbt version in project/build.properties against conda-forge"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^project/build\\.properties$/"],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           }
+         ],
+         "packageRules": [
+           {
+             "description": ["Pin sbt to 1.x"],
+             "matchPackageNames": ["sbt"],
+             "allowedVersions": "/^1\\./"
+           },
+           {
+             "description": ["Pin java (openjdk) to 21.x LTS"],
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "allowedVersions": "/^21\\./"
+           },
+           {
+             "description": ["Pin elixir to otp-27 compatible versions"],
+             "matchPackageNames": ["elixir"],
+             "matchManagers": ["mise"],
+             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+             "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+           },
+           {
+             "description": [
+               "Disable sbt from the mise manager (handled by regex customManager instead)"
+             ],
+             "matchPackageNames": ["sbt", "sbt/sbt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable scalafmt from the mise manager (handled by regex customManagers)"
+             ],
+             "matchDepNames": ["scalafmt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable editorconfig-checker from the mise manager (handled by regex customManagers)"
+             ],
+             "matchDepNames": ["editorconfig-checker"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable java from the mise manager (handled by regex customManager)"
+             ],
+             "matchPackageNames": ["java", "java-jdk"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": ["Group all mise tool updates into a single PR"],
+             "matchManagers": ["mise"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": ["Group openjdk into mise tools PR"],
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": [
+               "Group scalafmt from mise.toml and .scalafmt.conf into single PR"
+             ],
+             "matchPackageNames": ["scalameta/scalafmt"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "scalafmt version",
+             "groupSlug": "scalafmt-version"
+           },
+           {
+             "description": [
+               "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into single PR"
+             ],
+             "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "editorconfig-checker version",
+             "groupSlug": "editorconfig-checker-version"
+           }
+         ]
+       }
+DEBUG: Resolved shallow config, without merging internal presets (repository=mojito317/clouseau)
+       "renovateVersion": "44.14.4",
+       "config": {
+         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+         "labels": ["dependencies"],
+         "dependencyDashboard": true,
+         "prHourlyLimit": 0,
+         "branchNameStrict": true,
+         "branchPrefix": "renovate-",
+         "recreateWhen": "always",
+         "enabledManagers": ["mise", "custom.regex"],
+         "customDatasources": {
+           "mise-java-openjdk": {
+             "defaultRegistryUrlTemplate": "https://mise-java.jdx.dev/jvm/ga/linux/x86_64.json",
+             "transformTemplates": [
+               "{\"releases\": $map($filter($, function($e) { $e.vendor = \"openjdk\" }), function($e) { {\"version\": $e.version} })}"
+             ]
+           },
+           "conda-forge-sbt": {
+             "defaultRegistryUrlTemplate": "https://api.anaconda.org/package/conda-forge/sbt",
+             "transformTemplates": [
+               "{\"releases\": $map(versions, function($v) { {\"version\": $v} })}"
+             ]
+           }
+         },
+         "customManagers": [
+           {
+             "description": [
+               "Track java (openjdk) version in mise.toml via mise-java.jdx.dev"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": ["Track editorconfig-checker version in mise.toml"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": [
+               "Track editorconfig-checker version in .editorconfig-checker.json"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.editorconfig-checker\\.json$/"],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track scalafmt version in mise.toml"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track scalafmt version in .scalafmt.conf"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^\\.scalafmt\\.conf$/"],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$"
+           },
+           {
+             "description": ["Track sbt version in mise.toml against conda-forge"],
+             "customType": "regex",
+             "managerFilePatterns": ["/^mise\\.toml$/"],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           },
+           {
+             "description": [
+               "Track sbt version in project/build.properties against conda-forge"
+             ],
+             "customType": "regex",
+             "managerFilePatterns": ["/^project/build\\.properties$/"],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced"
+           }
+         ],
+         "packageRules": [
+           {
+             "description": ["Pin sbt to 1.x"],
+             "matchPackageNames": ["sbt"],
+             "allowedVersions": "/^1\\./"
+           },
+           {
+             "description": ["Pin java (openjdk) to 21.x LTS"],
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "allowedVersions": "/^21\\./"
+           },
+           {
+             "description": ["Pin elixir to otp-27 compatible versions"],
+             "matchPackageNames": ["elixir"],
+             "matchManagers": ["mise"],
+             "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+             "allowedVersions": "/^1\\.[0-9]+(\\.[0-9]+)?-otp-27$/"
+           },
+           {
+             "description": [
+               "Disable sbt from the mise manager (handled by regex customManager instead)"
+             ],
+             "matchPackageNames": ["sbt", "sbt/sbt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable scalafmt from the mise manager (handled by regex customManagers)"
+             ],
+             "matchDepNames": ["scalafmt"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable editorconfig-checker from the mise manager (handled by regex customManagers)"
+             ],
+             "matchDepNames": ["editorconfig-checker"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": [
+               "Disable java from the mise manager (handled by regex customManager)"
+             ],
+             "matchPackageNames": ["java", "java-jdk"],
+             "matchManagers": ["mise"],
+             "enabled": false
+           },
+           {
+             "description": ["Group all mise tool updates into a single PR"],
+             "matchManagers": ["mise"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": ["Group openjdk into mise tools PR"],
+             "matchPackageNames": ["openjdk"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "mise tools",
+             "groupSlug": "mise-tools"
+           },
+           {
+             "description": [
+               "Group scalafmt from mise.toml and .scalafmt.conf into single PR"
+             ],
+             "matchPackageNames": ["scalameta/scalafmt"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "scalafmt version",
+             "groupSlug": "scalafmt-version"
+           },
+           {
+             "description": [
+               "Group editorconfig-checker from mise.toml and .editorconfig-checker.json into single PR"
+             ],
+             "matchPackageNames": ["editorconfig-checker/editorconfig-checker"],
+             "matchManagers": ["custom.regex"],
+             "groupName": "editorconfig-checker version",
+             "groupSlug": "editorconfig-checker-version"
+           }
+         ]
+       },
+       "visitedPresets": {"merged": [], "unmerged": ["config:recommended", "mergeConfidence:all-badges"]}
+DEBUG: Found repo ignorePaths (repository=mojito317/clouseau)
+       "ignorePaths": [
+         "**/node_modules/**",
+         "**/bower_components/**",
+         "**/vendor/**",
+         "**/examples/**",
+         "**/__tests__/**",
+         "**/test/**",
+         "**/tests/**",
+         "**/__fixtures__/**"
+       ]
+DEBUG: No vulnerability alerts enabled for repo (repository=mojito317/clouseau)
+DEBUG: No vulnerability alerts found (repository=mojito317/clouseau)
+DEBUG: findIssue(Dependency Dashboard) (repository=mojito317/clouseau)
+DEBUG: Retrieving issueList (repository=mojito317/clouseau)
+DEBUG: Retrieved 2 issues (repository=mojito317/clouseau)
+DEBUG: Issues cache: Setting 2 issues in cache (repository=mojito317/clouseau)
+DEBUG: Found issue 27 (repository=mojito317/clouseau)
+DEBUG: http cache: saving https://api.github.com/repos/mojito317/clouseau/issues/27 (etag=W/"84e856e46c52cc306dfe2b7e0e4c40dd2eb7a41dd3b024edecb10d3718dc72be", lastModified=Thu, 27 Aug 2026 09:20:12 GMT) (repository=mojito317/clouseau)
+DEBUG: Issues cache: Updating issue 27 in cache (repository=mojito317/clouseau)
+DEBUG: No baseBranches (repository=mojito317/clouseau)
+DEBUG: extract() (repository=mojito317/clouseau)
+DEBUG: Setting current branch to main (repository=mojito317/clouseau)
+DEBUG: latest commit (repository=mojito317/clouseau)
+       "branchName": "main",
+       "latestCommitDate": "2026-08-27T09:19:23.000Z",
+       "sha": "848725cfc7fe3ff85e973d53f716fcab6f329c58"
+DEBUG: Using file pattern: **/{,.}mise{,.*}.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/{,.}mise/config{,.*}.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/.config/mise{,.*}.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/.config/mise/{mise,config}{,.*}.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/.config/mise/conf.d/*.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/.rtx{,.*}.toml for manager mise (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/{j,t}sconfig.json for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/{j,t}sconfig.*.json for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/{j,t}sconfig.json for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: **/{j,t}sconfig.*.json for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^mise\.toml$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^mise\.toml$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^\.editorconfig-checker\.json$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^mise\.toml$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^\.scalafmt\.conf$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^mise\.toml$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Using file pattern: /^project/build\.properties$/ for manager regex (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager mise: mise.toml (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: mise.toml (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: mise.toml (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: .editorconfig-checker.json (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: mise.toml (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: .scalafmt.conf (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: mise.toml (repository=mojito317/clouseau)
+DEBUG: Matched 1 file(s) for manager regex: project/build.properties (repository=mojito317/clouseau)
+DEBUG: manager extract durations (ms) (repository=mojito317/clouseau)
+       "managers": {"mise": 7, "regex": 6}
+DEBUG: Found mise package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found regex package files (repository=mojito317/clouseau)
+DEBUG: Found 8 package file(s) (repository=mojito317/clouseau)
+ INFO: Dependency extraction complete (repository=mojito317/clouseau, baseBranch=main)
+       "stats": {
+         "managers": {
+           "mise": {"fileCount": 1, "depCount": 13},
+           "regex": {"fileCount": 7, "depCount": 7}
+         },
+         "total": {"fileCount": 8, "depCount": 20}
+       }
+DEBUG: hostRules: no authentication for mise-java.jdx.dev (repository=mojito317/clouseau)
+DEBUG: Using queue: host=mise-java.jdx.dev, concurrency=16 (repository=mojito317/clouseau)
+DEBUG: Dependency erlang/otp has unsupported/unversioned value 27.3.4.11 (versioning=regex:^(?<major>\d+?)\.(?<minor>\d+?)(\.(?<patch>\d+))?$) (repository=mojito317/clouseau)
+DEBUG: Skipping erlang/otp because no currentDigest or pinDigests (repository=mojito317/clouseau)
+DEBUG: Dependency: editorconfig-checker, is disabled (repository=mojito317/clouseau)
+DEBUG: Dependency: java, is disabled (repository=mojito317/clouseau)
+DEBUG: hostRules: no authentication for builds.hex.pm (repository=mojito317/clouseau)
+DEBUG: Using queue: host=builds.hex.pm, concurrency=16 (repository=mojito317/clouseau)
+DEBUG: hostRules: no authentication for api.anaconda.org (repository=mojito317/clouseau)
+DEBUG: Using queue: host=api.anaconda.org, concurrency=16 (repository=mojito317/clouseau)
+DEBUG: Dependency: sbt, is disabled (repository=mojito317/clouseau)
+DEBUG: Dependency: scalafmt, is disabled (repository=mojito317/clouseau)
+ INFO: GitHub GraphQL datasource: skipping empty item (repository=mojito317/clouseau)
+       "packageName": "python/cpython",
+       "baseUrl": "https://api.github.com/"
+DEBUG: PackageFiles.add() - Package file saved for base branch (repository=mojito317/clouseau, baseBranch=main)
+DEBUG: Package releases lookups complete (repository=mojito317/clouseau, baseBranch=main)
+DEBUG: LibYears: no currentVersionTimestamp for openjdk (repository=mojito317/clouseau)
+DEBUG: LibYears: no currentVersionTimestamp for sbt (repository=mojito317/clouseau)
+DEBUG: Repository libYears (repository=mojito317/clouseau)
+       "libYears": {
+         "managers": {"mise": 2.6832921740233386, "regex": 0.4647372209538305},
+         "total": 3.148029394977169
+       },
+       "dependencyStatus": {"outdated": 9, "total": 17}
+DEBUG: branchifyUpgrades (repository=mojito317/clouseau)
+DEBUG: detectSemanticCommits() (repository=mojito317/clouseau)
+DEBUG: getCommitMessages (repository=mojito317/clouseau)
+DEBUG: semanticCommits: score=-20 (repository=mojito317/clouseau)
+DEBUG: semanticCommits: disabled (repository=mojito317/clouseau)
+DEBUG: 12 flattened updates found: elixir, github-cli, jq, python, typst, openjdk, editorconfig-checker/editorconfig-checker, editorconfig-checker/editorconfig-checker, scalameta/scalafmt, scalameta/scalafmt, sbt, sbt (repository=mojito317/clouseau)
+DEBUG: Returning 4 branch(es) (repository=mojito317/clouseau)
+DEBUG: Branch is not pending, removing pending upgrades (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: Branch is not pending, removing pending upgrades (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: Branch is not pending, removing pending upgrades (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: Branch is not pending, removing pending upgrades (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: config.repoIsOnboarded=true (repository=mojito317/clouseau)
+DEBUG: packageFiles with updates (repository=mojito317/clouseau, baseBranch=main)
+       "config": {
+         "mise": [
+           {
+             "deps": [
+               {
+                 "depName": "bat",
+                 "depType": "tools",
+                 "currentValue": "0.26.1",
+                 "packageName": "sharkdp/bat",
+                 "datasource": "github-tags",
+                 "extractVersion": "^v?(?<version>.+)",
+                 "updates": [],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/sharkdp/bat",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2025-12-02T20:48:10.000Z",
+                 "currentVersion": "0.26.1",
+                 "currentVersionTimestamp": "2025-12-02T20:48:10.000Z",
+                 "currentVersionAgeInDays": 267,
+                 "fixedVersion": "0.26.1"
+               },
+               {
+                 "depName": "editorconfig-checker",
+                 "depType": "tools",
+                 "currentValue": "3.7.0",
+                 "datasource": "github-releases",
+                 "packageName": "editorconfig-checker/editorconfig-checker",
+                 "extractVersion": "^v(?<version>\\S+)",
+                 "updates": [],
+                 "skipReason": "disabled"
+               },
+               {
+                 "depName": "elixir",
+                 "depType": "tools",
+                 "currentValue": "1.19.5-otp-27",
+                 "datasource": "hexpm-bob",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "1.20.3-otp-27",
+                     "newValue": "1.20.3-otp-27",
+                     "releaseTimestamp": "2026-08-04T14:49:25.000Z",
+                     "newVersionAgeInDays": 22,
+                     "newMajor": 1,
+                     "newMinor": 20,
+                     "newPatch": 3,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "libYears": 0.5674893455098935,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "packageName": "elixir",
+                 "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?(-otp-(?<compatibility>\\d+))?$",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/elixir-lang/elixir",
+                 "registryUrl": "https://builds.hex.pm",
+                 "homepage": "https://elixir-lang.org/",
+                 "currentVersion": "1.19.5",
+                 "currentVersionTimestamp": "2026-01-09T11:37:01.000Z",
+                 "currentVersionAgeInDays": 229,
+                 "isSingleVersion": true,
+                 "fixedVersion": "1.19.5-otp-27"
+               },
+               {
+                 "depName": "erlang",
+                 "depType": "tools",
+                 "currentValue": "27.3.4.11",
+                 "packageName": "erlang/otp",
+                 "datasource": "github-tags",
+                 "extractVersion": "^OTP-(?<version>\\S+)",
+                 "versioning": "regex:^(?<major>\\d+?)\\.(?<minor>\\d+?)(\\.(?<patch>\\d+))?$",
+                 "updates": [],
+                 "warnings": [],
+                 "skipReason": "invalid-value"
+               },
+               {
+                 "depName": "github-cli",
+                 "depType": "tools",
+                 "currentValue": "2.92.0",
+                 "datasource": "github-releases",
+                 "packageName": "cli/cli",
+                 "extractVersion": "^v(?<version>\\S+)",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "2.98.0",
+                     "newValue": "2.98.0",
+                     "releaseTimestamp": "2026-08-20T22:15:58.000Z",
+                     "newVersionAgeInDays": 6,
+                     "newMajor": 2,
+                     "newMinor": 98,
+                     "newPatch": 0,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "libYears": 0.3135347856418062,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/cli/cli",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-08-20T22:15:58.000Z",
+                 "currentVersion": "2.92.0",
+                 "currentVersionTimestamp": "2026-04-28T11:42:05.000Z",
+                 "currentVersionAgeInDays": 120,
+                 "isSingleVersion": true,
+                 "fixedVersion": "2.92.0"
+               },
+               {
+                 "depName": "java",
+                 "depType": "tools",
+                 "currentValue": "21.0.1",
+                 "datasource": "java-version",
+                 "packageName": "java-jdk",
+                 "updates": [],
+                 "skipReason": "disabled"
+               },
+               {
+                 "depName": "jq",
+                 "depType": "tools",
+                 "currentValue": "1.8.1",
+                 "packageName": "jqlang/jq",
+                 "datasource": "github-releases",
+                 "extractVersion": "^jq-(?<version>\\S+)",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "1.8.2",
+                     "newValue": "1.8.2",
+                     "releaseTimestamp": "2026-06-20T14:11:27.000Z",
+                     "newVersionAgeInDays": 67,
+                     "newMajor": 1,
+                     "newMinor": 8,
+                     "newPatch": 2,
+                     "updateType": "patch",
+                     "isBreaking": false,
+                     "libYears": 0.9701319444444444,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/jqlang/jq",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-06-20T14:11:27.000Z",
+                 "currentVersion": "1.8.1",
+                 "currentVersionTimestamp": "2025-07-01T11:50:06.000Z",
+                 "currentVersionAgeInDays": 421,
+                 "isSingleVersion": true,
+                 "fixedVersion": "1.8.1"
+               },
+               {
+                 "depName": "python",
+                 "depType": "tools",
+                 "currentValue": "3.14.5",
+                 "packageName": "python/cpython",
+                 "datasource": "github-tags",
+                 "extractVersion": "^v(?<version>\\S+)",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "3.14.7",
+                     "newValue": "3.14.7",
+                     "releaseTimestamp": "2026-08-05T10:29:49.000Z",
+                     "newVersionAgeInDays": 21,
+                     "newMajor": 3,
+                     "newMinor": 14,
+                     "newPatch": 7,
+                     "updateType": "patch",
+                     "isBreaking": false,
+                     "libYears": 0.2383718607305936,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/python/cpython",
+                 "registryUrl": "https://github.com",
+                 "currentVersion": "3.14.5",
+                 "currentVersionTimestamp": "2026-05-10T10:21:34.000Z",
+                 "currentVersionAgeInDays": 108,
+                 "isSingleVersion": true,
+                 "fixedVersion": "3.14.5"
+               },
+               {
+                 "depName": "rebar",
+                 "depType": "tools",
+                 "currentValue": "3.27.0",
+                 "datasource": "github-tags",
+                 "packageName": "erlang/rebar3",
+                 "updates": [],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/erlang/rebar3",
+                 "registryUrl": "https://github.com",
+                 "currentVersion": "3.27.0",
+                 "currentVersionTimestamp": "2026-02-27T17:45:48.000Z",
+                 "currentVersionAgeInDays": 180,
+                 "fixedVersion": "3.27.0"
+               },
+               {
+                 "depName": "sbt",
+                 "depType": "tools",
+                 "currentValue": "1.12.9",
+                 "datasource": "github-releases",
+                 "packageName": "sbt/sbt",
+                 "extractVersion": "^v(?<version>\\S+)",
+                 "updates": [],
+                 "skipReason": "disabled"
+               },
+               {
+                 "depName": "scala",
+                 "depType": "tools",
+                 "currentValue": "2.13.18",
+                 "datasource": "github-tags",
+                 "packageName": "scala/scala",
+                 "extractVersion": "^v(?<version>\\S+)",
+                 "updates": [],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/scala/scala",
+                 "registryUrl": "https://github.com",
+                 "currentVersion": "2.13.18",
+                 "currentVersionTimestamp": "2025-11-17T08:28:41.000Z",
+                 "currentVersionAgeInDays": 283,
+                 "fixedVersion": "2.13.18"
+               },
+               {
+                 "depName": "scalafmt",
+                 "depType": "tools",
+                 "currentValue": "3.11.1",
+                 "packageName": "scalameta/scalafmt",
+                 "datasource": "github-releases",
+                 "updates": [],
+                 "skipReason": "disabled"
+               },
+               {
+                 "depName": "typst",
+                 "depType": "tools",
+                 "currentValue": "0.14.2",
+                 "packageName": "typst/typst",
+                 "datasource": "github-releases",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "v0.15.1",
+                     "newValue": "0.15.1",
+                     "releaseTimestamp": "2026-07-17T11:12:06.000Z",
+                     "newVersionAgeInDays": 40,
+                     "newMajor": 0,
+                     "newMinor": 15,
+                     "newPatch": 1,
+                     "updateType": "minor",
+                     "isBreaking": true,
+                     "libYears": 0.5937642376966007,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "versioning": "semver-coerced",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/typst/typst",
+                 "registryUrl": "https://github.com",
+                 "currentVersion": "v0.14.2",
+                 "currentVersionTimestamp": "2025-12-12T17:49:37.000Z",
+                 "currentVersionAgeInDays": 257,
+                 "isSingleVersion": true,
+                 "fixedVersion": "0.14.2"
+               }
+             ],
+             "packageFile": "mise.toml"
+           }
+         ],
+         "regex": [
+           {
+             "deps": [
+               {
+                 "depName": "openjdk",
+                 "currentValue": "21.0.1",
+                 "datasource": "custom.mise-java-openjdk",
+                 "versioning": "semver-coerced",
+                 "replaceString": "java = \"openjdk-21.0.1\"",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "21.0.2",
+                     "newValue": "21.0.2",
+                     "newMajor": 21,
+                     "newMinor": 0,
+                     "newPatch": 2,
+                     "updateType": "patch",
+                     "isBreaking": false,
+                     "branchName": "renovate-mise-tools"
+                   }
+                 ],
+                 "packageName": "openjdk",
+                 "warnings": [],
+                 "currentVersion": "21.0.1",
+                 "isSingleVersion": true,
+                 "fixedVersion": "21.0.1"
+               }
+             ],
+             "matchStrings": ["java\\s*=\\s*\"openjdk-(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "openjdk",
+             "datasourceTemplate": "custom.mise-java-openjdk",
+             "versioningTemplate": "semver-coerced",
+             "packageFile": "mise.toml"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "editorconfig-checker/editorconfig-checker",
+                 "currentValue": "3.7.0",
+                 "datasource": "github-releases",
+                 "versioning": "semver-coerced",
+                 "extractVersion": "^v?(?<version>.+)$",
+                 "replaceString": "editorconfig-checker = { version = \"3.7.0\"",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "3.11.2",
+                     "newValue": "3.11.2",
+                     "releaseTimestamp": "2026-08-25T21:14:36.000Z",
+                     "newVersionAgeInDays": 1,
+                     "newMajor": 3,
+                     "newMinor": 11,
+                     "newPatch": 2,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "libYears": 0.25250304414003044,
+                     "branchName": "renovate-editorconfig-checker-version"
+                   }
+                 ],
+                 "packageName": "editorconfig-checker/editorconfig-checker",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/editorconfig-checker/editorconfig-checker",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-08-25T21:14:36.000Z",
+                 "currentVersion": "3.7.0",
+                 "currentVersionTimestamp": "2026-05-25T17:19:00.000Z",
+                 "currentVersionAgeInDays": 93,
+                 "isSingleVersion": true,
+                 "fixedVersion": "3.7.0"
+               }
+             ],
+             "matchStrings": [
+               "editorconfig-checker\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$",
+             "packageFile": "mise.toml"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "editorconfig-checker/editorconfig-checker",
+                 "currentValue": "3.7.0",
+                 "datasource": "github-releases",
+                 "versioning": "semver-coerced",
+                 "extractVersion": "^v?(?<version>.+)$",
+                 "replaceString": "\"Version\": \"v3.7.0\"",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "3.11.2",
+                     "newValue": "3.11.2",
+                     "releaseTimestamp": "2026-08-25T21:14:36.000Z",
+                     "newVersionAgeInDays": 1,
+                     "newMajor": 3,
+                     "newMinor": 11,
+                     "newPatch": 2,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "libYears": 0.25250304414003044,
+                     "branchName": "renovate-editorconfig-checker-version"
+                   }
+                 ],
+                 "packageName": "editorconfig-checker/editorconfig-checker",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/editorconfig-checker/editorconfig-checker",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-08-25T21:14:36.000Z",
+                 "currentVersion": "3.7.0",
+                 "currentVersionTimestamp": "2026-05-25T17:19:00.000Z",
+                 "currentVersionAgeInDays": 93,
+                 "isSingleVersion": true,
+                 "fixedVersion": "3.7.0"
+               }
+             ],
+             "matchStrings": ["\"Version\"\\s*:\\s*\"v(?<currentValue>[^\"]+)\""],
+             "depNameTemplate": "editorconfig-checker/editorconfig-checker",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$",
+             "packageFile": ".editorconfig-checker.json"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "scalameta/scalafmt",
+                 "currentValue": "3.11.1",
+                 "datasource": "github-releases",
+                 "versioning": "semver-coerced",
+                 "extractVersion": "^v?(?<version>.+)$",
+                 "replaceString": "scalafmt = { version = \"3.11.1\"",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "3.11.5",
+                     "newValue": "3.11.5",
+                     "releaseTimestamp": "2026-07-27T02:04:29.000Z",
+                     "newVersionAgeInDays": 31,
+                     "newMajor": 3,
+                     "newMinor": 11,
+                     "newPatch": 5,
+                     "updateType": "patch",
+                     "isBreaking": false,
+                     "libYears": 0.2122341768138001,
+                     "branchName": "renovate-scalafmt-version"
+                   }
+                 ],
+                 "packageName": "scalameta/scalafmt",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/scalameta/scalafmt",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-07-27T02:04:29.000Z",
+                 "currentVersion": "3.11.1",
+                 "currentVersionTimestamp": "2026-05-10T14:54:12.000Z",
+                 "currentVersionAgeInDays": 108,
+                 "isSingleVersion": true,
+                 "fixedVersion": "3.11.1"
+               }
+             ],
+             "matchStrings": [
+               "scalafmt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$",
+             "packageFile": "mise.toml"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "scalameta/scalafmt",
+                 "currentValue": "3.11.1",
+                 "datasource": "github-releases",
+                 "versioning": "semver-coerced",
+                 "extractVersion": "^v?(?<version>.+)$",
+                 "replaceString": "version = 3.11.1",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "3.11.5",
+                     "newValue": "3.11.5",
+                     "releaseTimestamp": "2026-07-27T02:04:29.000Z",
+                     "newVersionAgeInDays": 31,
+                     "newMajor": 3,
+                     "newMinor": 11,
+                     "newPatch": 5,
+                     "updateType": "patch",
+                     "isBreaking": false,
+                     "libYears": 0.2122341768138001,
+                     "branchName": "renovate-scalafmt-version"
+                   }
+                 ],
+                 "packageName": "scalameta/scalafmt",
+                 "warnings": [],
+                 "sourceUrl": "https://github.com/scalameta/scalafmt",
+                 "registryUrl": "https://github.com",
+                 "mostRecentTimestamp": "2026-07-27T02:04:29.000Z",
+                 "currentVersion": "3.11.1",
+                 "currentVersionTimestamp": "2026-05-10T14:54:12.000Z",
+                 "currentVersionAgeInDays": 108,
+                 "isSingleVersion": true,
+                 "fixedVersion": "3.11.1"
+               }
+             ],
+             "matchStrings": ["(?m)^version\\s*=\\s*(?<currentValue>[^\\s]+)"],
+             "depNameTemplate": "scalameta/scalafmt",
+             "datasourceTemplate": "github-releases",
+             "versioningTemplate": "semver-coerced",
+             "extractVersionTemplate": "^v?(?<version>.+)$",
+             "packageFile": ".scalafmt.conf"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "sbt",
+                 "currentValue": "1.12.9",
+                 "datasource": "custom.conda-forge-sbt",
+                 "versioning": "semver-coerced",
+                 "replaceString": "sbt = { version = \"1.12.9\"",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "1.13.0",
+                     "newValue": "1.13.0",
+                     "newMajor": 1,
+                     "newMinor": 13,
+                     "newPatch": 0,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "branchName": "renovate-sbt-1-x"
+                   }
+                 ],
+                 "packageName": "sbt",
+                 "warnings": [],
+                 "currentVersion": "1.12.9",
+                 "isSingleVersion": true,
+                 "fixedVersion": "1.12.9"
+               }
+             ],
+             "matchStrings": [
+               "sbt\\s*=\\s*\\{\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\""
+             ],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced",
+             "packageFile": "mise.toml"
+           },
+           {
+             "deps": [
+               {
+                 "depName": "sbt",
+                 "currentValue": "1.12.9",
+                 "datasource": "custom.conda-forge-sbt",
+                 "versioning": "semver-coerced",
+                 "replaceString": "sbt.version=1.12.9",
+                 "updates": [
+                   {
+                     "bucket": "non-major",
+                     "newVersion": "1.13.0",
+                     "newValue": "1.13.0",
+                     "newMajor": 1,
+                     "newMinor": 13,
+                     "newPatch": 0,
+                     "updateType": "minor",
+                     "isBreaking": false,
+                     "branchName": "renovate-sbt-1-x"
+                   }
+                 ],
+                 "packageName": "sbt",
+                 "warnings": [],
+                 "currentVersion": "1.12.9",
+                 "isSingleVersion": true,
+                 "fixedVersion": "1.12.9"
+               }
+             ],
+             "matchStrings": ["sbt\\.version=(?<currentValue>[^\\n]+)"],
+             "depNameTemplate": "sbt",
+             "datasourceTemplate": "custom.conda-forge-sbt",
+             "versioningTemplate": "semver-coerced",
+             "packageFile": "project/build.properties"
+           }
+         ]
+       }
+DEBUG: detectSemanticCommits() (repository=mojito317/clouseau)
+DEBUG: semanticCommits: returning "disabled" from cache (repository=mojito317/clouseau)
+DEBUG: processRepo() (repository=mojito317/clouseau)
+DEBUG: Processing 4 branches: renovate-editorconfig-checker-version, renovate-mise-tools, renovate-sbt-1-x, renovate-scalafmt-version (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-scalafmt-version) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-scalafmt-version, undefined, open) (repository=mojito317/clouseau)
+DEBUG: PR cache: cached data not found, creating new cache (repository=mojito317/clouseau)
+DEBUG: PR cache: initial fetch (repository=mojito317/clouseau)
+DEBUG: http cache: saving https://api.github.com/repos/mojito317/clouseau/pulls?per_page=100&state=all&sort=updated&direction=desc&page=1 (etag=W/"67890cdfa920db6340d29bd2a1f9cc89bcdb19e3159d1a424307c4bb03235e0f", lastModified=undefined) (repository=mojito317/clouseau)
+DEBUG: PR cache: Filtered 170 PRs to 61 (user=mojito317) (repository=mojito317/clouseau)
+DEBUG: PR cache: getPrList success (repository=mojito317/clouseau)
+       "pullsTotal": 61,
+       "requestsTotal": 1,
+       "apiQuotaAffected": true,
+       "durationMs": 2096
+DEBUG: getBranchPr(renovate-editorconfig-checker-version) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-editorconfig-checker-version, undefined, open) (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-sbt-1-x) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-sbt-1-x, undefined, open) (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-mise-tools) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-mise-tools, undefined, open) (repository=mojito317/clouseau)
+DEBUG: 0 PRs are currently open (repository=mojito317/clouseau)
+DEBUG: ConcurrentPRs count = 0 (repository=mojito317/clouseau)
+DEBUG: 4 already existing branches found. (repository=mojito317/clouseau)
+DEBUG: Branches count = 4 (repository=mojito317/clouseau)
+DEBUG: Calculating PRs created so far in this hour currentHourStart=2026-08-27T09:00:00.000Z (repository=mojito317/clouseau)
+DEBUG: 1 PRs have been created so far in this hour. (repository=mojito317/clouseau)
+DEBUG: HourlyPRs count = 1 (repository=mojito317/clouseau)
+DEBUG: Calculating commits so far in this hour currentHourStart=2026-08-27T09:00:00.000Z, for 4 branches (repository=mojito317/clouseau)
+DEBUG: getAllBranchUpdateDates (repository=mojito317/clouseau)
+DEBUG: 1 commits so far in this hour. (repository=mojito317/clouseau)
+DEBUG: HourlyCommits count = 1 (repository=mojito317/clouseau)
+DEBUG: syncBranchState() (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: syncBranchState(): Branch cache not found, creating minimal branchState (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: getBranchPr(renovate-scalafmt-version) (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: findPr(renovate-scalafmt-version, undefined, open) (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: branchExists=true (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: dependencyDashboardCheck=undefined (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: recreateClosed is true. No need to check for closed PR. (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: Open PR Count: 0, Existing Branch Count: 4, Hourly PR Count: 1, Hourly Commit Count: 1 (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: commitHourlyLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+       "limits": [{"depName": "scalameta/scalafmt", "commitHourlyLimit": 0}]
+DEBUG: commitHourlyLimit of this branch is unlimited, because at least one of the upgrade has it's commitHourlyLimit set to "No limit" ie. 0 or null (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: Checking if PR has been edited (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: branch.isModified() = true (repository=mojito317/clouseau, baseBranch=main, branch=renovate-scalafmt-version)
+       "branchName": "renovate-scalafmt-version",
+       "unrecognizedAuthors": ["29139614+renovate[bot]@users.noreply.github.com"]
+DEBUG: findPr(renovate-scalafmt-version, undefined, !open) (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: Found PR #149 (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+DEBUG: Found old PR but the SHA is different (repository=mojito317/clouseau, branch=renovate-scalafmt-version)
+       "oldPrNumber": 149,
+       "oldPrSha": "a3469bb44759efef4c05f4420a4ce18e6df89c4e",
+       "branchSha": "e8671ee260e349363f915b24c4ab76de50434180"
+DEBUG: syncBranchState() (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: syncBranchState(): Branch cache not found, creating minimal branchState (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: getBranchPr(renovate-editorconfig-checker-version) (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: findPr(renovate-editorconfig-checker-version, undefined, open) (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: branchExists=true (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: dependencyDashboardCheck=undefined (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: recreateClosed is true. No need to check for closed PR. (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: Open PR Count: 0, Existing Branch Count: 4, Hourly PR Count: 1, Hourly Commit Count: 1 (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: commitHourlyLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+       "limits": [
+         {
+           "depName": "editorconfig-checker/editorconfig-checker",
+           "commitHourlyLimit": 0
+         }
+       ]
+DEBUG: commitHourlyLimit of this branch is unlimited, because at least one of the upgrade has it's commitHourlyLimit set to "No limit" ie. 0 or null (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: Checking if PR has been edited (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: branch.isModified() = true (repository=mojito317/clouseau, baseBranch=main, branch=renovate-editorconfig-checker-version)
+       "branchName": "renovate-editorconfig-checker-version",
+       "unrecognizedAuthors": ["29139614+renovate[bot]@users.noreply.github.com"]
+DEBUG: findPr(renovate-editorconfig-checker-version, undefined, !open) (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: Found PR #150 (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+DEBUG: Found old PR but the SHA is different (repository=mojito317/clouseau, branch=renovate-editorconfig-checker-version)
+       "oldPrNumber": 150,
+       "oldPrSha": "c05ed87c3dddae46185c8e238147ad89a8a8a17c",
+       "branchSha": "11b7f09fc2c6f01b83ff3a9cb0338633644f5be3"
+DEBUG: syncBranchState() (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: syncBranchState(): Branch cache not found, creating minimal branchState (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: getBranchPr(renovate-sbt-1-x) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: findPr(renovate-sbt-1-x, undefined, open) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: branchExists=true (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: dependencyDashboardCheck=undefined (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: recreateClosed is true. No need to check for closed PR. (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Open PR Count: 0, Existing Branch Count: 4, Hourly PR Count: 1, Hourly Commit Count: 1 (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: commitHourlyLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "limits": [{"depName": "sbt", "commitHourlyLimit": 0}]
+DEBUG: commitHourlyLimit of this branch is unlimited, because at least one of the upgrade has it's commitHourlyLimit set to "No limit" ie. 0 or null (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Checking if PR has been edited (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: branch.isModified() = false (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Checking schedule(schedule=at any time, tz=null, now=2026-08-27T09:21:47.535Z) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No schedule defined (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: http cache: saving https://api.github.com/repos/mojito317/clouseau/rules/branches/main (etag="d5e2d3ba532245321593cbd14fad82f6f18ff344c4c698e66482fe8585e19c21", lastModified=undefined) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: GET https://api.github.com/repos/mojito317/clouseau/branches/main/protection = (code=ERR_NON_2XX_3XX_RESPONSE, statusCode=404 retryCount=0, duration=229) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No branch-protection found for main (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Converting rebaseWhen=auto to rebaseWhen=conflicted because no rule for behind-base-branch applies (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Branch already exists (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Skipping behind base branch check due to rebaseWhen=conflicted (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: isBranchConflicted(main, renovate-sbt-1-x) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: branch.isConflicted(): using git to calculate against baseBranch main (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Setting git author name: Renovate Bot (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Setting git author email: renovate@whitesourcesoftware.com (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: branch.isConflicted(): false (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Branch does not need rebasing (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Using reuseExistingBranch: true (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Setting current branch to main (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: latest commit (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "branchName": "main",
+       "latestCommitDate": "2026-08-27T09:19:23.000Z",
+       "sha": "848725cfc7fe3ff85e973d53f716fcab6f329c58"
+DEBUG: manager.getUpdatedPackageFiles() reuseExistingBranch=true (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Branch dep sbt in project/build.properties is already updated (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No content changed (repository=mojito317/clouseau, packageFile=project/build.properties, branch=renovate-sbt-1-x)
+       "depName": "sbt"
+DEBUG: Branch dep sbt in mise.toml is already updated (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No content changed (repository=mojito317/clouseau, packageFile=mise.toml, branch=renovate-sbt-1-x)
+       "depName": "sbt"
+DEBUG: No package files need updating (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No updated lock files in branch (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No changes to package files, skipping post-upgrade tasks (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: No files to commit (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Setting current branch to main (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: latest commit (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "branchName": "main",
+       "latestCommitDate": "2026-08-27T09:19:23.000Z",
+       "sha": "848725cfc7fe3ff85e973d53f716fcab6f329c58"
+DEBUG: Checking if we can automerge branch (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: mergeStatus=no automerge (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Ensuring PR (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: There are 0 errors and 0 warnings (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: getBranchPr(renovate-sbt-1-x) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: findPr(renovate-sbt-1-x, undefined, open) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: findPr(renovate-sbt-1-x, undefined, closed) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Found PR #171 (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Creating PR (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "prTitle": "Update dependency sbt to v1.13.0"
+DEBUG: prHourlyLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "limits": [{"depName": "sbt", "prHourlyLimit": 0}]
+DEBUG: prHourlyLimit of this branch is unlimited, because at least one of the upgrade has it's prHourlyLimit set to "No limit" ie. 0 or null (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: prConcurrentLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "limits": [{"depName": "sbt", "prConcurrentLimit": 10}]
+DEBUG: Calculated lowest prConcurrentLimit among the upgrades present in this branch is 10. (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Creating PR (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "title": "Update dependency sbt to v1.13.0",
+       "head": "mojito317:renovate-sbt-1-x",
+       "base": "main",
+       "draft": false
+DEBUG: PR created (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "pr": 175,
+       "draft": false
+DEBUG: Adding labels 'dependencies' to #175 (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+ INFO: PR created (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+       "pr": 175,
+       "prTitle": "Update dependency sbt to v1.13.0",
+       "labels": []
+DEBUG: addParticipants(pr=175) (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: setPrCache() (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: Created Pull Request #175 (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: PR is not configured for automerge (repository=mojito317/clouseau, branch=renovate-sbt-1-x)
+DEBUG: syncBranchState() (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: syncBranchState(): Branch cache not found, creating minimal branchState (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: getBranchPr(renovate-mise-tools) (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: findPr(renovate-mise-tools, undefined, open) (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: branchExists=true (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: dependencyDashboardCheck=undefined (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: recreateClosed is true. No need to check for closed PR. (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: Open PR Count: 1, Existing Branch Count: 4, Hourly PR Count: 2, Hourly Commit Count: 1 (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: commitHourlyLimit of the upgrades present in this branch (repository=mojito317/clouseau, branch=renovate-mise-tools)
+       "limits": [
+         {"depName": "elixir", "commitHourlyLimit": 0},
+         {"depName": "github-cli", "commitHourlyLimit": 0},
+         {"depName": "jq", "commitHourlyLimit": 0},
+         {"depName": "openjdk", "commitHourlyLimit": 0},
+         {"depName": "python", "commitHourlyLimit": 0},
+         {"depName": "typst", "commitHourlyLimit": 0}
+       ]
+DEBUG: commitHourlyLimit of this branch is unlimited, because at least one of the upgrade has it's commitHourlyLimit set to "No limit" ie. 0 or null (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: Checking if PR has been edited (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: branch.isModified() = true (repository=mojito317/clouseau, baseBranch=main, branch=renovate-mise-tools)
+       "branchName": "renovate-mise-tools",
+       "unrecognizedAuthors": ["29139614+renovate[bot]@users.noreply.github.com"]
+DEBUG: findPr(renovate-mise-tools, undefined, !open) (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: Found PR #146 (repository=mojito317/clouseau, branch=renovate-mise-tools)
+DEBUG: Found old PR but the SHA is different (repository=mojito317/clouseau, branch=renovate-mise-tools)
+       "oldPrNumber": 146,
+       "oldPrSha": "8057b05f55d9443468689d15f9c2d1b293a2e4ec",
+       "branchSha": "57aaaa256735416e47515e73fcf76f1be8292672"
+DEBUG: getBranchPr(renovate-scalafmt-version) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-scalafmt-version, undefined, open) (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-editorconfig-checker-version) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-editorconfig-checker-version, undefined, open) (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-sbt-1-x) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-sbt-1-x, undefined, open) (repository=mojito317/clouseau)
+DEBUG: Found PR #175 (repository=mojito317/clouseau)
+DEBUG: getBranchPr(renovate-mise-tools) (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-mise-tools, undefined, open) (repository=mojito317/clouseau)
+DEBUG: http cache: saving https://api.github.com/repos/mojito317/clouseau/contents/renovate.json (etag="692f00fc0e4ce082cfd089703e8ee7f9d3ec6710", lastModified=Thu, 27 Aug 2026 09:19:23 GMT) (repository=mojito317/clouseau)
+DEBUG: http cache: Using cached response: https://api.github.com/repos/mojito317/clouseau/contents/renovate.json from 2026-08-27T09:21:50.736Z (repository=mojito317/clouseau)
+DEBUG: checkConfigMigrationBranch() (repository=mojito317/clouseau)
+DEBUG: Config migration needed but config migration is disabled and checkbox not checked or not present. (repository=mojito317/clouseau)
+DEBUG: ensureDependencyDashboard() (repository=mojito317/clouseau)
+DEBUG: Ensuring Dependency Dashboard (repository=mojito317/clouseau)
+DEBUG: Checking packageFiles for deprecated or replacement packages (repository=mojito317/clouseau)
+DEBUG: http cache: Using cached response: https://api.github.com/repos/mojito317/clouseau/issues/27 from 2026-08-27T09:21:31.319Z (repository=mojito317/clouseau)
+DEBUG: Issues cache: Updating issue 27 in cache (repository=mojito317/clouseau)
+DEBUG: http cache: Using cached response: https://api.github.com/repos/mojito317/clouseau/issues/27 from 2026-08-27T09:21:51.380Z (repository=mojito317/clouseau)
+DEBUG: Issues cache: Updating issue 27 in cache (repository=mojito317/clouseau)
+DEBUG: ensureIssue(Dependency Dashboard) (repository=mojito317/clouseau)
+DEBUG: http cache: Using cached response: https://api.github.com/repos/mojito317/clouseau/issues/27 from 2026-08-27T09:21:51.611Z (repository=mojito317/clouseau)
+DEBUG: Issues cache: Updating issue 27 in cache (repository=mojito317/clouseau)
+DEBUG: Patching issue (repository=mojito317/clouseau)
+DEBUG: Issues cache: Updating issue 27 in cache (repository=mojito317/clouseau)
+DEBUG: Issue updated (repository=mojito317/clouseau)
+DEBUG: checkReconfigureBranch() (repository=mojito317/clouseau)
+DEBUG: No reconfigure branch found (repository=mojito317/clouseau)
+       "reconfigureBranch": "renovate-reconfigure"
+DEBUG: Removing any stale branches (repository=mojito317/clouseau)
+DEBUG: config.repoIsOnboarded=true (repository=mojito317/clouseau)
+DEBUG: Branch lists (repository=mojito317/clouseau)
+       "branchList": [
+         "renovate-editorconfig-checker-version",
+         "renovate-mise-tools",
+         "renovate-sbt-1-x",
+         "renovate-scalafmt-version"
+       ],
+       "renovateBranches": [
+         "renovate-actions-checkout-7-x",
+         "renovate-editorconfig-checker-version",
+         "renovate-mise-tools",
+         "renovate-sbt-1-x",
+         "renovate-sbt-dependencies",
+         "renovate-scalafmt-version"
+       ]
+DEBUG: remainingBranches=renovate-actions-checkout-7-x,renovate-sbt-dependencies (repository=mojito317/clouseau)
+DEBUG: findPr(renovate-actions-checkout-7-x, undefined, open) (repository=mojito317/clouseau)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau)
+DEBUG: branch.isModified() = true (repository=mojito317/clouseau, baseBranch=main)
+       "branchName": "renovate-actions-checkout-7-x",
+       "unrecognizedAuthors": ["29139614+renovate[bot]@users.noreply.github.com", "ildiko.eigel@ibm.com"]
+DEBUG: setCachedModifiedResult(): Branch cache not present (repository=mojito317/clouseau)
+DEBUG: Orphan Branch is modified - skipping branch deletion (repository=mojito317/clouseau, branch=renovate-actions-checkout-7-x)
+DEBUG: findPr(renovate-sbt-dependencies, undefined, open) (repository=mojito317/clouseau)
+DEBUG: branch.isModified(): using git to calculate against baseBranch "main" (repository=mojito317/clouseau)
+DEBUG: branch.isModified() = true (repository=mojito317/clouseau, baseBranch=main)
+       "branchName": "renovate-sbt-dependencies",
+       "unrecognizedAuthors": ["29139614+renovate[bot]@users.noreply.github.com", "ildiko.eigel@ibm.com"]
+DEBUG: setCachedModifiedResult(): Branch cache not present (repository=mojito317/clouseau)
+DEBUG: Orphan Branch is modified - skipping branch deletion (repository=mojito317/clouseau, branch=renovate-sbt-dependencies)
+DEBUG: PackageFiles.clear() - Package files deleted (repository=mojito317/clouseau)
+DEBUG: Branch summary (repository=mojito317/clouseau)
+       "cacheModified": undefined,
+       "baseBranches": [{"branchName": "main", "sha": "848725cfc7fe3ff85e973d53f716fcab6f329c58"}],
+       "branches": [
+         {
+           "automerge": false,
+           "baseBranch": "main",
+           "baseBranchSha": "848725cfc7fe3ff85e973d53f716fcab6f329c58",
+           "branchName": "renovate-scalafmt-version",
+           "branchSha": "e8671ee260e349363f915b24c4ab76de50434180",
+           "isModified": true,
+           "isPristine": false
+         },
+         {
+           "automerge": false,
+           "baseBranch": "main",
+           "baseBranchSha": "848725cfc7fe3ff85e973d53f716fcab6f329c58",
+           "branchName": "renovate-editorconfig-checker-version",
+           "branchSha": "11b7f09fc2c6f01b83ff3a9cb0338633644f5be3",
+           "isModified": true,
+           "isPristine": false
+         },
+         {
+           "automerge": false,
+           "baseBranch": "main",
+           "baseBranchSha": "848725cfc7fe3ff85e973d53f716fcab6f329c58",
+           "branchName": "renovate-sbt-1-x",
+           "branchSha": "3584286e66547d47d87e9ebb3dee10f412f8f768",
+           "isModified": false,
+           "isPristine": false
+         },
+         {
+           "automerge": false,
+           "baseBranch": "main",
+           "baseBranchSha": "848725cfc7fe3ff85e973d53f716fcab6f329c58",
+           "branchName": "renovate-mise-tools",
+           "branchSha": "57aaaa256735416e47515e73fcf76f1be8292672",
+           "isModified": true,
+           "isPristine": false
+         }
+       ],
+       "defaultBranch": "main",
+       "inactiveBranches": []
+DEBUG: branches info extended (repository=mojito317/clouseau)
+       "branchesInformation": [
+         {
+           "branchName": "renovate-scalafmt-version",
+           "prNo": null,
+           "prTitle": "Update dependency scalameta/scalafmt to v3.11.5",
+           "result": "pr-edited",
+           "upgrades": [
+             {
+               "datasource": "github-releases",
+               "depName": "scalameta/scalafmt",
+               "displayPending": "",
+               "fixedVersion": "3.11.1",
+               "currentVersion": "3.11.1",
+               "currentValue": "3.11.1",
+               "newValue": "3.11.5",
+               "newVersion": "3.11.5",
+               "packageFile": ".scalafmt.conf",
+               "updateType": "patch",
+               "packageName": "scalameta/scalafmt"
+             },
+             {
+               "datasource": "github-releases",
+               "depName": "scalameta/scalafmt",
+               "displayPending": "",
+               "fixedVersion": "3.11.1",
+               "currentVersion": "3.11.1",
+               "currentValue": "3.11.1",
+               "newValue": "3.11.5",
+               "newVersion": "3.11.5",
+               "packageFile": "mise.toml",
+               "updateType": "patch",
+               "packageName": "scalameta/scalafmt"
+             }
+           ]
+         },
+         {
+           "branchName": "renovate-editorconfig-checker-version",
+           "prNo": null,
+           "prTitle": "Update dependency editorconfig-checker/editorconfig-checker to v3.11.2",
+           "result": "pr-edited",
+           "upgrades": [
+             {
+               "datasource": "github-releases",
+               "depName": "editorconfig-checker/editorconfig-checker",
+               "displayPending": "",
+               "fixedVersion": "3.7.0",
+               "currentVersion": "3.7.0",
+               "currentValue": "3.7.0",
+               "newValue": "3.11.2",
+               "newVersion": "3.11.2",
+               "packageFile": ".editorconfig-checker.json",
+               "updateType": "minor",
+               "packageName": "editorconfig-checker/editorconfig-checker"
+             },
+             {
+               "datasource": "github-releases",
+               "depName": "editorconfig-checker/editorconfig-checker",
+               "displayPending": "",
+               "fixedVersion": "3.7.0",
+               "currentVersion": "3.7.0",
+               "currentValue": "3.7.0",
+               "newValue": "3.11.2",
+               "newVersion": "3.11.2",
+               "packageFile": "mise.toml",
+               "updateType": "minor",
+               "packageName": "editorconfig-checker/editorconfig-checker"
+             }
+           ]
+         },
+         {
+           "branchName": "renovate-sbt-1-x",
+           "prNo": 175,
+           "prTitle": "Update dependency sbt to v1.13.0",
+           "result": "done",
+           "upgrades": [
+             {
+               "datasource": "custom.conda-forge-sbt",
+               "depName": "sbt",
+               "displayPending": "",
+               "fixedVersion": "1.12.9",
+               "currentVersion": "1.12.9",
+               "currentValue": "1.12.9",
+               "newValue": "1.13.0",
+               "newVersion": "1.13.0",
+               "packageFile": "project/build.properties",
+               "updateType": "minor",
+               "packageName": "sbt"
+             },
+             {
+               "datasource": "custom.conda-forge-sbt",
+               "depName": "sbt",
+               "displayPending": "",
+               "fixedVersion": "1.12.9",
+               "currentVersion": "1.12.9",
+               "currentValue": "1.12.9",
+               "newValue": "1.13.0",
+               "newVersion": "1.13.0",
+               "packageFile": "mise.toml",
+               "updateType": "minor",
+               "packageName": "sbt"
+             }
+           ]
+         },
+         {
+           "branchName": "renovate-mise-tools",
+           "prNo": null,
+           "prTitle": "Update mise tools",
+           "result": "pr-edited",
+           "upgrades": [
+             {
+               "datasource": "hexpm-bob",
+               "depName": "elixir",
+               "displayPending": "",
+               "fixedVersion": "1.19.5-otp-27",
+               "currentVersion": "1.19.5",
+               "currentValue": "1.19.5-otp-27",
+               "newValue": "1.20.3-otp-27",
+               "newVersion": "1.20.3-otp-27",
+               "packageFile": "mise.toml",
+               "updateType": "minor",
+               "packageName": "elixir"
+             },
+             {
+               "datasource": "github-releases",
+               "depName": "github-cli",
+               "displayPending": "",
+               "fixedVersion": "2.92.0",
+               "currentVersion": "2.92.0",
+               "currentValue": "2.92.0",
+               "newValue": "2.98.0",
+               "newVersion": "2.98.0",
+               "packageFile": "mise.toml",
+               "updateType": "minor",
+               "packageName": "cli/cli"
+             },
+             {
+               "datasource": "github-releases",
+               "depName": "jq",
+               "displayPending": "",
+               "fixedVersion": "1.8.1",
+               "currentVersion": "1.8.1",
+               "currentValue": "1.8.1",
+               "newValue": "1.8.2",
+               "newVersion": "1.8.2",
+               "packageFile": "mise.toml",
+               "updateType": "patch",
+               "packageName": "jqlang/jq"
+             },
+             {
+               "datasource": "custom.mise-java-openjdk",
+               "depName": "openjdk",
+               "displayPending": "",
+               "fixedVersion": "21.0.1",
+               "currentVersion": "21.0.1",
+               "currentValue": "21.0.1",
+               "newValue": "21.0.2",
+               "newVersion": "21.0.2",
+               "packageFile": "mise.toml",
+               "updateType": "patch",
+               "packageName": "openjdk"
+             },
+             {
+               "datasource": "github-tags",
+               "depName": "python",
+               "displayPending": "",
+               "fixedVersion": "3.14.5",
+               "currentVersion": "3.14.5",
+               "currentValue": "3.14.5",
+               "newValue": "3.14.7",
+               "newVersion": "3.14.7",
+               "packageFile": "mise.toml",
+               "updateType": "patch",
+               "packageName": "python/cpython"
+             },
+             {
+               "datasource": "github-releases",
+               "depName": "typst",
+               "displayPending": "",
+               "fixedVersion": "0.14.2",
+               "currentVersion": "v0.14.2",
+               "currentValue": "0.14.2",
+               "newValue": "0.15.1",
+               "newVersion": "v0.15.1",
+               "packageFile": "mise.toml",
+               "updateType": "minor",
+               "packageName": "typst/typst"
+             }
+           ]
+         }
+       ]
+DEBUG: Updates summary (repository=mojito317/clouseau)
+       "updateSummary": [
+         {
+           "baseBranch": "main",
+           "total": 12,
+           "vulnerabilityAlert": 0,
+           "updates": {"patch": 5, "minor": 7},
+           "managers": {
+             "regex": {
+               "total": 7,
+               "vulnerabilityAlert": 0,
+               "updates": {"patch": 3, "minor": 4}
+             },
+             "mise": {
+               "total": 5,
+               "vulnerabilityAlert": 0,
+               "updates": {"minor": 3, "patch": 2}
+             }
+           }
+         }
+       ]
+DEBUG: Renovate repository PR statistics (repository=mojito317/clouseau)
+       "stats": {"total": 62, "open": 2, "closed": 60, "merged": 0}
+DEBUG: Repository result: done, status: onboarded, enabled: true, onboarded: true (repository=mojito317/clouseau)
+DEBUG: Repository timing splits (milliseconds) (repository=mojito317/clouseau)
+       "splits": {
+         "init": 3241,
+         "onboarding": 0,
+         "extract": 1128,
+         "lookup": 13990,
+         "update": 5050
+       },
+       "total": 25720
+DEBUG: Package cache statistics (repository=mojito317/clouseau)
+       "get": {"count": 28, "avgMs": 3, "medianMs": 1, "maxMs": 10, "totalMs": 82},
+       "set": {"count": 28, "avgMs": 9, "medianMs": 7, "maxMs": 30, "totalMs": 258}
+DEBUG: Datasource cache statistics (repository=mojito317/clouseau)
+       "hexpm-bob": {"https://builds.hex.pm": {"hit": 0, "miss": 1, "set": 1, "skip": 0}},
+       "github-releases": {"https://github.com": {"hit": 0, "miss": 0, "set": 0, "skip": 5}},
+       "github-tags": {"https://github.com": {"hit": 0, "miss": 0, "set": 0, "skip": 4}}
+DEBUG: HTTP statistics (repository=mojito317/clouseau)
+       "hosts": {
+         "api.anaconda.org": {
+           "count": 1,
+           "reqAvgMs": 1087,
+           "reqMedianMs": 1087,
+           "reqMaxMs": 1087,
+           "queueAvgMs": 0,
+           "queueMedianMs": 0,
+           "queueMaxMs": 0
+         },
+         "api.github.com": {
+           "count": 39,
+           "reqAvgMs": 840,
+           "reqMedianMs": 613,
+           "reqMaxMs": 6970,
+           "queueAvgMs": 0,
+           "queueMedianMs": 0,
+           "queueMaxMs": 1
+         },
+         "builds.hex.pm": {
+           "count": 1,
+           "reqAvgMs": 180,
+           "reqMedianMs": 180,
+           "reqMaxMs": 180,
+           "queueAvgMs": 0,
+           "queueMedianMs": 0,
+           "queueMaxMs": 0
+         },
+         "mise-java.jdx.dev": {
+           "count": 1,
+           "reqAvgMs": 588,
+           "reqMedianMs": 588,
+           "reqMaxMs": 588,
+           "queueAvgMs": 2,
+           "queueMedianMs": 2,
+           "queueMaxMs": 2
+         }
+       },
+       "requests": 42
+DEBUG: HTTP cache statistics (repository=mojito317/clouseau)
+       "https://api.github.com": {
+         "/repos/mojito317/clouseau/contents/renovate.json": {"hit": 1, "miss": 1},
+         "/repos/mojito317/clouseau/issues/27": {"hit": 3, "miss": 1},
+         "/repos/mojito317/clouseau/pulls": {"hit": 0, "miss": 1},
+         "/repos/mojito317/clouseau/rules/branches/main": {"hit": 0, "miss": 1}
+       }
+DEBUG: Lookup statistics (repository=mojito317/clouseau)
+       "github-tags": {"count": 5, "avgMs": 3945, "medianMs": 1964, "maxMs": 13829, "totalMs": 19726},
+       "hexpm-bob": {"count": 1, "avgMs": 264, "medianMs": 264, "maxMs": 264, "totalMs": 264},
+       "github-releases": {"count": 7, "avgMs": 1100, "medianMs": 1202, "maxMs": 2377, "totalMs": 7700},
+       "custom.mise-java-openjdk": {"count": 1, "avgMs": 1192, "medianMs": 1192, "maxMs": 1192, "totalMs": 1192},
+       "custom.conda-forge-sbt": {"count": 2, "avgMs": 1123, "medianMs": 1123, "maxMs": 1123, "totalMs": 2245}
+DEBUG: getReleases statistics summary (repository=mojito317/clouseau)
+       "stats": {
+         "count": 12,
+         "avgMs": 2331,
+         "medianMs": 1212.352117,
+         "maxMs": 13790.273369,
+         "totalMs": 27970.060488000003
+       },
+       "datasources": {
+         "hexpm-bob": {
+           "stats": {
+             "count": 1,
+             "avgMs": 205,
+             "medianMs": 204.979539,
+             "maxMs": 204.979539,
+             "totalMs": 204.979539
+           },
+           "registryUrls": {
+             "https://builds.hex.pm": {
+               "stats": {
+                 "count": 1,
+                 "avgMs": 205,
+                 "medianMs": 204.979539,
+                 "maxMs": 204.979539,
+                 "totalMs": 204.979539
+               }
+             }
+           }
+         },
+         "github-releases": {
+           "stats": {
+             "count": 5,
+             "avgMs": 1163,
+             "medianMs": 1195.501587,
+             "maxMs": 2360.933287,
+             "totalMs": 5815.468309
+           },
+           "registryUrls": {
+             "https://github.com": {
+               "stats": {
+                 "count": 5,
+                 "avgMs": 1163,
+                 "medianMs": 1195.501587,
+                 "maxMs": 2360.933287,
+                 "totalMs": 5815.468309
+               }
+             }
+           }
+         },
+         "custom": {
+           "stats": {
+             "count": 2,
+             "avgMs": 1141,
+             "medianMs": 1185.46786,
+             "maxMs": 1185.46786,
+             "totalMs": 2281.2679319999997
+           },
+           "registryUrls": {
+             "": {
+               "stats": {
+                 "count": 2,
+                 "avgMs": 1141,
+                 "medianMs": 1185.46786,
+                 "maxMs": 1185.46786,
+                 "totalMs": 2281.2679319999997
+               }
+             }
+           }
+         },
+         "github-tags": {
+           "stats": {
+             "count": 4,
+             "avgMs": 4917,
+             "medianMs": 2710.2769630000003,
+             "maxMs": 13790.273369,
+             "totalMs": 19668.344708
+           },
+           "registryUrls": {
+             "https://github.com": {
+               "stats": {
+                 "count": 4,
+                 "avgMs": 4917,
+                 "medianMs": 2710.2769630000003,
+                 "maxMs": 13790.273369,
+                 "totalMs": 19668.344708
+               }
+             }
+           }
+         }
+       }
+DEBUG: Cache fallback URLs (repository=mojito317/clouseau)
+       "count": 0,
+       "hits": {}
+DEBUG: Git operations statistics (repository=mojito317/clouseau)
+       "other": {
+         "count": 28,
+         "avgMs": 31,
+         "medianMs": 3.571712,
+         "maxMs": 607.885056,
+         "totalMs": 864
+       },
+       "clone": {
+         "count": 1,
+         "avgMs": 1662,
+         "medianMs": 1661.860352,
+         "maxMs": 1661.860352,
+         "totalMs": 1662
+       },
+       "checkout": {
+         "count": 3,
+         "avgMs": 15,
+         "medianMs": 17.669888,
+         "maxMs": 23.494144,
+         "totalMs": 46
+       },
+       "reset": {"count": 4, "avgMs": 7, "medianMs": 5.681408, "maxMs": 11.30496, "totalMs": 27},
+       "merge": {
+         "count": 2,
+         "avgMs": 292,
+         "medianMs": 515.52512,
+         "maxMs": 515.52512,
+         "totalMs": 584
+       }
+ INFO: Repository finished (repository=mojito317/clouseau)
+       "cloned": true,
+       "durationMs": 25720,
+       "result": "done",
+       "status": "onboarded",
+       "enabled": true,
+       "onboarded": true
+DEBUG: Checking file package cache for expired items
+DEBUG: Deleted 0 of 27 file cached entries in 7ms
