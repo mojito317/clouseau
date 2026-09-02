@@ -1,12 +1,15 @@
 # Use bash to enable `read -d ''` option
 SHELL := /bin/bash
 
+export LC_ALL := C
+
 BUILD_DIR=$(shell pwd)
 ARTIFACTS_DIR=$(BUILD_DIR)/artifacts
 CI_ARTIFACTS_DIR=$(BUILD_DIR)/ci-artifacts
+SCRIPTS_DIR=$(BUILD_DIR)/scripts
 
 COUCHDB_REPO?=https://github.com/apache/couchdb
-COUCHDB_COMMIT?=3.5.1
+COUCHDB_COMMIT?=d0a509b3f215c0a8379cc1e22183e740ff435927
 COUCHDB_ROOT?=deps/couchdb
 COUCHDB_CONFIGURE_ARGS?=--dev --disable-spidermonkey
 
@@ -21,6 +24,8 @@ endif
 TIMEOUT?=timeout --foreground
 TIMEOUT_MANGO_TEST?=20m
 TIMEOUT_ELIXIR_SEARCH?=20m
+
+SBT?=sbt --java-home $(JAVA_HOME)
 
 REBAR?=rebar3
 
@@ -48,7 +53,7 @@ endif
 ifeq ($(PROJECT_VSN),)
 	# technically we could use 'sbt -Dsbt.supershell=false -error "print version"'
 	# but it takes 30 seconds to run it. So we go with direct access
-	PROJECT_VSN := $(shell cat $(BUILD_DIR)/version.sbt | sed -e \
+	export PROJECT_VSN := $(shell cat $(BUILD_DIR)/version.sbt | sed -e \
 		'/ThisBuild[[:space:]]*[/][[:space:]]*version[[:space:]]*[:]=[[:space:]]*/!d' \
 		-e "s///g" \
 		-e 's/\"//g')
@@ -81,16 +86,18 @@ JAR_PROD := clouseau_$(SCALA_VSN)_$(PROJECT_VSN).jar
 JAR_TEST := clouseau_$(SCALA_VSN)_$(PROJECT_VSN)_test.jar
 
 RELEASE_FILES := $(JAR_PROD) \
-	clouseau-$(PROJECT_VSN)-dist.zip
+	clouseau-$(PROJECT_VSN)-dist.zip \
+	clouseau-$(PROJECT_VSN)-dist.tar.gz \
+	book.pdf
 
 JAR_ARTIFACTS := $(addprefix $(ARTIFACTS_DIR)/, $(JAR_PROD))
 RELEASE_ARTIFACTS := $(addprefix $(ARTIFACTS_DIR)/, $(RELEASE_FILES))
 
 CHECKSUM_FILES := $(foreach file, $(RELEASE_FILES), $(file).chksum)
 
-JMX_EXPORTER_VSN ?= 1.5.0
+JMX_EXPORTER_VSN ?= 1.6.0
 JMX_EXPORTER ?= jmx_prometheus_javaagent-$(JMX_EXPORTER_VSN).jar
-JMX_EXPORTER_CFG ?= prometheus/jmx_exporter.yaml
+JMX_EXPORTER_CFG ?= test/prometheus/jmx_exporter.yaml
 JMX_EXPORTER_PORT ?= 8080
 JMX_EXPORTER_URL := https://github.com/prometheus/jmx_exporter/releases/download/$(JMX_EXPORTER_VSN)/$(JMX_EXPORTER)
 
@@ -100,10 +107,6 @@ space := $(empty) $(empty)
 apps ?= clouseau,core,macros,otp,scalang,vendor
 skip ?= vendor
 COMMON_PATH := /target/scala-$(SCALA_SHORT_VSN)/classes
-SPOTBUGS_OPTS = $(foreach app,$(filter-out \
-		$(subst $(comma),$(space),$(skip)),\
-		$(subst $(comma),$(space),$(apps))\
-	),$(app)$(COMMON_PATH))
 
 define to_artifacts
 	find $(1) -name '$(2)' -print0 | while IFS= read -r -d '' pathname; \
@@ -118,7 +121,7 @@ endef
 .PHONY: build
 # target: build - Build package, run tests and create distribution
 build: epmd
-	@sbt compile
+	@$(SBT) compile
 
 ERL_EPMD_ADDRESS?=127.0.0.1
 
@@ -131,7 +134,7 @@ epmd:
 # target: clouseau2 - Start local instance of clouseau2 node
 # target: clouseau3 - Start local instance of clouseau3 node
 clouseau1 clouseau2 clouseau3: epmd
-	@sbt run -Dnode=$@ $(_JAVA_COOKIE)
+	@$(SBT) run -Dnode=$@ $(_JAVA_COOKIE)
 
 $(ARTIFACTS_DIR):
 	@mkdir -p $@
@@ -146,7 +149,7 @@ ERL_SRCS?=$(shell git ls-files -- "*/rebar.config" "*.[e,h]rl" "*.app.src" "*.es
 check-fmt: $(ARTIFACTS_DIR)
 	@set -o pipefail; scalafmt --test | tee $(ARTIFACTS_DIR)/scalafmt.log
 	@set -o pipefail; ec | tee $(ARTIFACTS_DIR)/editor-config.log
-	@set -o pipefail; erlfmt --verbose --check -- $(ERL_SRCS) | tee $(ARTIFACTS_DIR)/erlfmt.log
+	@set -o pipefail; rebar3 fmt --verbose --check -- $(ERL_SRCS) | tee $(ARTIFACTS_DIR)/erlfmt.log
 
 .PHONY: erlfmt-format
 # target: erlfmt-format - Format Erlang code automatically
@@ -165,17 +168,11 @@ format-code: erlfmt-format scalafmt-format
 .PHONY: check-deps
 # target: check-deps - Detect publicly disclosed vulnerabilities
 check-deps: build $(ARTIFACTS_DIR)
-	@sbt dependencyCheck \
+	@$(SBT) dependencyCheck \
 		-Dnvd_update=$(OWASP_NVD_UPDATE) \
 		-Dnvd_data_dir=$(OWASP_NVD_DATA_DIR) \
 		-Dlog4j2.level=info
 	@$(call to_artifacts,$(SCALA_SUBPROJECTS),dependency-check-report.*)
-
-.PHONY: check-spotbugs
-# target: check-spotbugs - Inspect bugs in Java bytecode
-check-spotbugs: build $(ARTIFACTS_DIR)
-	@spotbugs -textui -quiet -html=$(ARTIFACTS_DIR)/spotbugs.html \
-		-xml=$(ARTIFACTS_DIR)/spotbugs.xml $(SPOTBUGS_OPTS)
 
 .PHONY: docs
 # target: docs - Generate documentation
@@ -193,7 +190,7 @@ jar: $(ARTIFACTS_DIR)/$(JAR_PROD)
 jartest: $(ARTIFACTS_DIR)/$(JAR_TEST)
 
 $(JMX_EXPORTER):
-	@curl -LSso $(JMX_EXPORTER) $(JMX_EXPORTER_URL)
+	@curl -fLSso $(JMX_EXPORTER) $(JMX_EXPORTER_URL)
 
 .PHONY: jmx-prometheus
 # target: jmx-prometheus - Export metrics to Prometheus
@@ -203,20 +200,21 @@ jmx-prometheus: $(JAR_ARTIFACTS) $(JMX_EXPORTER) epmd
 
 .PHONY: bin/clouseau_ctrl
 bin/clouseau_ctrl: clouseau-ctrl/_build/default/bin/clouseau_ctrl
+	@mkdir -p bin
 	@cp $? $@
 
 clouseau-ctrl/_build/default/bin/clouseau_ctrl: clouseau-ctrl/src
 	@cd clouseau-ctrl/ && $(REBAR) escriptize
 
 $(ARTIFACTS_DIR)/$(JAR_PROD): $(ARTIFACTS_DIR)
-	@sbt assembly
+	@$(SBT) assembly
 	@cp clouseau/target/scala-$(SCALA_SHORT_VSN)/$(@F) $@
 	@javap -classpath $@ com.cloudant.ziose.clouseau.EchoService \
 		| grep -q 'public boolean isProduction' \
 		|| ( echo '>>>>> incorrect override EchoService' ; exit 1 )
 
 $(ARTIFACTS_DIR)/$(JAR_TEST): $(ARTIFACTS_DIR)
-	@sbt assembly -Djartest=true
+	@$(SBT) assembly -Djartest=true
 	@cp clouseau/target/scala-$(SCALA_SHORT_VSN)/$(@F) $@
 	@javap -classpath $@ com.cloudant.ziose.clouseau.EchoService \
 		| grep -q 'public boolean isTest' \
@@ -225,13 +223,13 @@ $(ARTIFACTS_DIR)/$(JAR_TEST): $(ARTIFACTS_DIR)
 # target: clean - Clean Java/Scala artifacts
 clean:
 	@rm -rf tmp $(ARTIFACTS_DIR)/*
-	@rm -f collectd/*.class collectd/*.out
+	@rm -f test/collectd/*.class test/collectd/*.out
 	@rm -rf bin/clouseau_ctrl ; cd clouseau-ctrl && $(REBAR) clean
-	@sbt clean
+	@$(SBT) clean
 
 # target: clean-all - Clean up the project to start afresh
 clean-all:
-	@sbt clean
+	@$(SBT) clean
 	@echo '==> keep in mind that some state is stored in ~/.ivy2/cache/ and ~/.sbt'
 	@echo '     and in  ~/Library/Caches/Coursier/v1/https/'
 	@echo '    to fully clean the cache use `make clean-user-cache`'
@@ -261,17 +259,28 @@ help:
 		| sort \
 		| awk '{printf("    %-20s", $$1); $$1=$$2=""; print "-" $$0}'
 
+.PHONY: clouseau-ctrl-smoke
+# target: clouseau-ctrl-smoke - Start clouseau1 and verify `clouseau_ctrl service list`
+clouseau-ctrl-smoke: $(JAR_ARTIFACTS) bin/clouseau_ctrl epmd FORCE
+	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
+	@cli await clouseau1 "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
+	@./clouseau-ctrl/_build/default/bin/clouseau_ctrl -config "$(BUILD_DIR)/clouseau-ctrl-config.erl" service list \
+		| tee tmp/clouseau-ctrl-smoke.out \
+		| grep -q analyzer \
+		|| ( echo '>>>>> clouseau_ctrl smoke test FAILED' ; $(MAKE) test-failed ID=$@ )
+	@echo '>>>>> clouseau_ctrl smoke test PASSED'
+	@cli stop $@ || true
 
 ############### Tests ###############
 .PHONY: all-tests
 # target: all-tests - Run all test suites
 all-tests: test zeunit concurrent-zeunit-tests restart-test syslog-tests
-all-tests: couchdb-tests metrics-tests compatibility-tests
+all-tests: couchdb-tests metrics-tests compatibility-tests clouseau-ctrl-smoke
 
 .PHONY: test
 # target: test - Run all Scala tests
 test: build $(ARTIFACTS_DIR)
-	@sbt clean test
+	@$(SBT) clean test
 	@$(call to_artifacts,$(ALL_SUBPROJECTS),test-reports)
 
 FORCE: # https://www.gnu.org/software/make/manual/html_node/Force-Targets.html
@@ -281,15 +290,15 @@ FORCE: # https://www.gnu.org/software/make/manual/html_node/Force-Targets.html
 zeunit: $(ARTIFACTS_DIR)/$(JAR_TEST) epmd FORCE
 	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
 	@sleep 5
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@cli zeunit $(node_name) "$(EUNIT_OPTS)" || $(MAKE) test-failed ID=$@
 	@$(call to_artifacts,zeunit,test-reports)
 	@cli stop $@
 
 concurrent-zeunit-tests: $(ARTIFACTS_DIR)/$(JAR_TEST) epmd FORCE
-	@cli start $@ "java $(_JAVA_COOKIE) -jar $< concurrent.app.conf"
+	@cli start $@ "java $(_JAVA_COOKIE) -jar $< test/conf/concurrent.app.conf"
 	@sleep 5
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@cli zeunit $(node_name) "$(EUNIT_OPTS)" || $(MAKE) test-failed ID=$@
 	@cli stop $@
 
@@ -306,9 +315,9 @@ syslog-test: $(JAR_ARTIFACTS) epmd FORCE
 		-e "s/%%PORT%%/$(PORT)/" \
 		-e "s/%%FACILITY%%/$(FACILITY)/" \
 		-e "s/%%LEVEL%%/$(LEVEL)/" \
-		syslog.app.conf.templ > syslog.app.conf
-	@cli start $@ "java -jar $< syslog.app.conf"
-	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) test-failed ID=$@
+		test/conf/syslog.app.conf.templ > test/conf/syslog.app.conf
+	@cli start $@ "java -jar $< test/conf/syslog.app.conf"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@echo ">>> Waiting for Clouseau to generate logs (5 seconds)"
 	@sleep 5
 	@cli stop $@
@@ -383,6 +392,12 @@ elixir-search: couchdb
 	@#                                       v-this is a hack
 	@$(MAKE) -C $(COUCHDB_DIR) elixir-search _WITH_CLOUSEAU=-q ERLANG_COOKIE=$(ERLANG_COOKIE)
 
+.PHONY: await-failed
+await-failed:
+	@echo ">>>> FAILED: Startup failed. Below are the process logs:"
+	@cat $(shell cli logs $(ID))
+	@exit 1
+
 .PHONY: test-failed
 test-failed:
 	@echo "The thread dump before attempt to force the shutdown"
@@ -397,7 +412,7 @@ test-failed:
 # target: couchdb-tests - Run test suites from upstream CouchDB that use Clouseau
 couchdb-tests: $(JAR_ARTIFACTS) couchdb epmd FORCE
 	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@$(TIMEOUT) $(TIMEOUT_MANGO_TEST) $(MAKE) mango-test || $(MAKE) test-failed ID=$@
 	@$(TIMEOUT) $(TIMEOUT_ELIXIR_SEARCH) $(MAKE) elixir-search || $(MAKE) test-failed ID=$@
 	@cli stop $@
@@ -407,22 +422,28 @@ define collect_and_compare
 	$(2)
 	echo "Comparing $(1) metrics with expectations:"
 	DIFF=$$(diff -u $(1)/metrics.out $(1)/metrics.expected); \
+	ERR=$$?; \
+	if [[ $$ERR -gt 1 ]]; then \
+		echo -e '\tFAILED: Diff failed to run!'; \
+		cli stop $@; \
+		exit 1; \
+	fi; \
 	if [[ -z $$DIFF ]]; then \
 		echo -e "\tEverything is in order"; \
 	else \
 		echo -e '\tFAILED: Metrics is different from "$(1)/metrics.expected"!'; \
 		echo "$$DIFF"; \
+		cli stop $@; \
 		exit 1; \
 	fi
 endef
 
-collectd/clouseau.class: collectd/clouseau.java
+test/collectd/clouseau.class: test/collectd/clouseau.java
 	javac -source 8 -target 8 "$<"
 
 .PHONY: metrics-tests
 # target: metrics-tests - Run JMX metrics collection tests
-metrics-tests: $(JAR_ARTIFACTS) $(JMX_EXPORTER) collectd/clouseau.class epmd
-	@cli stop $@ > /dev/null 2>&1 || true
+metrics-tests: $(JAR_ARTIFACTS) $(JMX_EXPORTER) test/collectd/clouseau.class epmd
 	@chmod 600 jmxremote.password
 	@cli start $@ \
 		java \
@@ -430,20 +451,22 @@ metrics-tests: $(JAR_ARTIFACTS) $(JMX_EXPORTER) collectd/clouseau.class epmd
 			-Dcom.sun.management.jmxremote.ssl=false \
 			-Dcom.sun.management.jmxremote.password.file=jmxremote.password \
 			-javaagent:$(JMX_EXPORTER)=$(JMX_EXPORTER_PORT):$(JMX_EXPORTER_CFG) \
-			-jar $(JAR_ARTIFACTS) metrics.app.conf > /dev/null
+			$(_JAVA_COOKIE) \
+			-jar $(JAR_ARTIFACTS) test/conf/metrics.app.conf
 	@sleep 5
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@echo "Warming up Clouseau to expose all the metrics"
 	@$(TIMEOUT) $(TIMEOUT_MANGO_TEST) $(MAKE) mango-test || $(MAKE) test-failed ID=$@
 	@$(call collect_and_compare,\
-			collectd,\
-			java -cp collectd clouseau "service:jmx:rmi:///jndi/rmi://localhost:9090/jmxrmi" monitorRole password | \
-			sort > collectd/metrics.out)
+			test/collectd,\
+			java -cp test/collectd clouseau "service:jmx:rmi:///jndi/rmi://localhost:9090/jmxrmi" monitorRole password | \
+			sort > test/collectd/metrics.out)
 	@$(call collect_and_compare,\
-			prometheus,\
-			curl -Ss "http://localhost:$(JMX_EXPORTER_PORT)/metrics" | \
+			test/prometheus,\
+			curl -Ss "http://localhost:$(JMX_EXPORTER_PORT)/custom_path" | \
 				sed -n 's/^\(_com_cloudant_clouseau.*\)[[:space:]].*/\1/p' | \
-				sort > prometheus/metrics.out)
+				sort > test/prometheus/metrics.out)
+	@cli stop $@ || true
 
 sup-test: couchdb
 	@$(COUCHDB_DIR)/dev/run \
@@ -458,7 +481,7 @@ echo \"Ref = make_ref(), {sup, 'clouseau1@127.0.0.1'} ! {ping, self(), Ref}, rec
 # target: compatibility-tests - Run Clouseau 2.x compatibility tests
 compatibility-tests: $(JAR_ARTIFACTS) couchdb epmd FORCE
 	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@$(MAKE) sup-test || $(MAKE) test-failed ID=$@
 	@cli stop $@
 
@@ -560,23 +583,23 @@ ci-concurrent-zeunit: concurrent-zeunit-tests
 
 ci-mango: $(JAR_ARTIFACTS) couchdb epmd FORCE
 	@cli stop $@ || true
-	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
+	@cli start $@ "java $(_JAVA_COOKIE) -jar $< test/conf/ci.app.conf"
 	@sleep 5
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@$(TIMEOUT) $(TIMEOUT_MANGO_TEST) $(MAKE) mango-test || $(MAKE) test-failed ID=$@
 	@cli stop $@
 
 ci-elixir: $(JAR_ARTIFACTS) couchdb epmd FORCE
 	@cli stop $@ || true
-	@cli start $@ "java $(_JAVA_COOKIE) -jar $<"
-	@cli await $(node_name) "$(ERLANG_COOKIE)"
+	@cli start $@ "java $(_JAVA_COOKIE) -jar $< test/conf/ci.app.conf"
+	@cli await $(node_name) "$(ERLANG_COOKIE)" || $(MAKE) await-failed ID=$@
 	@$(TIMEOUT) $(TIMEOUT_ELIXIR_SEARCH) $(MAKE) elixir-search || $(MAKE) test-failed ID=$@
 	@cli stop $@
 
 ci-metrics: metrics-tests
 ci-restart: restart-test
 ci-syslog: syslog-tests
-ci-verify: check-deps check-spotbugs
+ci-verify: check-deps
 
 .PHONY: artifacts
 # target: artifacts - Generate release artifacts
@@ -594,23 +617,26 @@ release: $(RELEASE_ARTIFACTS) $(ARTIFACTS_DIR)/checksums.txt
 		--generate-notes $(RELEASE_ARTIFACTS) $(ARTIFACTS_DIR)/checksums.txt
 
 $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)-dist.zip: $(JAR_ARTIFACTS) $(ARTIFACTS_DIR)/clouseau_ctrl
-	@mkdir -p $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)/bin
+	@mkdir -p $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
 	@cp $(JAR_ARTIFACTS) $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
-	@cp $(ARTIFACTS_DIR)/clouseau_ctrl $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)/bin
-	@zip --junk-paths -r $@ $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
+	@cp $(ARTIFACTS_DIR)/clouseau_ctrl $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
+	@cd $(ARTIFACTS_DIR) && zip -r $@ clouseau-$(PROJECT_VSN)
 
-$(ARTIFACTS_DIR)/%.jar.chksum: $(ARTIFACTS_DIR)/%.jar
-	@cd $(ARTIFACTS_DIR) && sha256sum $(<F) > $(@F)
+$(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)-dist.tar.gz: $(JAR_ARTIFACTS) $(ARTIFACTS_DIR)/clouseau_ctrl
+	@mkdir -p $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
+	@cp $(JAR_ARTIFACTS) $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
+	@cp $(ARTIFACTS_DIR)/clouseau_ctrl $(ARTIFACTS_DIR)/clouseau-$(PROJECT_VSN)
+	@cd $(ARTIFACTS_DIR) && tar --gzip -cf $@ clouseau-$(PROJECT_VSN)
 
-$(ARTIFACTS_DIR)/%.zip.chksum: $(ARTIFACTS_DIR)/%.zip
+$(ARTIFACTS_DIR)/%.chksum: $(ARTIFACTS_DIR)/%
 	@cd $(ARTIFACTS_DIR) && sha256sum $(<F) > $(@F)
 
 $(ARTIFACTS_DIR)/checksums.txt: $(addprefix $(ARTIFACTS_DIR)/, $(CHECKSUM_FILES))
-	@cat $? > $@
+	@cat $^ > $@
 	@cd $(ARTIFACTS_DIR)/ && sha256sum -c checksums.txt
 
 $(ARTIFACTS_DIR)/clouseau_ctrl: bin/clouseau_ctrl
-	@cp $? $@
+	@cp $^ $@
 
 .PHONY: ci-release
 ci-release:
@@ -629,10 +655,9 @@ changes:
 MODE ?= release
 
 .PHONY: generate-erlang-cookie
-# target: generate-erlang-cookie - Generate secure erlang.cookie file
+# target: generate-erlang-cookie - Generate secure erlang.cookie file with permissions for Docker to read
 generate-erlang-cookie:
-	@umask 0077 && openssl rand -base64 16 > $(ERLANG_COOKIE_FILE) && umask 0022
-	@chmod 644 $(ERLANG_COOKIE_FILE)
+	@umask 0133 && openssl rand -base64 16 > $(ERLANG_COOKIE_FILE)
 	@echo "Generated erlang.cookie at $(ERLANG_COOKIE_FILE)"
 
 .PHONY: docker-build

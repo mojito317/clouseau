@@ -1,4 +1,4 @@
-name: Release 3.x
+name: Release
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    name: Release of clouseau-{version}-dist.zip
+    name: Prepare a Clouseau release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -19,14 +19,14 @@ jobs:
           echo "RELEASE_TAG=${GITHUB_REF:10}" >> $GITHUB_ENV
           echo "RELEASE_NAME=$GITHUB_WORKFLOW" >> $GITHUB_ENV
 
-      - name: Test
-        run: mise exec -- make test
       - name: Generate artifacts
-        run: mise exec -- make artifacts
+        run: make artifacts
+
       - name: List artifacts
         run: ls artifacts
+
       - name: Create release
-        run: mise exec -- make release
+        run: make release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docker-release:
@@ -45,18 +45,9 @@ jobs:
         run: |
           VERSION=$(make version)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Building version: $VERSION"
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v7
+      - name: Build and publish
+        uses: ./.github/actions/docker-publish
         with:
-          context: .
-          file: docker/Dockerfile
-          push: true
-          build-args: |
-            BUILD_MODE=release
-            CLOUSEAU_VERSION=${{ steps.version.outputs.version }}
-          tags: |
-            ghcr.io/mojito317/clouseau:${{ steps.version.outputs.version }}
-            ghcr.io/mojito317/clouseau:latest
-          platforms: linux/amd64,linux/arm64
+          version: ${{ steps.version.outputs.version }}
+          registry-token: ${{ secrets.GHCR_TOKEN }}

@@ -14,40 +14,42 @@ ARG CLOUSEAU_REPO=https://github.com/mojito317/clouseau
 ARG BUILD_MODE=release
 
 
-# Stage 1: Copy local JAR files (for dev builds)
-FROM scratch AS local-jars
+# Stage 1: Local build
+FROM eclipse-temurin:21-jre-ubi10-minimal@sha256:c7feea7f2dce5cf29e0ffa94e386b0a12ab44c029ad66bcb59eacc4da572ccf4 AS local-builder
 COPY artifacts/*.jar /usr/src/
 
 
-# Stage 2: Download from GitHub release (for release builds)
-FROM debian:trixie-slim AS fetcher
+# Stage 2: Release build
+FROM eclipse-temurin:21-jre-ubi10-minimal@sha256:c7feea7f2dce5cf29e0ffa94e386b0a12ab44c029ad66bcb59eacc4da572ccf4 AS release-builder
 
 ARG CLOUSEAU_VERSION
 ARG CLOUSEAU_REPO
 
-RUN set -ex; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        unzip \
-        wget \
-    ; \
-    wget -q -O clouseau.zip "${CLOUSEAU_REPO}/releases/download/${CLOUSEAU_VERSION}/clouseau-${CLOUSEAU_VERSION}-dist.zip"; \
+RUN microdnf install -y unzip && \
+    microdnf clean all
+
+ADD "${CLOUSEAU_REPO}/releases/download/${CLOUSEAU_VERSION}/clouseau-${CLOUSEAU_VERSION}-dist.zip" /clouseau.zip
+ADD "${CLOUSEAU_REPO}/releases/download/${CLOUSEAU_VERSION}/checksums.txt" /checksums.txt
+
+RUN grep "clouseau-${CLOUSEAU_VERSION}-dist.zip" checksums.txt | sha256sum -c - || \
+        (echo "ERROR: Checksum verification failed" && exit 1); \
     unzip clouseau.zip -d /usr/src; \
-    rm clouseau.zip
+    rm clouseau.zip checksums.txt
 
 
-# Stage 3: Select JAR source based on BUILD_MODE
-FROM local-jars AS jars-local
-FROM fetcher AS jars-release
-FROM jars-${BUILD_MODE} AS jars
+# Stage 3: Select builder based on BUILD_MODE
+FROM local-builder AS builder-local
+FROM release-builder AS builder-release
+FROM builder-${BUILD_MODE} AS builder
 
-
+# Runner stage
 FROM eclipse-temurin:21-jre AS runner
 
 # Helpful for `docker inspect`
 ARG CLOUSEAU_VERSION
 ENV CLOUSEAU_VERSION=${CLOUSEAU_VERSION}
+ENV JAVA_XMX=2G
+ENV JAVA_XMS=1600M
 
 LABEL maintainer="CouchDB Developers dev@couchdb.apache.org"
 
@@ -55,13 +57,12 @@ LABEL maintainer="CouchDB Developers dev@couchdb.apache.org"
 RUN groupadd -g 5986 -r clouseau && \
     useradd -u 5986 -d /opt/couchdb-search -g clouseau clouseau
 
-# Install runtime dependencies
+# Install dependencies (Tini)
 RUN set -ex; \
     apt-get update; \
-    apt-get install -y --no-install-recommends tini erlang-base; \
+    apt-get install -y --no-install-recommends tini; \
     rm -rf /var/lib/apt/lists/*; \
-    tini --version; \
-    epmd -help || true
+    tini --version
 
 # Set up directories with correct permissions to avoid chmod later
 WORKDIR /opt/couchdb-search
@@ -71,7 +72,7 @@ RUN chown clouseau:clouseau . && \
     lib \
     data
 
-COPY --from=jars --chown=clouseau:clouseau /usr/src/*.jar lib/
+COPY --from=builder --chown=clouseau:clouseau /usr/src/*.jar lib/
 COPY --chown=clouseau:clouseau clouseau.conf etc/
 
 VOLUME /opt/couchdb-search/data
@@ -80,11 +81,10 @@ USER clouseau
 
 ENTRYPOINT ["tini", "--"]
 CMD ["sh", "-c", "\
-    epmd -daemon && \
     exec java \
     -server \
-    -Xmx2G \
-    -Xms1600M \
+    -Xmx${JAVA_XMX} \
+    -Xms${JAVA_XMS} \
     -XX:+UseG1GC \
     -XX:+ParallelRefProcEnabled \
     -Dsun.net.inetaddr.ttl=30 \

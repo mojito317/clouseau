@@ -1,11 +1,11 @@
 package com.cloudant.ziose.core
 
-import zio._
+import zio.{&, Tag, Trace, UIO, URIO, ZIO}
 
 sealed trait EngineWorkerError            extends Exception
 case class NameAlreadyInUse(name: String) extends EngineWorkerError
 
-trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
+trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] with ZioSupport {
   type Context <: ProcessContext
   val id: Engine.WorkerId
   val nodeName: Symbol
@@ -13,8 +13,8 @@ trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
   val exchange: EngineWorkerExchange
   def acquire: UIO[Unit]
   def release: UIO[Unit]
-  def register(entity: ForwardWithId[Address, MessageEnvelope]): UIO[Unit] = exchange.add(entity)
-  def unregister(addr: Address): ZIO[Any, Nothing, Option[ForwardWithId[Address, MessageEnvelope]]] = {
+  def register(entity: ForwardWithId[Address, MessageEnvelope]): UIO[Unit]            = exchange.add(entity)
+  def unregister(addr: Address): UIO[Option[ForwardWithId[Address, MessageEnvelope]]] = {
     exchange.remove(addr)
   }
   def spawn[A <: Actor](
@@ -29,11 +29,7 @@ trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
   }
 
   def processInfo[A <: Actor](addr: Address): Option[ProcessInfo] = {
-    Unsafe.unsafe { implicit unsafe =>
-      Runtime.default.unsafe
-        .run(processInfoZIO(addr))
-        .getOrThrowFiberFailure()
-    }.asInstanceOf[Option[ProcessInfo]]
+    processInfoZIO(addr).unsafeRunAndGet
   }
 
   def actorMetersZIO[A <: Actor](addr: Address): UIO[Option[List[ActorMeterInfo]]] = {
@@ -41,11 +37,7 @@ trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
   }
 
   def actorMeters[A <: Actor](addr: Address): Option[List[ActorMeterInfo]] = {
-    Unsafe.unsafe { implicit unsafe =>
-      Runtime.default.unsafe
-        .run(actorMetersZIO(addr))
-        .getOrThrowFiberFailure()
-    }.asInstanceOf[Option[List[ActorMeterInfo]]]
+    actorMetersZIO(addr).unsafeRunAndGet
   }
 
   def processInfoTopKZIO[A <: Actor](
@@ -63,11 +55,7 @@ trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
   }
 
   def processInfoTopK(valueFun: ProcessInfo => Int): List[ProcessInfo] = {
-    Unsafe.unsafe { implicit unsafe =>
-      Runtime.default.unsafe
-        .run(processInfoTopKZIO(valueFun))
-        .getOrThrowFiberFailure()
-    }.asInstanceOf[List[ProcessInfo]]
+    processInfoTopKZIO(valueFun).unsafeRunAndGet
   }
 
   def actorMeterInfoTopKZIO[A <: Actor](
@@ -87,13 +75,8 @@ trait EngineWorker extends ForwardWithId[Engine.WorkerId, MessageEnvelope] {
   }
 
   def actorMeterInfoTopK(query: ActorMeterInfo.Query[Double]): List[ActorMeterInfo] = {
-    Unsafe.unsafe { implicit unsafe =>
-      Runtime.default.unsafe
-        .run(actorMeterInfoTopKZIO(query))
-        .getOrThrowFiberFailure()
-    }.asInstanceOf[List[ActorMeterInfo]]
+    actorMeterInfoTopKZIO(query).unsafeRunAndGet
   }
-
 }
 
 object EngineWorker {

@@ -6,9 +6,11 @@ package com.cloudant.ziose.clouseau
 import com.cloudant.ziose.core.{ActorFactory, AddressableActor, EngineWorker, Node}
 import com.cloudant.ziose.otp.{OTPLayers, OTPNodeConfig}
 import com.cloudant.ziose.scalang.ScalangMeterRegistry
-import zio.{&, LogLevel, RIO, Scope, System, Task, ZIO, ZIOAppArgs, ZIOAppDefault}
+import zio.{&, LogLevel, RIO, Scope, System, Task, ZIO, ZIOAppArgs, ZIOAppDefault, Runtime, RuntimeFlag}
 
 object Main extends ZIOAppDefault {
+  override val bootstrap = Runtime.disableFlags(RuntimeFlag.FiberRoots)
+
   def getNodeIdx: Task[Int] = {
     for {
       prop <- System.property("node")
@@ -41,7 +43,11 @@ object Main extends ZIOAppDefault {
       runtime  <- ZIO.runtime[EngineWorker & Node & ActorFactory]
       otp_node <- ZIO.service[Node]
       remote_node = s"node${workerCfg.node.name.last}@${workerCfg.node.domain}"
-      _      <- otp_node.monitorRemoteNode(remote_node)
+      _ <- otp_node.monitorRemoteNode(
+        remote_node,
+        workerCfg.node.pingTimeoutResolved,
+        workerCfg.node.pingIntervalResolved
+      )
       worker <- ZIO.service[EngineWorker]
       logLevel = loggerCfg.level.getOrElse(LogLevel.Debug)
       node       <- ZIO.succeed(new ClouseauNode()(runtime, worker, metricsRegistry, logLevel))

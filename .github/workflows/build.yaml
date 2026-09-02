@@ -1,9 +1,11 @@
-name: Build 3.x
+name: Build & Test
 
 on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
@@ -18,39 +20,42 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup
       - name: Lint
-        run: |
-          source scripts/console.sh
-          source scripts/tools.sh
-          COURSIER="mise exec -- cs" tools::activate_tools
-          mise exec -- make ci-lint
+        run: make ci-lint
+
       - name: Unit tests
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make test
+          command: make test
+
       - name: Restart test
-        run: mise exec -- make restart-test
+        run: make restart-test
+
       - name: RPC tests (zeunit)
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make zeunit
+          command: make zeunit
+
       - name: Concurrent RPC tests (zeunit)
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make concurrent-zeunit-tests
+          command: make concurrent-zeunit-tests
+
       - name: Syslog tests
-        run: mise exec -- make syslog-tests
+        run: make syslog-tests
+
       - name: Elixir tests
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make ci-elixir
+          command: make ci-elixir
+
       - name: Metrics tests (mango)
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
@@ -75,7 +80,7 @@ jobs:
       - name: Generate erlang.cookie
         run: make generate-erlang-cookie
       - name: Build Clouseau Docker image (local mode)
-        run: mise exec -- make docker-build MODE=local
+        run: make docker-build MODE=local
       - name: Set up Docker Compose
         uses: docker/setup-compose-action@4eb059ff7f16592f9c84d5ca339c53cb7c5064e2 # v2.3.0
       - name: Run docker compose
@@ -88,20 +93,19 @@ jobs:
           retry_wait_seconds: 2
           command: make docker-check-couchdb-is-ready
       - name: Test CouchDB and Clouseau integration
-        run: mise exec -- make docker-test-integration
+        run: make docker-test-integration
       - name: Mango tests on Docker
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make docker-mango-test
+          command: make docker-mango-test
       - name: Elixir tests on Docker
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: mise exec -- make docker-elixir-test
-
+          command: make docker-elixir-test
       - name: Cleanup
         if: always()
         run: |
