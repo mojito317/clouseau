@@ -50,4 +50,4 @@ jobs:
         uses: ./.github/actions/docker-publish
         with:
           version: ${{ steps.version.outputs.version }}
-          registry-token: ${{ secrets.GHCR_TOKEN }}
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
