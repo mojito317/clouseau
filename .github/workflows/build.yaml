@@ -24,6 +24,7 @@ jobs:
         with:
           env: true
           cache: true
+          cache_key_prefix: mise-${{ hashFiles('mise.toml') }}-
           export_path: true
 
       - name: Lint
