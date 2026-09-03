@@ -3,11 +3,7 @@
 
 [tools]
 bat = "0.26.1"
-# Sync version with ".editorconfig-checker.json"
-editorconfig-checker = { version = "3.11.2", postinstall = """
-jq --arg v "v$MISE_TOOL_VERSION" '.Version = $v' .editorconfig-checker.json >tmp.json &&
-mv tmp.json .editorconfig-checker.json
-""" }
+editorconfig-checker = "3.11.2"
 elixir = "1.19.5-otp-27"
 erlang = "27.3.4.11"
 github-cli = "2.92.0"
