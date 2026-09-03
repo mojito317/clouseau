@@ -26,6 +26,12 @@ jobs:
           cache: true
           export_path: true
 
+      - name: Reshim mise tools
+        run: mise reshim
+
+      - name: Debug scalafmt
+        run: which scalafmt && scalafmt --version
+
       - name: Lint
         run: make ci-lint
 
