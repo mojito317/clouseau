@@ -25,10 +25,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup
 
-      - name: Get latest release version
+      - name: Get latest major.minor version
         id: version
         run: |
-          VERSION=$(make version)
+          VERSION=$(make version | sed 's/\.[^.]*-.*//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build and publish
