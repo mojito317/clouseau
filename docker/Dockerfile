@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ARG CLOUSEAU_REPO=https://github.com/cloudant-labs/clouseau
+ARG CLOUSEAU_REPO=https://github.com/mojito317/clouseau
 ARG BUILD_MODE=release
 
 
@@ -50,8 +50,6 @@ ARG CLOUSEAU_VERSION
 ENV CLOUSEAU_VERSION=${CLOUSEAU_VERSION}
 ENV JAVA_XMX=2G
 ENV JAVA_XMS=1600M
-
-LABEL org.opencontainers.image.authors="Cloudant Labs https://github.com/cloudant-labs/clouseau"
 
 # Create the user/group first
 RUN groupadd -g 5986 -r clouseau && \
