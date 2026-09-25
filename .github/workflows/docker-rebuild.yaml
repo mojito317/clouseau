@@ -13,6 +13,7 @@ on:
       - main
     paths:
       - 'docker/Dockerfile'
+  workflow_dispatch:
 
 jobs:
   docker-rebuild:
