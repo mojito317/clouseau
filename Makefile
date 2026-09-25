@@ -618,7 +618,7 @@ release: $(RELEASE_ARTIFACTS) $(ARTIFACTS_DIR)/checksums.txt
 	GH_DEBUG=1 GH_HOST=github.com gh release list --repo github.com/mojito317/clouseau
 	GH_DEBUG=1 GH_HOST=github.com gh release create "$(PROJECT_VSN)" \
 		$(MAYBE_PRERELEASE) --target "$$(git rev-parse HEAD)" \
-		--repo github.com/cloudant-labs/clouseau \
+		--repo github.com/mojito317/clouseau \
 		--title "Release $(PROJECT_VSN)" \
 		--generate-notes $(RELEASE_ARTIFACTS) $(ARTIFACTS_DIR)/checksums.txt
 
