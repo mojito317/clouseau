@@ -37,3 +37,4 @@ jobs:
         with:
           version: ${{ steps.version.outputs.version }}
           registry-token: ${{ secrets.GITHUB_TOKEN }}
+          include-patch-tag: 'false'

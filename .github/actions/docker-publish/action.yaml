@@ -7,6 +7,10 @@ inputs:
   registry-token:
     description: 'GitHub token for registry authentication'
     required: true
+  include-patch-tag:
+    description: 'Whether to include the <major>.<minor>.<patch> image tag (set to false for rebuilds)'
+    required: false
+    default: 'true'
 runs:
   using: 'composite'
   steps:
@@ -24,9 +28,9 @@ runs:
       id: meta
       uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
       with:
-        images: ghcr.io/mojito317/clouseau
+        images: ghcr.io/${{ github.repository }}
         tags: |
-          type=semver,pattern={{version}},value=${{ inputs.version }}
+          type=semver,pattern={{version}},value=${{ inputs.version }},enable=${{ inputs.include-patch-tag }}
           type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }}
           type=semver,pattern={{major}},value=${{ inputs.version }}
           type=raw,value=latest
