@@ -48,7 +48,7 @@ runs:
         no-cache: true
         build-args: |
           BUILD_MODE=${{ inputs.build-mode }}
-          CLOUSEAU_VERSION=${{ inputs.version }}
+          CLOUSEAU_VERSION=${{ inputs.full-version || inputs.version }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64

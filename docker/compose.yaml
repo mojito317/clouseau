@@ -20,9 +20,9 @@ services:
         exec /docker-entrypoint.sh /opt/couchdb/bin/couchdb
 
   clouseau:
-    image: clouseau:latest
+    # image: clouseau:latest
     # For remote image pull use:
-    # image: ghcr.io/cloudant-labs/clouseau:latest
+    image: ghcr.io/mojito317/clouseau:latest
     network_mode: "service:couchdb"
     volumes:
       - ./erlang.cookie:/run/secrets/erlang.cookie:ro
