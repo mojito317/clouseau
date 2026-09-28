@@ -7,6 +7,10 @@ inputs:
   registry-token:
     description: 'GitHub token for registry authentication'
     required: true
+  build-mode:
+    description: 'Docker build mode (local or release)'
+    required: false
+    default: 'release'
   include-patch-tag:
     description: 'Whether to include the <major>.<minor>.<patch> image tag (set to false for rebuilds)'
     required: false
@@ -43,7 +47,7 @@ runs:
         push: true
         no-cache: true
         build-args: |
-          BUILD_MODE=release
+          BUILD_MODE=${{ inputs.build-mode }}
           CLOUSEAU_VERSION=${{ inputs.version }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

@@ -26,6 +26,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup
 
+      - name: Build JAR artifact
+        run: make jar
+
       - name: Get latest major.minor version
         id: version
         run: |
@@ -37,4 +40,5 @@ jobs:
         with:
           version: ${{ steps.version.outputs.version }}
           registry-token: ${{ secrets.GITHUB_TOKEN }}
+          build-mode: 'local'
           include-patch-tag: 'false'
