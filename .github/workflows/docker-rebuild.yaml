@@ -33,7 +33,7 @@ jobs:
         id: version
         run: |
           FULL=$(make version)
-          SHORT=$(echo $FULL | sed 's/\.[^.]*-.*//')
+          SHORT=$(echo $FULL | sed 's/-.*//')
           echo "full=$FULL" >> $GITHUB_OUTPUT
           echo "short=$SHORT" >> $GITHUB_OUTPUT
 

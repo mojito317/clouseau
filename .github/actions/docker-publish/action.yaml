@@ -15,6 +15,9 @@ inputs:
     description: 'Whether to include the <major>.<minor>.<patch> image tag (set to false for rebuilds)'
     required: false
     default: 'true'
+  full-version:
+    description: 'Full Clouseau version (e.g. 3.4.1-SNAPSHOT) to set as CLOUSEAU_VERSION inside the image'
+    required: false
 runs:
   using: 'composite'
   steps:
