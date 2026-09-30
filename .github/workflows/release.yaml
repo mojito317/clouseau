@@ -56,9 +56,8 @@ jobs:
     name: Bump to next snapshot version
     runs-on: ubuntu-latest
     needs: release
-    # Only bump for regular releases tagged from main, not release candidates
+    # Only bump for regular releases, not release candidates
     if: |
-      github.event.base_ref == 'refs/heads/main' &&
       !contains(github.ref_name, '-RC') &&
       !contains(github.ref_name, '-rc')
     permissions:
@@ -67,14 +66,28 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: main
+          fetch-depth: 0
+
+      - name: Check tag is reachable from main
+        id: check-main
+        run: |
+          git fetch origin main
+          if git merge-base --is-ancestor "${{ github.sha }}" origin/main; then
+            echo "on_main=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag is not on main, skipping bump."
+            echo "on_main=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Bump version.sbt to next snapshot
+        if: steps.check-main.outputs.on_main == 'true'
         run: |
+          git checkout origin/main -- version.sbt
           make bump-snapshot
           echo "NEXT_VSN=$(make version)" >> $GITHUB_ENV
 
       - name: Open PR with bumped version
+        if: steps.check-main.outputs.on_main == 'true'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           commit-message: "Bump version to ${{ env.NEXT_VSN }}"
