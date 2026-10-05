@@ -16,7 +16,7 @@ ARG BUILD_MODE=release
 
 # Stage 1: Local build
 FROM eclipse-temurin:21-jre-ubi10-minimal@sha256:c7feea7f2dce5cf29e0ffa94e386b0a12ab44c029ad66bcb59eacc4da572ccf4 AS local-builder
-COPY artifacts/*.jar /usr/src/
+COPY artifacts/*.jar /build/
 
 
 # Stage 2: Release build
@@ -30,7 +30,7 @@ ADD "${CLOUSEAU_REPO}/releases/download/${CLOUSEAU_VERSION}/checksums.txt" /chec
 
 RUN grep "clouseau-${CLOUSEAU_VERSION}-dist.tar.gz" /checksums.txt | sha256sum -c - || \
         { echo "ERROR: Checksum verification failed"; exit 1; }; \
-    tar -xzf /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz -C /usr/src --strip-components=1; \
+    tar -xzf /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz -C /build --strip-components=1; \
     rm /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz /checksums.txt
 
 
@@ -62,7 +62,7 @@ RUN chown clouseau:clouseau . && \
     lib \
     data
 
-COPY --from=builder --chown=clouseau:clouseau /usr/src/*.jar lib/
+COPY --from=builder --chown=clouseau:clouseau /build/*.jar lib/
 COPY --chown=clouseau:clouseau docker/clouseau.conf etc/
 
 VOLUME /opt/couchdb-search/data
