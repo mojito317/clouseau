@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-ARG CLOUSEAU_REPO=https://github.com/cloudant-labs/clouseau
+ARG CLOUSEAU_REPO=https://github.com/mojito317/clouseau
 ARG BUILD_MODE=release
 
 
