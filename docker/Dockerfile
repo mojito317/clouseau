@@ -30,7 +30,7 @@ ADD "${CLOUSEAU_REPO}/releases/download/${CLOUSEAU_VERSION}/checksums.txt" /chec
 
 RUN grep "clouseau-${CLOUSEAU_VERSION}-dist.tar.gz" /checksums.txt | sha256sum -c - || \
         { echo "ERROR: Checksum verification failed"; exit 1; }; \
-    tar -xzf /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz -C /build --strip-components=1; \
+    mkdir /build && tar -xzf /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz -C /build --strip-components=1; \
     rm /clouseau-${CLOUSEAU_VERSION}-dist.tar.gz /checksums.txt
 
 
