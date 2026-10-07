@@ -4,6 +4,9 @@ name: Docker Rebuild
 # This is triggered by Dependabot PRs that update the base image SHA, ensuring
 # the published image stays up to date with upstream OS/JRE security patches.
 #
+# Can also be triggered manually (workflow_dispatch) to rebuild the image for a
+# specific released version, e.g. to fix a broken image without a new release.
+#
 # Note: Java library dependencies are bundled in the Clouseau release artifact
 # and are not updated here. Dependabot can update SBT dependencies, but those
 # require a new Clouseau release to take effect.
@@ -13,6 +16,11 @@ on:
       - main
     paths:
       - 'docker/Dockerfile'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Released version to rebuild the image for (e.g. 3.4.0)'
+        required: true
 
 jobs:
   docker-rebuild:
@@ -26,15 +34,21 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Build JAR artifact
+        if: github.event_name == 'push'
         run: make jar
 
       - name: Get version
         id: version
         run: |
-          FULL=$(make version)
-          SHORT=$(echo $FULL | sed 's/-.*//')
-          echo "full=$FULL" >> $GITHUB_OUTPUT
-          echo "short=$SHORT" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "full=${{ inputs.version }}" >> $GITHUB_OUTPUT
+            echo "short=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            FULL=$(make version)
+            SHORT=$(echo $FULL | sed 's/-.*//')
+            echo "full=$FULL" >> $GITHUB_OUTPUT
+            echo "short=$SHORT" >> $GITHUB_OUTPUT
+          fi
 
       - name: Build and publish
         uses: ./.github/actions/docker-publish
@@ -42,5 +56,6 @@ jobs:
           version: ${{ steps.version.outputs.short }}
           full-version: ${{ steps.version.outputs.full }}
           registry-token: ${{ secrets.GITHUB_TOKEN }}
-          build-mode: 'local'
-          include-patch-tag: 'false'
+          build-mode: ${{ github.event_name == 'workflow_dispatch' && 'release' || 'local' }}
+          include-patch-tag: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          only-patch-tag: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}

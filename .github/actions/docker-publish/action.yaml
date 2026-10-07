@@ -15,6 +15,10 @@ inputs:
     description: 'Whether to include the <major>.<minor>.<patch> image tag (set to false for rebuilds)'
     required: false
     default: 'true'
+  only-patch-tag:
+    description: 'When true, only push the <major>.<minor>.<patch> tag, skipping floating tags (major.minor, major, latest)'
+    required: false
+    default: 'false'
   full-version:
     description: 'Full Clouseau version (e.g. 3.4.1-SNAPSHOT) to set as CLOUSEAU_VERSION inside the image'
     required: false
@@ -38,9 +42,9 @@ runs:
         images: ghcr.io/mojito317/clouseau
         tags: |
           type=semver,pattern={{version}},value=${{ inputs.version }},enable=${{ inputs.include-patch-tag }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }}
-          type=semver,pattern={{major}},value=${{ inputs.version }}
-          type=raw,value=latest
+          type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }},enable=${{ inputs.only-patch-tag == 'false' }}
+          type=semver,pattern={{major}},value=${{ inputs.version }},enable=${{ inputs.only-patch-tag == 'false' }}
+          type=raw,value=latest,enable=${{ inputs.only-patch-tag == 'false' }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
